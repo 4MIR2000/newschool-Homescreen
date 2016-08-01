@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+
+        >
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="1"
+            android:id="@+id/hour_timetable"
+            android:background="@drawable/hour_round_background"
+
+
+            android:focusable="false"
+            android:textColor="#fafafa"
+            android:textSize="30dp"
+            android:layout_centerVertical="true"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timetable_item_layout"
+            android:layout_marginLeft="30dp"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/timetable_item_layout_color"
+                ></RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Englisch"
+            android:id="@+id/subject_timetable"
+            android:textSize="25dp"
+
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="K 12"
+            android:id="@+id/standardroom_timetable"
+            android:textSize="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+
+
+
+
+            />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

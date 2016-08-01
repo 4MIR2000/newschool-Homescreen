@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/timetable_item_layout"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Englisch"
+            android:id="@+id/subject_timetable"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="K 12"
+            android:id="@+id/standardroom_timetable"
+            android:textSize="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="K 08"
+            android:id="@+id/otherroom_timetable"
+            android:layout_alignTop="@id/standardroom_timetable"
+            android:layout_toStartOf="@id/standardroom_timetable"
+            android:layout_marginRight="10dp"
+            android:visibility="invisible" />
+
+        </RelativeLayout>
+    </RelativeLayout>

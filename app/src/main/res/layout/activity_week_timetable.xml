@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="amiran.SiriusTablet.WeekTimetableActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weekTimetable"
+        android:weightSum="10"
+        android:orientation="vertical"
+        >
+
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/WeekTimetable_days_height"
+            android:layout_weight="2"
+            android:id="@+id/days_grid"
+            android:stretchMode="columnWidth"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="@dimen/weekTimetable_vertical_margin"
+            ></GridView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"></RelativeLayout>
+
+
+        <GridView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/subjects_grid"
+                android:stretchMode="columnWidth"
+                android:numColumns="auto_fit"
+                android:verticalSpacing="@dimen/weekTimetable_vertical_margin"
+
+                ></GridView>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

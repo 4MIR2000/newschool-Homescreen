@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/frag_layout"
+android:background="#40a5b7"
+    android:focusable="false"
+    android:paddingLeft="@dimen/appWidget_horizontal"
+    android:paddingRight="@dimen/appWidget_horizontal"
+    android:paddingTop="@dimen/appWidget_vertical_margin"
+    android:paddingBottom="@dimen/appWidget_vertical_margin">
+
+
+
+    <SlidingDrawer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/slidingDrawer"
+        android:content="@+id/content"
+        android:handle="@+id/handle" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/handle"
+        android:background="@drawable/up_arrow"
+       />
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        android:background="@color/grey"
+    />
+
+    </SlidingDrawer>
+
+
+</RelativeLayout>

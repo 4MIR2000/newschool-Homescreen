@@ -1,0 +1,28 @@
+<resources>
+    <string name="homescreen">New School Homescreen</string>
+    <string name="lockscreen">New School Lockscreen</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="square_root_symbol">√¯¯</string>
+    <string name="squared_two">"X\u00B2"</string>
+    <string name="qube">"X\u00B3"</string>
+    <string name="delete_numbers">"\u21D0"</string>
+    <string name="degree_celsius">"\u2103"</string>
+    <string name="pi">"\u03C0"</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="german">Deutsch</string>
+    <string name="maths">Mathematik</string>
+    <string name="economy">Wirtschaft</string>
+    <string name="it">Informatik</string>
+    <string name="religion">Religion</string>
+    <string name="physics">Physik</string>
+    <string name="art">Kunst</string>
+    <string name="music">Musik</string>
+    <string name="activityNotFound">Diese Applikation ist nicht installiert</string>
+    <string name="writtingAppNotFound">Die Schreibeapp ist nicht installiert</string>
+    <string name="timetable">Stundenplan</string>
+
+
+
+</resources>

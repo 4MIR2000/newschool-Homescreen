@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="APPWIDGET_HOST_ID" type="id" />
+    <item name="REQUEST_PICK_APPWIDGET" type="id" />
+    <item name="app" type="id"/>
+    <item name="data" type="id" />
+    <item name="holder" type="id"/>
+    <item name="cellWidth" type="id"/>
+</resources>
