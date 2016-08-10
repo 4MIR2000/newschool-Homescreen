@@ -493,7 +493,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             slidingDrawer.animateClose();
             slidingDrawer.setVisibility(View.GONE);
         }
-        return;
     }
 
     @Override

@@ -150,7 +150,7 @@ public class Lockscreen extends AppCompatActivity {
                 lock.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
             } else {
-                if (locked == false) {
+                if (!locked) {
                     gestureDetector = new GestureDetector(Lockscreen.this, new MyGestureListener(activity, Lockscreen.this));
                     lockscreen_timetable.setVisibility(View.VISIBLE);
                     lock.setVisibility(View.GONE);
@@ -340,7 +340,6 @@ public class Lockscreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Don't allow back to dismiss.
-        return;
     }
 
     @Override

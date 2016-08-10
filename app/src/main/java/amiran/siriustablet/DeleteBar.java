@@ -57,7 +57,7 @@ class DeleteBar implements View.OnDragListener {
                                     }
 
                                     //if there is no other shortcut with the same icon
-                                    if (otherShortcutWithSameIcon_avaiable == false) {
+                                    if (!otherShortcutWithSameIcon_avaiable) {
                                         data.apps.get(i).deleteIcon();
                                     }
 

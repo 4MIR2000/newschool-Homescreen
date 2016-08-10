@@ -126,7 +126,7 @@ class ShortcutListeners implements View.OnClickListener, View.OnLongClickListene
                 break;
             case DragEvent.ACTION_DRAG_ENDED:
                 boolean droped = event.getResult();
-                if (droped == false) {
+                if (!droped) {
                     //invisible deletebar if the icon is droped anywhere else as our app_widget_placement
                     delete_bar_tv.setVisibility(View.INVISIBLE);
                     dragging_app.setVisibility(View.VISIBLE);

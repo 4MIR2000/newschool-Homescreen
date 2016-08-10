@@ -53,7 +53,7 @@ class AppWidgetListeners implements View.OnLongClickListener, View.OnDragListene
                 delete_bar_tv.setVisibility(View.INVISIBLE);
             case DragEvent.ACTION_DRAG_ENDED:
                 boolean drop = event.getResult();
-                if (drop == false) {
+                if (!drop) {
                     delete_bar_tv.setVisibility(View.INVISIBLE);
                 }
         }

@@ -153,7 +153,7 @@ public class CellLayout extends ViewGroup {
                 final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
                 final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
                 final boolean[][] occupied = mOccupied;
-                findOccupiedCells(xCount, yCount, occupied, null);
+                findOccupiedCells(xCount, yCount, occupied);
                 cellInfo.cell = null;
                 cellInfo.cellX = cellXY[0];
                 cellInfo.cellY = cellXY[1];
@@ -189,7 +189,7 @@ public class CellLayout extends ViewGroup {
             final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
             final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
             final boolean[][] occupied = mOccupied;
-            findOccupiedCells(xCount, yCount, occupied, null);
+            findOccupiedCells(xCount, yCount, occupied);
             findIntersectingVacantCells(info, info.cellX, info.cellY, xCount, yCount, occupied);
             mDirtyTag = false;
         }
@@ -290,7 +290,7 @@ public class CellLayout extends ViewGroup {
                 }
             }
         } else {
-            findOccupiedCells(xCount, yCount, occupied, ignoreView);
+            findOccupiedCells(xCount, yCount, occupied);
         }
         CellInfo cellInfo = new CellInfo();
         cellInfo.cellX = -1;
@@ -624,7 +624,7 @@ public class CellLayout extends ViewGroup {
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
         final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
         final boolean[][] occupied = mOccupied;
-        findOccupiedCells(xCount, yCount, occupied, null);
+        findOccupiedCells(xCount, yCount, occupied);
         return findVacantCell(vacant, spanX, spanY, xCount, yCount, occupied);
     }
 
@@ -655,7 +655,7 @@ public class CellLayout extends ViewGroup {
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
         final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
         final boolean[][] occupied = mOccupied;
-        findOccupiedCells(xCount, yCount, occupied, null);
+        findOccupiedCells(xCount, yCount, occupied);
         final boolean[] flat = new boolean[xCount * yCount];
         for (int y = 0; y < yCount; y++) {
             for (int x = 0; x < xCount; x++) {
@@ -665,7 +665,7 @@ public class CellLayout extends ViewGroup {
         return flat;
     }
 
-    private void findOccupiedCells(int xCount, int yCount, boolean[][] occupied, View ignoreView) {
+    private void findOccupiedCells(int xCount, int yCount, boolean[][] occupied) {
         for (int x = 0; x < xCount; x++) {
             for (int y = 0; y < yCount; y++) {
                 occupied[x][y] = false;

@@ -18,7 +18,7 @@ class DrawerClick implements AdapterView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity ma = new MainActivity();
-        if (ma.isLaunchable) {
+        if (MainActivity.isLaunchable) {
             Intent launchintent = new Intent(Intent.ACTION_MAIN);
 
             //so it is a Launcher and not a background app

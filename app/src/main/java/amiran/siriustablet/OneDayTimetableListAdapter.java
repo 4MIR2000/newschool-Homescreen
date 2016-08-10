@@ -61,7 +61,7 @@ class OneDayTimetableListAdapter extends BaseAdapter {
         if (msubstitution != null) {
             for (TimetableHourDetail subhour : msubstitution) {
                 if (subhour.hour - 1 == position) {
-                    holder.substitution(subhour.hour, subhour.subject, subhour.teacher, subhour.room);
+                    holder.substitution(subhour.subject, subhour.teacher, subhour.room);
                 }
             }
         }
@@ -90,7 +90,7 @@ class OneDayTimetableListAdapter extends BaseAdapter {
             hour_button.setText(Integer.toString(hour));
         }
 
-        public void substitution(int hour, String subject, String teacher, String room) {
+        public void substitution(String subject, String teacher, String room) {
             if (room == null && teacher == null) {
                 layout.setBackgroundColor(mcontext.getResources().getColor(R.color.ausfall));
             } else {
@@ -100,10 +100,8 @@ class OneDayTimetableListAdapter extends BaseAdapter {
                     standardroom_tv.setText(room);
 
                 } else {
-                    if (teacher != null) {
-                        layout.setBackgroundColor(mcontext.getResources().getColor(R.color.vertretung));
-                        subject_tv.setText(subject);
-                    }
+                    layout.setBackgroundColor(mcontext.getResources().getColor(R.color.vertretung));
+                    subject_tv.setText(subject);
                 }
             }
         }

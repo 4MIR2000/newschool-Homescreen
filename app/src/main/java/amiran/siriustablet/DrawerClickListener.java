@@ -11,7 +11,7 @@ class DrawerClickListener implements AdapterView.OnItemClickListener {
     private final AppDetail[] list;
     private PackageManager Pmanager;
 
-    public DrawerClickListener(Context context, AppDetail[] apps, PackageManager manager) {
+    public DrawerClickListener(Context context, AppDetail[] apps) {
         mcontext = context;
         list = apps;
     }
