@@ -42,22 +42,21 @@ import amiran.siriustablet.test.R;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private static final String LOG_TAG = MainActivity.class.getName();
-    static Activity activity;
+    static Activity activity; // @TODO Dangerous static instance
     private LayoutInflater inflater;
     //layout views declaration
     private GridView drawergrid;
-    static SlidingDrawer slidingDrawer;
+    static SlidingDrawer slidingDrawer; // @TODO Dangerous static instance
     private LinearLayout app_widget_layout;
     private LinearLayout app_widget_child_layout;
     private TextView delete_bar;
     private ProgressBar loading_bar;
 
-    private static final float TOUCH_TOLERANCE = 4;
     private PackageManager manager;
     private DrawerAdapter drawerAdapterObject;
 
-    public static AppDetail[] apps;
-    static boolean isLaunchable = true;
+    public static AppDetail[] apps; // @TODO Dangerous static instance
+    static boolean isLaunchable = true; // @TODO Dangerous static instance
 
     private AppWidgetManager mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
@@ -68,10 +67,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private DynamicGridView subjects_grid;
     private ListView oneDayTimetable;
 
-    static ViewPager multiscreen_pager;
-    static ViewPagerAdapter mpagerAdapter;
+    static ViewPager multiscreen_pager; // @TODO Dangerous static instance
+    static ViewPagerAdapter mpagerAdapter; // @TODO Dangerous static instance
     private ImageView[] dots;
-    static LinearLayout viewPagerIndicator_layout;
+    static LinearLayout viewPagerIndicator_layout; // @TODO Dangerous static instance
     private List<RelativeLayout> multiScreen_layouts;
 
     private int day_of_timetable = 1000;
@@ -100,7 +99,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         manager = getPackageManager();
 
-        Substitution substitution_class = new Substitution(this);
+        Substitution substitution_class = new Substitution();
 
         new SubjectsGrid_declaration().execute();
         //new OneDayTimeTable_declaration().execute();
@@ -209,7 +208,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             day_of_timetable = which_day;
             Log.d("which day", Integer.toString(which_day));
             Timetable timetable_class = new Timetable(MainActivity.this);
-            Substitution substitution_class = new Substitution(MainActivity.this);
+            Substitution substitution_class = new Substitution();
 
             if (timetable_class.getTimetable() != null) {
                 if (which_day < timetable_class.getTimetable().days.size()) {
@@ -260,7 +259,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected String doInBackground(String... params) {
-            SubjectsList list = new SubjectsList(MainActivity.this);
+            SubjectsList list = new SubjectsList();
             subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
 
             allSubjects = list.getAllSubjects();
@@ -312,10 +311,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //slidingDrawer.setVisibility(View.VISIBLE);
             //slidingDrawer.animateOpen();
         }
-    }
-
-    public static SlidingDrawer getDrawer() {
-        return slidingDrawer;
     }
 
     //this class helps us to load the installed apps in the background

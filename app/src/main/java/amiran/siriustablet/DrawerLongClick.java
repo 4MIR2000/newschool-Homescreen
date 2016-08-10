@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -13,17 +12,11 @@ import java.util.Date;
 import java.util.Locale;
 
 class DrawerLongClick implements AdapterView.OnItemLongClickListener {
-    final static String LOG_TAG = DrawerLongClick.class.getName();
-    private static Context mcontext;
-    SlidingDrawer SDrawer;
+    private final Context mcontext;
+    private final TextView delete_bar_tv; // bar allowing deletion of the icon of an added App on homescreen
+
     private LinearLayout home_layout;
 
-    static View dragging_app;
-
-    //is the bar which allows you to delete the icon of an added App on homescreen
-    private static TextView delete_bar_tv;
-
-    View draggingIcon;
 
     public DrawerLongClick(Context context, LinearLayout layout, TextView delete_tv) {
         mcontext = context;
@@ -31,11 +24,7 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         //list = apps;
         delete_bar_tv = delete_tv;
         delete_bar_tv.setOnDragListener(new DeleteBar(delete_bar_tv, home_layout));
-        home_layout.setOnDragListener(new ShortcutListeners(mcontext, layout, delete_bar_tv));
-    }
-
-    private DrawerLongClick() {
-
+        home_layout.setOnDragListener(new ShortcutListeners(mcontext, delete_bar_tv));
     }
 
     @Override

@@ -178,7 +178,7 @@ public class Lockscreen extends AppCompatActivity {
                 if (which_day < timetable.days.size()) {
                     day_timetable = timetable_class.getTimetable().days.get(which_day);
 
-                    SubjectsList list = new SubjectsList(Lockscreen.this);
+                    SubjectsList list = new SubjectsList();
 
                     //for getting the all subjects list
                     //we want to get the icon of one subject
@@ -274,7 +274,7 @@ public class Lockscreen extends AppCompatActivity {
             if (which_day < timetable.days.size()) {
                 TimetableDayDetail day_timetable = timetable_class.getTimetable().days.get(which_day);
 
-                SubjectsList list = new SubjectsList(this);
+                SubjectsList list = new SubjectsList();
 
                 //for getting the all subjects list
                 //we want to get the icon of one subject

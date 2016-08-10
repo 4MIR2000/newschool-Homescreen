@@ -8,7 +8,7 @@ import amiran.siriustablet.test.R;
 
 public class PagerChangeListener implements ViewPager.OnPageChangeListener {
     private static final String LOG_TAG = PagerChangeListener.class.getName();
-    private static ImageView[] mdots;
+    private static ImageView[] mdots; // @TODO Dangerous static instance
 
     public PagerChangeListener(ImageView[] dots) {
         mdots = dots;
@@ -16,9 +16,7 @@ public class PagerChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         Log.d(LOG_TAG, "onPageScrolled");
-
     }
 
     @Override

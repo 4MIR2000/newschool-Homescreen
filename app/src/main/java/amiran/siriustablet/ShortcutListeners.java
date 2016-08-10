@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,16 +19,13 @@ import java.util.Objects;
 import amiran.siriustablet.test.R;
 
 class ShortcutListeners implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener, View.OnTouchListener {
-    static final String LOG_TAG = ShortcutListeners.class.getName();
-    private static View dragging_app;
-    private static TextView delete_bar_tv;
-    private static Context mcontext;
-    private static LinearLayout mplacement_layout;
+    private static View dragging_app; // @TODO Dangerous static instance
+    private static TextView delete_bar_tv; // @TODO Dangerous static instance
+    private static Context mcontext; // @TODO Dangerous static instance
 
-    public ShortcutListeners(Context context, LinearLayout placement_layout, TextView delete_tv) {
+    public ShortcutListeners(Context context, TextView delete_tv) {
         mcontext = context;
         delete_bar_tv = delete_tv;
-        mplacement_layout = placement_layout;
     }
 
     public ShortcutListeners() {
@@ -159,7 +155,6 @@ class ShortcutListeners implements View.OnClickListener, View.OnLongClickListene
 
         return true;
     }
-
 
     public static View getDraggingApp() {
         return dragging_app;

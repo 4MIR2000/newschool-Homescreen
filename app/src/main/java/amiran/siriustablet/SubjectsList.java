@@ -1,6 +1,5 @@
 package amiran.siriustablet;
 
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -16,11 +15,6 @@ import amiran.siriustablet.test.R;
 
 class SubjectsList {
     private final static String LOG_TAG = SubjectsList.class.getName();
-    private final Context mcontext;
-
-    public SubjectsList(Context context) {
-        mcontext = context;
-    }
 
     public List<SubjectDetail> getAllSubjects() {
         List<String> names = getSubjectsName();

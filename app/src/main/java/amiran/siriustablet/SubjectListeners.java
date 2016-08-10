@@ -16,8 +16,6 @@ import amiran.siriustablet.test.R;
 
 class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGridView.OnDropListener, DynamicGridView.OnItemClickListener {
     private final Context mcontext;
-    LinearLayout subjects_layout;
-    View draggingView;
     RelativeLayout.LayoutParams params;
     private final DynamicGridView mgridView;
 

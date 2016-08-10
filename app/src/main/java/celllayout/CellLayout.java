@@ -699,7 +699,7 @@ public class CellLayout extends ViewGroup {
         return new CellLayout.LayoutParams(p);
     }
 
-    public static class LayoutParams extends ViewGroup.MarginLayoutParams {
+    private static class LayoutParams extends ViewGroup.MarginLayoutParams {
         /**
          * Horizontal location of the item in the grid.
          */
@@ -769,14 +769,14 @@ public class CellLayout extends ViewGroup {
         }
     }
 
-    static final class CellInfo implements ContextMenu.ContextMenuInfo {
+    private static final class CellInfo implements ContextMenu.ContextMenuInfo {
         /**
          * See View.AttachInfo.InvalidateInfo for futher explanations about
          * the recycling mechanism. In this case, we recycle the vacant cells
          * instances because up to several hundreds can be instanciated when
          * the user long presses an empty cell.
          */
-        static final class VacantCell {
+        private static final class VacantCell {
             int cellX;
             int cellY;
             int spanX;
@@ -786,12 +786,12 @@ public class CellLayout extends ViewGroup {
             // the fact that the user is not likely to touch an empty 4x4 grid
             // very often
             private static final int POOL_LIMIT = 100;
-            private static final Object sLock = new Object();
-            private static int sAcquiredCount = 0;
-            private static VacantCell sRoot;
+            private static final Object sLock = new Object(); // @TODO Dangerous static instance
+            private static int sAcquiredCount = 0; // @TODO Dangerous static instance
+            private static VacantCell sRoot; // @TODO Dangerous static instance
             private VacantCell next;
 
-            static VacantCell acquire() {
+            private static final VacantCell acquire() {
                 synchronized (sLock) {
                     if (sRoot == null) {
                         return new VacantCell();

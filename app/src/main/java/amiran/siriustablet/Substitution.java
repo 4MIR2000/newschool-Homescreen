@@ -14,13 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Substitution {
-    public static final String LOG_TAG = Substitution.class.getName();
-    private final Context mcontext;
-
-    public Substitution(Context context) {
-        mcontext = context;
-    }
-
     public TimetableWeekDetail getSubstitution() {
         TimetableWeekDetail week = null;
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +

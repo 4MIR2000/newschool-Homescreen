@@ -15,7 +15,6 @@ import java.util.List;
 import amiran.siriustablet.test.R;
 
 class OneDayTimetableListAdapter extends BaseAdapter {
-    static final String LOG_TAG = OneDayTimetableListAdapter.class.getName();
     private final Context mcontext;
     private final List<TimetableHourDetail> mhours;
     private final List<TimetableHourDetail> msubstitution;
@@ -24,7 +23,6 @@ class OneDayTimetableListAdapter extends BaseAdapter {
         mcontext = context;
         mhours = hours;
         msubstitution = substitution;
-
     }
 
     @Override
