@@ -9,20 +9,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-/**
- * Created by ASUS on 22.05.2016.
- */
 public class SerializationTools {
-
     public static void serializeData(AppSerializableData obj) {
-
         FileOutputStream fos;
         try {
             fos = mainActivity.activity.openFileOutput("data", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(obj);
             os.close();
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -36,14 +30,11 @@ public class SerializationTools {
         try {
             inputStream = new ObjectInputStream(mainActivity.activity.openFileInput("data"));
             Object obj = inputStream.readObject();
-
             if (obj instanceof AppSerializableData) {
                 return (AppSerializableData) obj;
             } else {
                 return null;
             }
-
-
         } catch (EOFException e) {
             e.printStackTrace();
         } catch (IOException e) {

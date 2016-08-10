@@ -19,11 +19,7 @@ import java.util.Objects;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 23.05.2016.
- */
 public class ShortcutListeners implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener, View.OnTouchListener {
-
     static final String LOG_TAG = ShortcutListeners.class.getName();
     static View dragging_app;
     static TextView delete_bar_tv;
@@ -36,39 +32,28 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
         mplacement_layout = placement_layout;
     }
 
-
     public ShortcutListeners() {
     }
 
     @Override
     public void onClick(View v) {
         AppDetail dataofView = (AppDetail) v.getTag();
-
-
         try {
-
-
             Intent launchintent = new Intent(Intent.ACTION_MAIN);
             //it is a Launcher and not a background app
             launchintent.addCategory(Intent.CATEGORY_LAUNCHER);
             ComponentName cp = new ComponentName(dataofView.packageName, dataofView.name);
             launchintent.setComponent(cp);
             mcontext.startActivity(launchintent);
-
-
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-
             Toast.makeText(mcontext,
                     mcontext.getResources().getString(R.string.activityNotFound), Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     @Override
     public boolean onLongClick(View v) {
-
         ClipData.Item item = new ClipData.Item("drag_item");
         String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
         ClipData clipData = new ClipData("drag_clipdata", mimeTypes, item);
@@ -77,18 +62,14 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
         v.setVisibility(View.INVISIBLE);
         dragging_app = v;
 
-
         //making the delete_bar visible if icon is longpressed
         delete_bar_tv.setVisibility(View.VISIBLE);
-
 
         return true;
     }
 
-
     @Override
     public boolean onDrag(View v, DragEvent event) {
-
    /*     Log.d(LOG_TAG, String.valueOf(event.getX()));
 
         Display display = ((WindowManager)mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -107,10 +88,7 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
 
         }*/
         switch (event.getAction()) {
-
-
             case DragEvent.ACTION_DROP:
-
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dragging_app.getWidth(), dragging_app.getHeight());
                 params.leftMargin = (int) event.getX() - (dragging_app.getWidth() / 2);
                 params.rightMargin = -params.leftMargin;
@@ -128,10 +106,7 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
                 delete_bar_tv.setVisibility(View.INVISIBLE);
 
                 AppDetail appDetail = (AppDetail) dragging_app.getTag();
-
-
                 AppSerializableData data = SerializationTools.loadSerializedData();
-
                 if (appDetail != null) {
                     if (data != null) {
                         if (data.apps != null) {
@@ -142,21 +117,16 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
 
                                     data.apps.get(i).screen_num = mainActivity.multiscreen_pager.getCurrentItem();
                                     SerializationTools.serializeData(data);
-
                                 }
                             }
                         }
                     }
                 }
-
                 //  SerializationTools.serializeData(serializableData);
-
                 break;
-
             case DragEvent.ACTION_DRAG_ENDED:
                 boolean droped = event.getResult();
                 if (droped == false) {
-
                     //invisible deletebar if the icon is droped anywhere else as our app_widget_placement
                     delete_bar_tv.setVisibility(View.INVISIBLE);
                     dragging_app.setVisibility(View.VISIBLE);
@@ -185,16 +155,13 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
                         }
                     }*/
                 }
-
         }
-
 
         return true;
     }
 
 
     public static View getDraggingApp() {
-
         return dragging_app;
     }
 
@@ -204,23 +171,15 @@ public class ShortcutListeners implements View.OnClickListener, View.OnLongClick
             case MotionEvent.ACTION_DOWN:
                 v.getBackground().setColorFilter(0xe0f47521, PorterDuff.Mode.SRC_ATOP);
                 v.invalidate();
-
-
                 break;
-
             case MotionEvent.ACTION_UP:
                 v.getBackground().clearColorFilter();
                 v.invalidate();
-
                 break;
-
             case MotionEvent.ACTION_CANCEL:
                 v.getBackground().clearColorFilter();
                 v.invalidate();
-
                 break;
-
-
         }
         return false;
     }

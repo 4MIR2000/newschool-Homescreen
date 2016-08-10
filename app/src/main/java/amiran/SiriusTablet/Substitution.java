@@ -14,21 +14,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ASUS on 30.06.2016.
- */
 public class Substitution {
-
     public static final String LOG_TAG = Substitution.class.getName();
     public Context mcontext;
 
     public Substitution(Context context) {
         mcontext = context;
-
     }
 
     public Timetable_WeekDetail getSubstitution() {
-
         Timetable_WeekDetail week = null;
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
                 "Vertretungsplan" + File.separator + "vp.txt");
@@ -36,14 +30,11 @@ public class Substitution {
         InputStreamReader isr = null;
         BufferedReader br = null;
 
-
         try {
-
             week = new Timetable_WeekDetail();
             fis = new FileInputStream(file);
             isr = new InputStreamReader(fis);
             br = new BufferedReader(isr);
-
 
             TextUtils.SimpleStringSplitter day_splitter = new TextUtils.SimpleStringSplitter('*');
             TextUtils.SimpleStringSplitter hour_splitter = new TextUtils.SimpleStringSplitter(';');
@@ -51,9 +42,7 @@ public class Substitution {
 
             String line = br.readLine();
 
-
             List<Timetable_DayDetail> days_list = new ArrayList<>();
-
 
             for (int i = 0; line != null; i++) {
                 day_splitter.setString(line);
@@ -67,8 +56,6 @@ public class Substitution {
 
                 Log.d("substitution line", line);
                 for (int j = 0; hour_splitter.hasNext(); j++) {
-
-
                     String hour = hour_splitter.next();
                     subject_splitter.setString(hour);
 
@@ -79,12 +66,8 @@ public class Substitution {
                     String teacher = null;
                     String subject = null;
 
-
                     try {
-
                         if (!kindOfSubstitution.equals("A")) {
-
-
                             if (kindOfSubstitution.equals("R")) {
                                 room = subject_splitter.next();
                             } else {
@@ -92,12 +75,9 @@ public class Substitution {
                                     teacher = subject_splitter.next();
                                     subject = subject_splitter.next();
                                     room = subject_splitter.next();
-
-
                                 }
                             }
                         }
-
                     } catch (StringIndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
@@ -109,19 +89,14 @@ public class Substitution {
                     hour_class.subject = subject;
 
                     hours_list.add(j, hour_class);
-
                 }
 
                 Timetable_DayDetail day_class = new Timetable_DayDetail();
                 day_class.day_num = Integer.parseInt(day_num);
                 day_class.hours = hours_list;
-
                 days_list.add(i, day_class);
 
-
                 line = br.readLine();
-
-
             }
 
             week = new Timetable_WeekDetail();
@@ -134,7 +109,6 @@ public class Substitution {
         } catch (StringIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
-
 
         return week;
     }

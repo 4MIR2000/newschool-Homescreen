@@ -19,11 +19,9 @@ import java.util.List;
 import amiran.siriustablet_test.R;
 
 public class apps_list extends AppCompatActivity {
-
     private PackageManager manager;
     private List<AppDetail> apps;
     ListView list;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,20 +30,16 @@ public class apps_list extends AppCompatActivity {
         loadApps();
         loadListView();
         addClickListener();
-
     }
 
     private void loadApps() {
-
         manager = getPackageManager();
-        apps = new ArrayList<AppDetail>();
+        apps = new ArrayList<>();
 
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
 
         List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(i, 0);
-
-
         for (ResolveInfo ri : avaibleactivities) {
             AppDetail app = new AppDetail();
             app.label = ri.loadLabel(manager).toString();
@@ -55,15 +49,10 @@ public class apps_list extends AppCompatActivity {
         }
     }
 
-
     private void loadListView() {
-
         list = (ListView) findViewById(R.id.apps_list);
 
-
         ArrayAdapter<AppDetail> adapter = new ArrayAdapter<AppDetail>(this, R.layout.list_item, apps) {
-
-
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
@@ -83,14 +72,13 @@ public class apps_list extends AppCompatActivity {
         };
 
         list.setAdapter(adapter);
-
     }
 
     private void addClickListener() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = manager.getLaunchIntentForPackage(apps.get(position).name.toString());
+                Intent i = manager.getLaunchIntentForPackage(apps.get(position).name);
                 apps_list.this.startActivity(i);
             }
         });

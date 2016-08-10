@@ -1,9 +1,5 @@
 package CellLayout;
 
-/**
- * Created by ASUS on 25.05.2016.
- */
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;

@@ -7,10 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-
-/**
- * Created by ASUS on 03.04.2016.
- */
 public class Timetable_lockscreen_adapter extends BaseAdapter {
     Timetable_DayDetail thisDay_timetable;
     Context mcontext;

@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by amirt on 11.02.2016.
- */
 public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
     final static String LOG_TAG = DrawerLongClick.class.getName();
     static Context mcontext;
@@ -26,32 +23,24 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
     //is the bar which allows you to delete the icon of an added App on homescreen
     static TextView delete_bar_tv;
 
-
     View draggingIcon;
 
     public DrawerLongClick(Context context, LinearLayout layout, TextView delete_tv) {
-
         mcontext = context;
         home_layout = layout;
         //list = apps;
         delete_bar_tv = delete_tv;
         delete_bar_tv.setOnDragListener(new Delete_bar(delete_bar_tv, home_layout));
         home_layout.setOnDragListener(new ShortcutListeners(mcontext, layout, delete_bar_tv));
-
-
     }
 
     public DrawerLongClick() {
 
     }
 
-
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-
         mainActivity.isLaunchable = false; //so the app wont lauch if you longclick it. Look at OnItemListener in mainActivity.class
-
 
         AppSerializableData objectdata = SerializationTools.loadSerializedData();
         if (objectdata == null)
@@ -72,7 +61,6 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         appToAdd.x = (int) view.getX();
         appToAdd.y = (int) view.getY();
 
-
         if (objectdata.apps == null)
             objectdata.apps = new ArrayList<AppDetail>();
 
@@ -90,9 +78,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         objectdata.apps.add(appToAdd);
         SerializationTools.serializeData(objectdata);
 
-
         appToAdd.addToHome(mcontext);
-
 
         mainActivity.multiscreen_pager.setVisibility(View.VISIBLE);
         mainActivity.viewPagerIndicator_layout.setVisibility(View.VISIBLE);
@@ -104,6 +90,4 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
         return false;
     }
-
-
 }

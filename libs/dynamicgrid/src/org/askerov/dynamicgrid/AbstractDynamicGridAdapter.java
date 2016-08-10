@@ -20,13 +20,10 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
     public static final int INVALID_ID = -1;
 
     private int nextStableId = 0;
-
-    private HashMap<Object, Integer> mIdMap = new HashMap<Object, Integer>();
+    private HashMap<Object, Integer> mIdMap = new HashMap<>();
 
     /**
      * Adapter must have stable id
-     *
-     * @return
      */
     @Override
     public final boolean hasStableIds() {
@@ -35,8 +32,6 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
 
     /**
      * creates stable id for object
-     *
-     * @param item
      */
     protected void addStableId(Object item) {
         mIdMap.put(item, nextStableId++);
@@ -44,8 +39,6 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
 
     /**
      * create stable ids for list
-     *
-     * @param items
      */
     protected void addAllStableId(List<?> items) {
         for (Object item : items) {
@@ -55,9 +48,6 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
 
     /**
      * get id for position
-     *
-     * @param position
-     * @return
      */
     @Override
     public final long getItemId(int position) {
@@ -78,8 +68,6 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
 
     /**
      * remove stable id for <code>item</code>. Should called on remove data item from adapter
-     *
-     * @param item
      */
     protected void removeStableID(Object item) {
         mIdMap.remove(item);

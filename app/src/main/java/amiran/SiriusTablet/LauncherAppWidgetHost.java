@@ -5,11 +5,7 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 
-/**
- * Created by amirt on 05.03.2016.
- */
 public class LauncherAppWidgetHost extends AppWidgetHost {
-
     public LauncherAppWidgetHost(Context context, int hostId) {
         super(context, hostId);
     }

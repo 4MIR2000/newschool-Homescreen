@@ -14,29 +14,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by amirt on 08.04.2016.
- */
 public class Timetable {
     static final String LOG_TAG = Timetable.class.getName();
     Context mcontext;
 
     public Timetable(Context context) {
         mcontext = context;
-
     }
 
-
     public Timetable_WeekDetail getTimetable() {
-
-
         return getTimetableFromFile();
     }
 
-
     private Timetable_WeekDetail getTimetableFromFile() {
-
-
         //the File of our txt file
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" +
                 File.separator + "Stundenplan" + File.separator + "st.txt");
@@ -56,7 +46,6 @@ public class Timetable {
             String line = br.readLine();
             Log.d("line", line);
 
-
             TextUtils.SimpleStringSplitter day_splitter = new TextUtils.SimpleStringSplitter('*');
             TextUtils.SimpleStringSplitter hour_splitter = new TextUtils.SimpleStringSplitter(';');
             TextUtils.SimpleStringSplitter subject_splitter = new TextUtils.SimpleStringSplitter(',');
@@ -68,10 +57,7 @@ public class Timetable {
             List<Timetable_HourDetail> hours_list;
             List<Timetable_DayDetail> days_list = new ArrayList<>();
 
-
             for (int i = 0; line != null; i++) {
-
-
                 hours_list = new ArrayList<>();
 
                 day_splitter.setString(line);
@@ -79,7 +65,6 @@ public class Timetable {
                 other = day_splitter.next();
 
                 hour_splitter.setString(other);
-
                 for (int j = 0; hour_splitter.hasNext(); j++) {
 
                     String hour = hour_splitter.next();
@@ -88,7 +73,6 @@ public class Timetable {
                     Timetable_HourDetail hour_class = new Timetable_HourDetail();
                     hour_class.subject = subject_splitter.next();
                     hour_class.room = subject_splitter.next();
-
 
                     String time = subject_splitter.next();
                     time_endStart_splitter.setString(time);
@@ -119,18 +103,12 @@ public class Timetable {
                     hours_list.add(j, hour_class);
                 }
 
-
                 Timetable_DayDetail day = new Timetable_DayDetail();
                 day.hours = hours_list;
                 day.day_name = daynum;
-
-
                 days_list.add(i, day);
 
-
                 line = br.readLine();
-
-
             }
 
             week.days = days_list;
@@ -153,19 +131,14 @@ public class Timetable {
             //  Toast.makeText(mcontext,"Fehler beim Lesen der st.txt",Toast.LENGTH_SHORT).show();
         }
 
-
         if (week != null) {
-
             if (week.days.size() != 0) {
                 return week;
-
             }
         } else {
-
             Log.d(LOG_TAG, "week is null");
         }
 
         return null;
-
     }
 }

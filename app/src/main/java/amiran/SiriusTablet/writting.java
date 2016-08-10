@@ -10,25 +10,14 @@ import android.graphics.Path;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by Amir on 30.12.2015.
- */
 public class writting extends Activity {
-
-
     DrawingView dv;
     private Paint mPaint;
-    String st;
     private Bitmap mBitmap;
-    String path;
-
-    Button save;
-    Button resultat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +33,11 @@ public class writting extends Activity {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(7);
 
-
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout_R);
         layout.addView(new DrawingView(this));
-
-
     }
 
-
     public class DrawingView extends View {
-
         public int width;
         public int height;
 
@@ -63,7 +47,6 @@ public class writting extends Activity {
         Context context;
         private Paint circlePaint;
         private Path circlePath;
-
 
         public DrawingView(Context c) {
             super(c);
@@ -77,10 +60,7 @@ public class writting extends Activity {
             circlePaint.setStyle(Paint.Style.STROKE);
             circlePaint.setStrokeJoin(Paint.Join.MITER);
             circlePaint.setStrokeWidth(4f);
-
-
         }
-
 
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -93,7 +73,6 @@ public class writting extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-
 
             //Canvas ist die Leinwand
             //Bitmap wird gebraucht um auf die Leinwand zeichnen zu können bzw. das Resultat zu sehen
@@ -133,8 +112,6 @@ public class writting extends Activity {
             mCanvas.drawPath(mPath, mPaint);
             // kill this so we don't double draw
             mPath.reset();
-
-
         }
 
         @Override
@@ -158,10 +135,6 @@ public class writting extends Activity {
             }
             return true;
         }
-
-
     }
-
-
 }
 

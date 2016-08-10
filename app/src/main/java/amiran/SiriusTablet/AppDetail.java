@@ -22,9 +22,6 @@ import java.io.Serializable;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by amirt on 18.01.2016.
- */
 public class AppDetail implements Serializable {
     final String LOG_TAG = AppDetail.class.getName();
     String id;
@@ -38,10 +35,8 @@ public class AppDetail implements Serializable {
     //which screen is the shortcut added
     int screen_num;
 
-
     public void cacheIcon() {
         if (iconLocation == null) {
-
             //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
 
             File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
@@ -55,7 +50,6 @@ public class AppDetail implements Serializable {
         }
 
         if (icon != null) {
-
             iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
                     "cachedApps" + File.separator + packageName + name;
 
@@ -79,9 +73,7 @@ public class AppDetail implements Serializable {
             } else {
                 iconLocation = null;
             }
-
         }
-
     }
 
     public Bitmap getCachedIcon() {
@@ -101,7 +93,6 @@ public class AppDetail implements Serializable {
     public void deleteIcon() {
         if (iconLocation != null) {
             new File(iconLocation).delete();
-
         }
     }
 
@@ -136,7 +127,5 @@ public class AppDetail implements Serializable {
 
         icon_imageView.setTag(this);
         home_icon.setTag(this);
-
-
     }
 }

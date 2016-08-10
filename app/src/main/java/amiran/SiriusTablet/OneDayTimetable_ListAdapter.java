@@ -14,9 +14,6 @@ import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 09.04.2016.
- */
 public class OneDayTimetable_ListAdapter extends BaseAdapter {
     static final String LOG_TAG = OneDayTimetable_ListAdapter.class.getName();
     Context mcontext;
@@ -30,11 +27,8 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
 
     }
 
-
     @Override
     public int getCount() {
-
-
         return mhours.size();
     }
 
@@ -55,7 +49,6 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.timetable_one_day_list_item, null);
 
-
             holder = new Holder(convertView);
             convertView.setTag(holder);
 
@@ -63,20 +56,15 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
-
         holder.build(position + 1, mhours.get(position).subject, mhours.get(position).room);
-
 
         if (msubstitution != null) {
             for (Timetable_HourDetail subhour : msubstitution) {
-
                 if (subhour.hour - 1 == position) {
                     holder.substitution(subhour.hour, subhour.subject, subhour.teacher, subhour.room);
                 }
             }
-
         }
-
 
         return convertView;
     }
@@ -86,8 +74,6 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
         TextView standardroom_tv;
         Button hour_button;
         RelativeLayout layout;
-
-
         View convertView;
 
         public Holder(View parent) {
@@ -96,16 +82,12 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
             standardroom_tv = (TextView) convertView.findViewById(R.id.standardroom_timetable);
             hour_button = (Button) convertView.findViewById(R.id.hour_timetable);
             layout = (RelativeLayout) convertView.findViewById(R.id.timetable_item_layout_color);
-
         }
 
-
         public void build(int hour, String subject, String room) {
-
             subject_tv.setText(subject);
             standardroom_tv.setText(room);
             hour_button.setText(Integer.toString(hour));
-
         }
 
         public void substitution(int hour, String subject, String teacher, String room) {

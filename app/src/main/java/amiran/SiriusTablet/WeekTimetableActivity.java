@@ -18,11 +18,9 @@ import android.widget.TextView;
 import amiran.siriustablet_test.R;
 
 public class WeekTimetableActivity extends ActionBarActivity {
-
     RelativeLayout timetable_layout;
     GridView timetable_gridView;
     GridView days_gridView;
-
 
     final static String LOG_TAG = WeekTimetableActivity.class.getName();
 
@@ -57,39 +55,29 @@ public class WeekTimetableActivity extends ActionBarActivity {
         timetable_gridView.setAdapter(new WeekTimetable_GridAdapter(this, timetable, timetable_sorted));
         timetable_gridView.setNumColumns(timetable.days.size());
 
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = gridView_leftmargin;
         timetable_gridView.setLayoutParams(params);
-
-
     }
 
-
     private void addTimetable_table() {
-
         //getting the timetable
         Timetable timetable_class = new Timetable(this);
         Timetable_WeekDetail timetable = new Timetable_WeekDetail();
         timetable = timetable_class.getTimetable();
 
-
         TableLayout.LayoutParams tableLayout_params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         // TableLayout table = (TableLayout)findViewById(R.id.timetable_tableLayout);
 
-
         TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams();
         tableRowParams.topMargin = 20;
-
 
         View convertView;
 
         TableRow.LayoutParams convertView_lp = new TableRow.LayoutParams();
         convertView_lp.rightMargin = 20; // right-margin = 10dp
 
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 
         //getting the hour numbers of the longest day
         //have a look at SortTimetable
@@ -110,37 +98,26 @@ public class WeekTimetableActivity extends ActionBarActivity {
             TableRow row = new TableRow(this);
 
             for (int j = 0; j < timetable.days.size(); j++) {
-
                 //Timetable_HourDetail hour_detail = timetable.days.get(j).hours.get(i);
-
-
                 Log.d(LOG_TAG, "day = " + Integer.toString(j) + "hour = " + Integer.toString(i));
 
                 convertView = inflater.inflate(R.layout.timetable_week_item, null);
-
 
                 TextView subject_tv = (TextView) convertView.findViewById(R.id.subject_timetable);
                 TextView standardroom_tv = (TextView) convertView.findViewById(R.id.standardroom_timetable);
 
                 if (a == 0) {
-
                     subject_tv.setTextSize(30);
                     subject_tv.setText(timetable.days.get(j).day_name);
                     standardroom_tv.setText("");
                     convertView.setBackgroundColor(Color.YELLOW);
-
-
                 } else {
-
-
                     //if i is bigger than the size of our hours of the day
                     //make the following textviews empety
                     if (i > timetable.days.get(j).hours.size() - 1) {
-
                         subject_tv.setText("");
                         standardroom_tv.setText("");
                     } else {
-
                         subject_tv.setText(timetable.days.get(j).hours.get(i).subject);
                         standardroom_tv.setText(timetable.days.get(j).hours.get(i).room);
                     }
@@ -149,8 +126,6 @@ public class WeekTimetableActivity extends ActionBarActivity {
                 convertView.setLayoutParams(convertView_lp);
                 row.addView(convertView);
                 row.setLayoutParams(tableRowParams);
-
-
             }
 
             if (a == 0) {
@@ -160,7 +135,5 @@ public class WeekTimetableActivity extends ActionBarActivity {
 
             // table.addView(row,tableRowParams);
         }
-
-
     }
 }

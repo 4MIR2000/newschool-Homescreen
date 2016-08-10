@@ -6,9 +6,6 @@ import android.widget.ImageView;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 27.05.2016.
- */
 public class PagerChangeListener implements ViewPager.OnPageChangeListener {
     public static final String LOG_TAG = PagerChangeListener.class.getName();
     static ImageView[] mdots;
@@ -26,7 +23,6 @@ public class PagerChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-
         for (int i = 0; i < mdots.length; i++) {
             mdots[i].setImageResource(R.drawable.indicator_nonselecteditem_dot);
         }

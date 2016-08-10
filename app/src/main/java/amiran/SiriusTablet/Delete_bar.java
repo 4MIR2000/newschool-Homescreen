@@ -10,9 +10,6 @@ import android.widget.TextView;
 import java.util.Objects;
 
 
-/**
- * Created by amirt on 17.02.2016.
- */
 public class Delete_bar implements View.OnDragListener {
     final String LOG_TAG = Delete_bar.class.getName();
     TextView delete_bar_tv;
@@ -66,21 +63,14 @@ public class Delete_bar implements View.OnDragListener {
 
                                     data.apps.remove(i);
                                     SerializationTools.serializeData(data);
-
-
                                 }
                             }
-
                         }
                     }
                 }
-
                 break;
-
             case DragEvent.ACTION_DRAG_EXITED:
-
                 delete_bar_tv.setTextColor(Color.BLACK);
-
         }
 
         return true;

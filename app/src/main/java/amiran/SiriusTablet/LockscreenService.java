@@ -16,11 +16,9 @@ import android.util.Log;
 public class LockscreenService extends Service {
     BroadcastReceiver mReceiver;
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
         Log.d("message", "IBinder");
         return null;
     }
@@ -45,7 +43,6 @@ public class LockscreenService extends Service {
     public void onStart(Intent intent, int startId) {
         // TODO Auto-generated method stub
         super.onStart(intent, startId);
-
     }
 
     @Override
@@ -53,6 +50,4 @@ public class LockscreenService extends Service {
         unregisterReceiver(mReceiver);
         super.onDestroy();
     }
-
-
 }

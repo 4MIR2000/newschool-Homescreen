@@ -6,11 +6,7 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.AdapterView;
 
-/**
- * Created by amirt on 11.02.2016.
- */
 public class DrawerClickListener implements AdapterView.OnItemClickListener {
-
     Context mcontext;
     AppDetail[] list;
     PackageManager Pmanager;
@@ -23,7 +19,7 @@ public class DrawerClickListener implements AdapterView.OnItemClickListener {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent launchintent = Pmanager.getLaunchIntentForPackage(list[position].name.toString());
+        Intent launchintent = Pmanager.getLaunchIntentForPackage(list[position].name);
         mcontext.startActivity(launchintent);
     }
 }

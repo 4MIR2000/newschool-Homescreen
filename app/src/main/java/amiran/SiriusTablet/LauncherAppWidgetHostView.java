@@ -7,11 +7,7 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
-/**
- * Created by ASUS on 05.03.2016.
- */
 public class LauncherAppWidgetHostView extends AppWidgetHostView {
-
     private boolean mHasPerformedLongPress;
     private CheckForLongPress mPendingCheckForLongPress;
     private LayoutInflater mInflater;
@@ -20,7 +16,6 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
         super(context);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // Consume any touch events for ourselves after longpress is triggered
@@ -36,7 +31,6 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
                 postCheckForLongClick();
                 break;
             }
-
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mHasPerformedLongPress = false;
@@ -93,5 +87,3 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
         return ViewGroup.FOCUS_BLOCK_DESCENDANTS;
     }
 }
-
-

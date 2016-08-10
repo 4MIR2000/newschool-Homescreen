@@ -6,25 +6,15 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
-/**
- * Created by ASUS on 27.05.2016.
- */
 public class ViewPagerAdapter extends android.support.v4.view.PagerAdapter {
-
     public List<RelativeLayout> layouts;
 
     public ViewPagerAdapter(List<RelativeLayout> layouts) {
-
-
         this.layouts = layouts;
-
     }
-
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
-
         container.addView(layouts.get(position));
         return layouts.get(position);
     }
@@ -39,15 +29,12 @@ public class ViewPagerAdapter extends android.support.v4.view.PagerAdapter {
         return view == object;
     }
 
-
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-
     }
 
     public RelativeLayout getLayout(int position) {
-
         return layouts.get(position);
     }
 }

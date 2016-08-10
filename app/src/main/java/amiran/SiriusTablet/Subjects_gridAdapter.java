@@ -17,9 +17,6 @@ import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 07.04.2016.
- */
 public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
     public final String LOG_TAG = Subjects_gridAdapter.class.getName();
     Context mcontext;
@@ -31,10 +28,8 @@ public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
         msubjects = subjects;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         //==Null because convertview is always the view of the previous item
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,7 +40,6 @@ public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
 
             Display display = ((WindowManager) mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             int display_width = display.getWidth();
-
 
             //used this for calculating the width of gridview
             int gridView_margin = (int) (mcontext.getResources().getDimension(R.dimen.subjectGridView_margin)
@@ -58,13 +52,11 @@ public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
             int subject_margin = (int) (mcontext.getResources().getDimension(R.dimen.subjects_margin)
                     / mcontext.getResources().getDisplayMetrics().density);
 
-
             int subject_width = ((gridView_width - subject_margin * 2) / 3);
 
             //both subject_width, because it should be a square
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(subject_width, subject_width);
             convertView.setLayoutParams(params);
-
         }
 
         SubjectDetail detail = (SubjectDetail) getItem(position);
@@ -76,11 +68,8 @@ public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
                 icon = (ImageView) convertView.findViewById(R.id.subject_imageView);
                 icon.setBackground(drawable);
             }
-
-
         }
 
         return convertView;
     }
-
 }

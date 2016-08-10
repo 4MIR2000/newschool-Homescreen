@@ -9,15 +9,10 @@ import android.widget.LinearLayout;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 27.05.2016.
- */
 public class Fragment3 extends android.support.v4.app.Fragment {
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         if (container == null) {
             return null;
         }

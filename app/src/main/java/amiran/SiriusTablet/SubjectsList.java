@@ -16,9 +16,6 @@ import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 07.04.2016.
- */
 public class SubjectsList {
     final static String LOG_TAG = SubjectsList.class.getName();
     Context mcontext;
@@ -29,19 +26,15 @@ public class SubjectsList {
 
     public List<SubjectDetail> getAllSubjects() {
         List<String> names = getSubjectsName();
-
         List<SubjectDetail> subjects = new ArrayList<>();
 
         if (names != null) {
             for (int i = 0; i < names.size(); i++) {
-
                 SubjectDetail sd = new SubjectDetail();
-
 
                 // Log.d(LOG_TAG,names.get(i));
                 //int string_id = mcontext.getResources().getIdentifier(names.get(i),"string",mcontext.getPackageName());
                 sd.name = names.get(i);
-
 
                 // int imageId = mcontext.getResources().getIdentifier(names.get(i),"drawable",mcontext.getPackageName());
                 //   Log.d(LOG_TAG,names.get(i));
@@ -105,14 +98,10 @@ public class SubjectsList {
                     default:
                         sd.pic = 0;
                 }
-
-
                 subjects.add(i, sd);
             }
 
-
             return subjects;
-
         }
 
         return null;
@@ -148,17 +137,11 @@ public class SubjectsList {
             names = new ArrayList<>();
 
             String line = br.readLine();
-
-
             for (int i = 0; line != null; i++) {
-
-
                 //  Log.d(LOG_TAG,br.readLine());
                 names.add(i, line);
 
-
                 line = br.readLine();
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -173,6 +156,4 @@ public class SubjectsList {
 
         return null;
     }
-
-
 }

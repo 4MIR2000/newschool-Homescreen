@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by ASUS on 11.07.2016.
- */
 public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
     Context mcontext;
     Timetable_WeekDetail mtimetable;
@@ -22,7 +19,6 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
     public WeekTimetable_Days_GridAdapter(Context context, Timetable_WeekDetail timetable) {
         mtimetable = timetable;
         mcontext = context;
-
     }
 
     @Override
@@ -78,9 +74,7 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
         TextView day_tv;
 
         public Holder(View convertLayout) {
-
             day_tv = (TextView) convertLayout.findViewById(R.id.day_timetable);
-
         }
 
         public void build(String day) {

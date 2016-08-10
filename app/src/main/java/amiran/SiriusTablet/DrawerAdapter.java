@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import amiran.siriustablet_test.R;
 
-/**
- * Created by amirt on 01.02.2016.
- */
 public class DrawerAdapter extends BaseAdapter {
     Context mcontext;
     // AppDetail[] applist;
@@ -22,10 +19,8 @@ public class DrawerAdapter extends BaseAdapter {
         //this.applist = list;
     }
 
-
     @Override
     public int getCount() {
-
         return mainActivity.apps.length;
     }
 
@@ -39,10 +34,8 @@ public class DrawerAdapter extends BaseAdapter {
         return 0;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewHolder viewHolder;
 
@@ -56,14 +49,11 @@ public class DrawerAdapter extends BaseAdapter {
 
             convertView.setTag(viewHolder);
         } else {
-
             viewHolder = (ViewHolder) convertView.getTag();
-
         }
 
         viewHolder.text.setText(mainActivity.apps[position].label);
         viewHolder.icon.setImageDrawable(mainActivity.apps[position].icon);
-
 
         return convertView;
     }
@@ -71,6 +61,5 @@ public class DrawerAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView text;
         ImageView icon;
-
     }
 }
