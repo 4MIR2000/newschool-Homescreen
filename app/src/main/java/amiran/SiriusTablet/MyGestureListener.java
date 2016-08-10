@@ -2,15 +2,8 @@ package amiran.SiriusTablet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.animation.AccelerateInterpolator;
-
-import java.util.concurrent.locks.Lock;
-
-import amiran.SiriusTablet.mainActivity;
-import amiran.siriustablet_test.R;
 
 
 /**

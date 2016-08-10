@@ -1,7 +1,6 @@
 package amiran.SiriusTablet;
 
 import android.content.Context;
-import android.graphics.Path;
 import android.os.Environment;
 import android.util.Log;
 

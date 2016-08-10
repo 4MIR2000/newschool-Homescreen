@@ -1,23 +1,16 @@
 package amiran.SiriusTablet;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.askerov.dynamicgrid.DynamicGridView;
-
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import amiran.siriustablet_test.R;
 

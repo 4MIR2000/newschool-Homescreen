@@ -1,19 +1,14 @@
 package amiran.SiriusTablet;
 
 import android.content.Context;
-import android.renderscript.Double2;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import amiran.siriustablet_test.R;
 

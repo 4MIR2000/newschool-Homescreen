@@ -2,7 +2,6 @@ package amiran.SiriusTablet;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.sql.Time;
 import java.util.List;
 
 import amiran.siriustablet_test.R;

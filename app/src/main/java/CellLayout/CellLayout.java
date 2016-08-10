@@ -3,6 +3,7 @@ package CellLayout;
 /**
  * Created by ASUS on 25.05.2016.
  */
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 import amiran.siriustablet_test.R;

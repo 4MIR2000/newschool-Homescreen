@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Objects;

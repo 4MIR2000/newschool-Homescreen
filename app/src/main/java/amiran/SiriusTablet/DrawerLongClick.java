@@ -1,32 +1,16 @@
 package amiran.SiriusTablet;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.view.PagerAdapter;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-
-import amiran.siriustablet_test.R;
 
 /**
  * Created by amirt on 11.02.2016.
