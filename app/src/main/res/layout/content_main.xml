@@ -10,7 +10,7 @@
     android:paddingBottom="@dimen/mainactivity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
-    tools:context="amiran.SiriusTablet.mainActivity"
+    tools:context="amiran.siriustablet.MainActivity"
     android:id="@+id/tablet"
     android:background="@drawable/background"
     android:orientation="horizontal">

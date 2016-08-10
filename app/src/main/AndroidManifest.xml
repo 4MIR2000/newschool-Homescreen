@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="amiran.siriustablet_test">
+    package="amiran.siriustablet.test">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -20,7 +20,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="amiran.SiriusTablet.mainActivity"
+            android:name="amiran.siriustablet.MainActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/homescreen"
             android:launchMode="singleTask"
@@ -38,7 +38,7 @@
         </activity>
 
         <activity
-            android:name="amiran.SiriusTablet.Lockscreen"
+            android:name="amiran.siriustablet.Lockscreen"
             android:launchMode="singleTask"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -49,18 +49,18 @@
         </activity>
 
         <service
-            android:name="amiran.SiriusTablet.LockscreenService"
+            android:name="amiran.siriustablet.LockscreenService"
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name="amiran.SiriusTablet.LockscreenReceiver">
+        <receiver android:name="amiran.siriustablet.LockscreenReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="amiran.SiriusTablet.WeekTimetableActivity"
+        <activity android:name="amiran.siriustablet.WeekTimetableActivity"
             android:theme="@style/AppTheme"
             android:label="@string/timetable"></activity>
     </application>

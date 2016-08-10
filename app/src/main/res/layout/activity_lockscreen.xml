@@ -8,7 +8,7 @@
     android:paddingRight="60dp"
     android:paddingTop="60dp"
     android:background="@color/newSchoolTabletBlue"
-    tools:context="amiran.SiriusTablet.Lockscreen"
+    tools:context="amiran.siriustablet.Lockscreen"
 
     >
 
