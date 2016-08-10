@@ -10,11 +10,11 @@ import android.widget.TextView;
 import java.util.Objects;
 
 
-public class Delete_bar implements View.OnDragListener {
-    final String LOG_TAG = Delete_bar.class.getName();
-    TextView delete_bar_tv;
-    LinearLayout layout_home;
-    mainActivity ma;
+class Delete_bar implements View.OnDragListener {
+    private final String LOG_TAG = Delete_bar.class.getName();
+    private final TextView delete_bar_tv;
+    private final LinearLayout layout_home;
+    private final mainActivity ma;
 
     public Delete_bar(TextView delete_bar, LinearLayout home_layout) {
         delete_bar_tv = delete_bar;

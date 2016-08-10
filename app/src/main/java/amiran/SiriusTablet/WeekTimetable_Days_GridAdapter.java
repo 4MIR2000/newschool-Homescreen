@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import amiran.siriustablet_test.R;
 
-public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
-    Context mcontext;
-    Timetable_WeekDetail mtimetable;
+class WeekTimetable_Days_GridAdapter extends BaseAdapter {
+    private final Context mcontext;
+    private final Timetable_WeekDetail mtimetable;
 
     public WeekTimetable_Days_GridAdapter(Context context, Timetable_WeekDetail timetable) {
         mtimetable = timetable;
@@ -71,7 +71,7 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
     }
 
     private class Holder {
-        TextView day_tv;
+        final TextView day_tv;
 
         public Holder(View convertLayout) {
             day_tv = (TextView) convertLayout.findViewById(R.id.day_timetable);

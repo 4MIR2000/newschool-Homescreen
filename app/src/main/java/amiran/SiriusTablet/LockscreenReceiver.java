@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public class LockscreenReceiver extends BroadcastReceiver {
-    public static boolean wasScreenOn = true;
+    private static boolean wasScreenOn = true;
 
     @Override
     public void onReceive(Context context, Intent intent) {

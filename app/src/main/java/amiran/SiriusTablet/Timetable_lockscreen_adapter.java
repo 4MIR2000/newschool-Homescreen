@@ -7,9 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-public class Timetable_lockscreen_adapter extends BaseAdapter {
-    Timetable_DayDetail thisDay_timetable;
-    Context mcontext;
+class Timetable_lockscreen_adapter extends BaseAdapter {
+    private final Timetable_DayDetail thisDay_timetable;
+    private final Context mcontext;
 
     public Timetable_lockscreen_adapter(Context context, Timetable_DayDetail timetable) {
         thisDay_timetable = timetable;

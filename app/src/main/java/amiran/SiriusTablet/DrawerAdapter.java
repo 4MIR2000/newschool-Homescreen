@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import amiran.siriustablet_test.R;
 
-public class DrawerAdapter extends BaseAdapter {
-    Context mcontext;
+class DrawerAdapter extends BaseAdapter {
+    private final Context mcontext;
     // AppDetail[] applist;
 
     public DrawerAdapter(Context context) {

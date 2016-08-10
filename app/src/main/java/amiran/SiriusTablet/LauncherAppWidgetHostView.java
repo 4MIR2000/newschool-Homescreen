@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 public class LauncherAppWidgetHostView extends AppWidgetHostView {
     private boolean mHasPerformedLongPress;
     private CheckForLongPress mPendingCheckForLongPress;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public LauncherAppWidgetHostView(Context context) {
         super(context);

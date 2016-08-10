@@ -23,14 +23,14 @@ import java.io.Serializable;
 import amiran.siriustablet_test.R;
 
 public class AppDetail implements Serializable {
-    final String LOG_TAG = AppDetail.class.getName();
+    private final String LOG_TAG = AppDetail.class.getName();
     String id;
     String label;
     String name;
     String packageName;
     transient Drawable icon;
     int x, y;
-    String iconLocation;
+    private String iconLocation;
 
     //which screen is the shortcut added
     int screen_num;
@@ -76,7 +76,7 @@ public class AppDetail implements Serializable {
         }
     }
 
-    public Bitmap getCachedIcon() {
+    private Bitmap getCachedIcon() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;

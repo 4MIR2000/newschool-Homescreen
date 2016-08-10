@@ -41,40 +41,40 @@ import amiran.siriustablet_test.R;
 
 
 public class mainActivity extends Activity implements View.OnClickListener {
-    static final String LOG_TAG = mainActivity.class.getName();
+    private static final String LOG_TAG = mainActivity.class.getName();
     static Activity activity;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     //layout views declaration
-    GridView drawergrid;
+    private GridView drawergrid;
     static SlidingDrawer slidingDrawer;
-    LinearLayout app_widget_layout;
-    LinearLayout app_widget_child_layout;
-    TextView delete_bar;
-    ProgressBar loading_bar;
+    private LinearLayout app_widget_layout;
+    private LinearLayout app_widget_child_layout;
+    private TextView delete_bar;
+    private ProgressBar loading_bar;
 
     private static final float TOUCH_TOLERANCE = 4;
-    PackageManager manager;
-    DrawerAdapter drawerAdapterObject;
+    private PackageManager manager;
+    private DrawerAdapter drawerAdapterObject;
 
     public static AppDetail[] apps;
     static boolean isLaunchable = true;
 
-    AppWidgetManager mAppWidgetManager;
-    LauncherAppWidgetHost mAppWidgetHost;
+    private AppWidgetManager mAppWidgetManager;
+    private LauncherAppWidgetHost mAppWidgetHost;
 
-    int REQUEST_CREATE_APPWIDGET = 900;
-    int REQUEST_PICK_APPWIDGET = 800;
+    private final int REQUEST_CREATE_APPWIDGET = 900;
+    private final int REQUEST_PICK_APPWIDGET = 800;
 
-    DynamicGridView subjects_grid;
-    ListView oneDayTimetable;
+    private DynamicGridView subjects_grid;
+    private ListView oneDayTimetable;
 
     static ViewPager multiscreen_pager;
     static ViewPagerAdapter mpagerAdapter;
-    ImageView[] dots;
+    private ImageView[] dots;
     static LinearLayout viewPagerIndicator_layout;
-    List<RelativeLayout> multiScreen_layouts;
+    private List<RelativeLayout> multiScreen_layouts;
 
-    int day_of_timetable = 1000;
+    private int day_of_timetable = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +215,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
                 if (which_day < timetable_class.getTimetable().days.size()) {
                     timetable_hours = timetable_class.getTimetable().days.get(which_day).hours;
                 } else {
-                    timetable_hours = new ArrayList<Timetable_HourDetail>();
+                    timetable_hours = new ArrayList<>();
                     for (int i = 0; i < 9; i++) {
                         timetable_hours.add(i, new Timetable_HourDetail());
                     }
@@ -319,7 +319,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
     }
 
     //this class helps us to load the installed apps in the background
-    public class LoadApps extends AsyncTask<String, Void, String> {
+    private class LoadApps extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             //manager gives data about installed packages
@@ -403,7 +403,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
         startActivityForResult(pickIntent, REQUEST_PICK_APPWIDGET);
     }
 
-    void addEmptyData(Intent pickIntent) {
+    private void addEmptyData(Intent pickIntent) {
         //addEmptyData is for preveting a crash if list is null
         ArrayList customInfo = new ArrayList();
         pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, customInfo);
@@ -441,7 +441,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public void createWidget(Intent data) {
+    private void createWidget(Intent data) {
 
         Bundle extras = data.getExtras();
         int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);

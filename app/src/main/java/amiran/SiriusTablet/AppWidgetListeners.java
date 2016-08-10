@@ -7,15 +7,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class AppWidgetListeners implements View.OnLongClickListener, View.OnDragListener {
-    View dragingView;
-    TextView delete_bar_tv;
+class AppWidgetListeners implements View.OnLongClickListener, View.OnDragListener {
+    private View dragingView;
+    private TextView delete_bar_tv;
 
     public AppWidgetListeners(TextView delete_tv) {
         delete_bar_tv = delete_tv;
     }
 
-    public AppWidgetListeners(View v) {
+    private AppWidgetListeners(View v) {
         dragingView = v;
     }
 
@@ -29,7 +29,7 @@ public class AppWidgetListeners implements View.OnLongClickListener, View.OnDrag
         v.setVisibility(View.INVISIBLE);
         delete_bar_tv.setVisibility(View.VISIBLE);
 
-        AppWidgetListeners awl = new AppWidgetListeners(v);
+        new AppWidgetListeners(v);
 
         return false;
     }

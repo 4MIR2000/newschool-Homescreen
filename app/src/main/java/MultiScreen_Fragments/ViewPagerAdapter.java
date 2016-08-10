@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import java.util.List;
 
 public class ViewPagerAdapter extends android.support.v4.view.PagerAdapter {
-    public List<RelativeLayout> layouts;
+    private final List<RelativeLayout> layouts;
 
     public ViewPagerAdapter(List<RelativeLayout> layouts) {
         this.layouts = layouts;

@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import amiran.siriustablet_test.R;
 
-public class WeekTimetable_GridAdapter extends BaseAdapter {
+class WeekTimetable_GridAdapter extends BaseAdapter {
     public static final String LOG_TAG = WeekTimetable_GridAdapter.class.getName();
-    Context mcontext;
-    Timetable_WeekDetail mtimetable;
-    int mlongestDayHoursNum;
+    private final Context mcontext;
+    private final Timetable_WeekDetail mtimetable;
+    private final int mlongestDayHoursNum;
     int mposition;
 
     public WeekTimetable_GridAdapter(Context context, Timetable_WeekDetail timetable, int longestDayHoursNum) {
@@ -91,8 +91,8 @@ public class WeekTimetable_GridAdapter extends BaseAdapter {
     }
 
     public class Holder {
-        TextView subject_tv;
-        TextView room_tv;
+        final TextView subject_tv;
+        final TextView room_tv;
 
         public Holder(View convertLayout) {
             subject_tv = (TextView) convertLayout.findViewById(R.id.subject_timetable);

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-public class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-    Context mcontext;
-    Activity mactivity;
+class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private final Context mcontext;
+    private final Activity mactivity;
 
     public MyGestureListener(Context context, Activity activity) {
         mcontext = context;

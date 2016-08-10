@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
+class DrawerLongClick implements AdapterView.OnItemLongClickListener {
     final static String LOG_TAG = DrawerLongClick.class.getName();
-    static Context mcontext;
+    private static Context mcontext;
     SlidingDrawer SDrawer;
-    LinearLayout home_layout;
+    private LinearLayout home_layout;
 
     static View dragging_app;
 
     //is the bar which allows you to delete the icon of an added App on homescreen
-    static TextView delete_bar_tv;
+    private static TextView delete_bar_tv;
 
     View draggingIcon;
 
@@ -34,7 +34,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         home_layout.setOnDragListener(new ShortcutListeners(mcontext, layout, delete_bar_tv));
     }
 
-    public DrawerLongClick() {
+    private DrawerLongClick() {
 
     }
 
@@ -62,7 +62,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         appToAdd.y = (int) view.getY();
 
         if (objectdata.apps == null)
-            objectdata.apps = new ArrayList<AppDetail>();
+            objectdata.apps = new ArrayList<>();
 
         appToAdd.cacheIcon();
         //home_icon.setTag(appToAdd);

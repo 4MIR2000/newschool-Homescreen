@@ -6,15 +6,14 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class DrawerClickListener implements AdapterView.OnItemClickListener {
-    Context mcontext;
-    AppDetail[] list;
-    PackageManager Pmanager;
+class DrawerClickListener implements AdapterView.OnItemClickListener {
+    private final Context mcontext;
+    private final AppDetail[] list;
+    private PackageManager Pmanager;
 
     public DrawerClickListener(Context context, AppDetail[] apps, PackageManager manager) {
         mcontext = context;
         list = apps;
-        manager = Pmanager;
     }
 
     @Override

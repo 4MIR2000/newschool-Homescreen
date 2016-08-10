@@ -1,6 +1,6 @@
 package amiran.SiriusTablet;
 
-public class SortTimetable {
+class SortTimetable {
     public static int getlongestDayHours(Timetable_WeekDetail timetable) {
         Timetable_WeekDetail mtimetable = timetable;
         Timetable_DayDetail temp;

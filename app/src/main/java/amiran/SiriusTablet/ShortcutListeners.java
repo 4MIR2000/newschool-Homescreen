@@ -19,12 +19,12 @@ import java.util.Objects;
 
 import amiran.siriustablet_test.R;
 
-public class ShortcutListeners implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener, View.OnTouchListener {
+class ShortcutListeners implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener, View.OnTouchListener {
     static final String LOG_TAG = ShortcutListeners.class.getName();
-    static View dragging_app;
-    static TextView delete_bar_tv;
-    static Context mcontext;
-    static LinearLayout mplacement_layout;
+    private static View dragging_app;
+    private static TextView delete_bar_tv;
+    private static Context mcontext;
+    private static LinearLayout mplacement_layout;
 
     public ShortcutListeners(Context context, LinearLayout placement_layout, TextView delete_tv) {
         mcontext = context;

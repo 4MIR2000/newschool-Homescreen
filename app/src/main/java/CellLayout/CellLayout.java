@@ -17,24 +17,24 @@ import amiran.siriustablet_test.R;
 
 public class CellLayout extends ViewGroup {
     private boolean mPortrait;
-    private int mCellWidth;
-    private int mCellHeight;
+    private final int mCellWidth;
+    private final int mCellHeight;
 
-    private int mLongAxisStartPadding;
-    private int mLongAxisEndPadding;
-    private int mShortAxisStartPadding;
-    private int mShortAxisEndPadding;
-    private int mShortAxisCells;
-    private int mLongAxisCells;
+    private final int mLongAxisStartPadding;
+    private final int mLongAxisEndPadding;
+    private final int mShortAxisStartPadding;
+    private final int mShortAxisEndPadding;
+    private final int mShortAxisCells;
+    private final int mLongAxisCells;
     private int mWidthGap;
     private int mHeightGap;
     private final Rect mRect = new Rect();
     private final CellInfo mCellInfo = new CellInfo();
 
-    int[] mCellXY = new int[2];
+    private final int[] mCellXY = new int[2];
 
-    boolean[][] mOccupied;
-    private RectF mDragRect = new RectF();
+    private boolean[][] mOccupied;
+    private final RectF mDragRect = new RectF();
     private boolean mDirtyTag;
 
     public CellLayout(Context context) {
@@ -326,7 +326,7 @@ public class CellLayout extends ViewGroup {
      * @param y      Y coordinate of the point
      * @param result Array of 2 ints to hold the x and y coordinate of the cell
      */
-    void pointToCellExact(int x, int y, int[] result) {
+    private void pointToCellExact(int x, int y, int[] result) {
         final boolean portrait = mPortrait;
 
         final int hStartPadding = portrait ? mShortAxisStartPadding : mLongAxisStartPadding;
@@ -348,7 +348,7 @@ public class CellLayout extends ViewGroup {
      * @param y      Y coordinate of the point
      * @param result Array of 2 ints to hold the x and y coordinate of the cell
      */
-    void pointToCellRounded(int x, int y, int[] result) {
+    private void pointToCellRounded(int x, int y, int[] result) {
         pointToCellExact(x + (mCellWidth / 2), y + (mCellHeight / 2), result);
     }
 
@@ -359,7 +359,7 @@ public class CellLayout extends ViewGroup {
      * @param cellY  Y coordinate of the cell
      * @param result Array of 2 ints to hold the x and y coordinate of the point
      */
-    void cellToPoint(int cellX, int cellY, int[] result) {
+    private void cellToPoint(int cellX, int cellY, int[] result) {
         final boolean portrait = mPortrait;
 
         final int hStartPadding = portrait ? mShortAxisStartPadding : mLongAxisStartPadding;
@@ -458,11 +458,6 @@ public class CellLayout extends ViewGroup {
             // Update the drawing caches
             view.buildDrawingCache(true);
         }
-    }
-
-    @Override
-    protected void setChildrenDrawnWithCacheEnabled(boolean enabled) {
-        super.setChildrenDrawnWithCacheEnabled(enabled);
     }
 
     /**
@@ -578,7 +573,7 @@ public class CellLayout extends ViewGroup {
      * @param cellVSpan Height in cells
      * @param dragRect  Rectnagle into which to put the results
      */
-    public void cellToRect(int cellX, int cellY, int cellHSpan, int cellVSpan, RectF dragRect) {
+    private void cellToRect(int cellX, int cellY, int cellHSpan, int cellVSpan, RectF dragRect) {
         final boolean portrait = mPortrait;
         final int cellWidth = mCellWidth;
         final int cellHeight = mCellHeight;
@@ -633,8 +628,8 @@ public class CellLayout extends ViewGroup {
         return findVacantCell(vacant, spanX, spanY, xCount, yCount, occupied);
     }
 
-    static boolean findVacantCell(int[] vacant, int spanX, int spanY,
-                                  int xCount, int yCount, boolean[][] occupied) {
+    private static boolean findVacantCell(int[] vacant, int spanX, int spanY,
+                                          int xCount, int yCount, boolean[][] occupied) {
         for (int x = 0; x < xCount; x++) {
             for (int y = 0; y < yCount; y++) {
                 boolean available = !occupied[x][y];
@@ -719,12 +714,12 @@ public class CellLayout extends ViewGroup {
          * Number of cells spanned horizontally by the item.
          */
         @ViewDebug.ExportedProperty
-        public int cellHSpan;
+        public final int cellHSpan;
         /**
          * Number of cells spanned vertically by the item.
          */
         @ViewDebug.ExportedProperty
-        public int cellVSpan;
+        public final int cellVSpan;
 
         /**
          * Is this item currently being dragged
@@ -832,7 +827,7 @@ public class CellLayout extends ViewGroup {
         int spanY;
         int screen;
         boolean valid;
-        final ArrayList<VacantCell> vacantCells = new ArrayList<VacantCell>(VacantCell.POOL_LIMIT);
+        final ArrayList<VacantCell> vacantCells = new ArrayList<>(VacantCell.POOL_LIMIT);
         int maxVacantSpanX;
         int maxVacantSpanXSpanY;
         int maxVacantSpanY;

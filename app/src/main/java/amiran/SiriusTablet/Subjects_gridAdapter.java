@@ -17,10 +17,10 @@ import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-public class Subjects_gridAdapter extends BaseDynamicGridAdapter {
-    public final String LOG_TAG = Subjects_gridAdapter.class.getName();
-    Context mcontext;
-    List<SubjectDetail> msubjects;
+class Subjects_gridAdapter extends BaseDynamicGridAdapter {
+    private final String LOG_TAG = Subjects_gridAdapter.class.getName();
+    private final Context mcontext;
+    private final List<SubjectDetail> msubjects;
 
     public Subjects_gridAdapter(Context context, List<SubjectDetail> subjects, int columnCount) {
         super(context, subjects, columnCount);

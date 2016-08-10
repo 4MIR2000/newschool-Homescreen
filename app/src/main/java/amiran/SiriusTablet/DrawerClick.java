@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class DrawerClick implements AdapterView.OnItemClickListener {
-    Context mcontext;
+class DrawerClick implements AdapterView.OnItemClickListener {
+    private final Context mcontext;
     AppDetail[] mapps;
 
     public DrawerClick(Context context) {

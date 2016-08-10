@@ -8,15 +8,14 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Substitution {
+class Substitution {
     public static final String LOG_TAG = Substitution.class.getName();
-    public Context mcontext;
+    private final Context mcontext;
 
     public Substitution(Context context) {
         mcontext = context;
@@ -102,11 +101,7 @@ public class Substitution {
             week = new Timetable_WeekDetail();
             week.days = days_list;
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (StringIndexOutOfBoundsException e) {
+        } catch (IOException | StringIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 

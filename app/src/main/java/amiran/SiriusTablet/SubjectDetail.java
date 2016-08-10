@@ -1,6 +1,6 @@
 package amiran.SiriusTablet;
 
-public class SubjectDetail {
+class SubjectDetail {
     public String name;
     public int pic;
 }

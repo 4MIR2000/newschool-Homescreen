@@ -14,12 +14,12 @@ import org.askerov.dynamicgrid.DynamicGridView;
 
 import amiran.siriustablet_test.R;
 
-public class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGridView.OnDropListener, DynamicGridView.OnItemClickListener {
-    Context mcontext;
+class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGridView.OnDropListener, DynamicGridView.OnItemClickListener {
+    private final Context mcontext;
     LinearLayout subjects_layout;
     View draggingView;
     RelativeLayout.LayoutParams params;
-    DynamicGridView mgridView;
+    private final DynamicGridView mgridView;
 
     private static final String TAG = SubjectListeners.class.getName();
 

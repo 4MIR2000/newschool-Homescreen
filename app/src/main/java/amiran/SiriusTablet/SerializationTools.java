@@ -2,14 +2,12 @@ package amiran.SiriusTablet;
 
 import android.content.Context;
 
-import java.io.EOFException;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class SerializationTools {
+class SerializationTools {
     public static void serializeData(AppSerializableData obj) {
         FileOutputStream fos;
         try {
@@ -17,8 +15,6 @@ public class SerializationTools {
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(obj);
             os.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,11 +31,7 @@ public class SerializationTools {
             } else {
                 return null;
             }
-        } catch (EOFException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {

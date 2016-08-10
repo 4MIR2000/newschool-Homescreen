@@ -19,10 +19,10 @@ import amiran.siriustablet_test.R;
 
 public class WeekTimetableActivity extends ActionBarActivity {
     RelativeLayout timetable_layout;
-    GridView timetable_gridView;
-    GridView days_gridView;
+    private GridView timetable_gridView;
+    private GridView days_gridView;
 
-    final static String LOG_TAG = WeekTimetableActivity.class.getName();
+    private final static String LOG_TAG = WeekTimetableActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

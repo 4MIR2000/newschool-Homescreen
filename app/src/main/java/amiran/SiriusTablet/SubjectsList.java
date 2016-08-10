@@ -7,18 +7,16 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-public class SubjectsList {
-    final static String LOG_TAG = SubjectsList.class.getName();
-    Context mcontext;
+class SubjectsList {
+    private final static String LOG_TAG = SubjectsList.class.getName();
+    private final Context mcontext;
 
     public SubjectsList(Context context) {
         mcontext = context;
@@ -107,7 +105,7 @@ public class SubjectsList {
         return null;
     }
 
-    public List<String> getSubjectsName() {
+    private List<String> getSubjectsName() {
 
    /*     List<String> names = new ArrayList<>();
         names.add(0,"german");
@@ -143,10 +141,6 @@ public class SubjectsList {
 
                 line = br.readLine();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

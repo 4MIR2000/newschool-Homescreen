@@ -1,9 +1,5 @@
 package amiran.SiriusTablet;
 
-/**
- * Created by amirt on 13.03.2016.
- */
-
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -14,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class LockscreenService extends Service {
-    BroadcastReceiver mReceiver;
+    private BroadcastReceiver mReceiver;
 
     @Nullable
     @Override
@@ -37,12 +33,6 @@ public class LockscreenService extends Service {
         registerReceiver(mReceiver, filter);
 
         Log.d("message", "service started");
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        // TODO Auto-generated method stub
-        super.onStart(intent, startId);
     }
 
     @Override

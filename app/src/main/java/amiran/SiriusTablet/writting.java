@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import amiran.siriustablet_test.R;
 
 public class writting extends Activity {
-    DrawingView dv;
+    private DrawingView dv;
     private Paint mPaint;
     private Bitmap mBitmap;
 
@@ -42,11 +42,11 @@ public class writting extends Activity {
         public int height;
 
         private Canvas mCanvas;
-        private Path mPath;
-        private Paint mBitmapPaint;
-        Context context;
-        private Paint circlePaint;
-        private Path circlePath;
+        private final Path mPath;
+        private final Paint mBitmapPaint;
+        final Context context;
+        private final Paint circlePaint;
+        private final Path circlePath;
 
         public DrawingView(Context c) {
             super(c);

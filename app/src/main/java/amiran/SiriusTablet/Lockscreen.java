@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,22 +37,22 @@ import java.util.Objects;
 import amiran.siriustablet_test.R;
 
 public class Lockscreen extends AppCompatActivity {
-    public static final String LOG_TAG = Lockscreen.class.getName();
+    private static final String LOG_TAG = Lockscreen.class.getName();
 
-    TextView date_tv;
-    Calendar calendar;
+    private TextView date_tv;
+    private Calendar calendar;
 
-    ShimmerTextView slideToUnlock_Tv;
-    Shimmer shimmer;
-    GestureDetector gestureDetector;
+    private ShimmerTextView slideToUnlock_Tv;
+    private Shimmer shimmer;
+    private GestureDetector gestureDetector;
 
-    Activity activity = this;
+    private final Activity activity = this;
 
-    GridView timetable_grid;
-    ImageView lock;
+    private GridView timetable_grid;
+    private ImageView lock;
 
-    LinearLayout lockscreen_timetable;
-    ProgressBar loadingBar;
+    private LinearLayout lockscreen_timetable;
+    private ProgressBar loadingBar;
 
     Handler handler = new Handler();
 
@@ -133,8 +132,6 @@ public class Lockscreen extends AppCompatActivity {
                 } finally {
                     connection.disconnect();
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
                 // Toast.makeText(this,"Übeprüfe deine Internetverbindung",Toast.LENGTH_SHORT).show();
@@ -321,7 +318,7 @@ public class Lockscreen extends AppCompatActivity {
         }
     }
 
-    class StateListener extends PhoneStateListener {
+    private class StateListener extends PhoneStateListener {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);

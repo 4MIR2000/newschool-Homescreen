@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import amiran.siriustablet_test.R;
 
 public class Fragment1 extends android.support.v4.app.Fragment {
-    public static LinearLayout layout;
+    private static LinearLayout layout;
 
     @Nullable
     @Override

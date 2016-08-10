@@ -14,11 +14,11 @@ import java.util.List;
 
 import amiran.siriustablet_test.R;
 
-public class OneDayTimetable_ListAdapter extends BaseAdapter {
+class OneDayTimetable_ListAdapter extends BaseAdapter {
     static final String LOG_TAG = OneDayTimetable_ListAdapter.class.getName();
-    Context mcontext;
-    List<Timetable_HourDetail> mhours;
-    List<Timetable_HourDetail> msubstitution;
+    private final Context mcontext;
+    private final List<Timetable_HourDetail> mhours;
+    private final List<Timetable_HourDetail> msubstitution;
 
     public OneDayTimetable_ListAdapter(Context context, List<Timetable_HourDetail> hours, List<Timetable_HourDetail> substitution) {
         mcontext = context;
@@ -70,11 +70,11 @@ public class OneDayTimetable_ListAdapter extends BaseAdapter {
     }
 
     private class Holder {
-        TextView subject_tv;
-        TextView standardroom_tv;
-        Button hour_button;
-        RelativeLayout layout;
-        View convertView;
+        final TextView subject_tv;
+        final TextView standardroom_tv;
+        final Button hour_button;
+        final RelativeLayout layout;
+        final View convertView;
 
         public Holder(View parent) {
             convertView = parent;

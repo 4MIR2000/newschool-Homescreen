@@ -1,6 +1,6 @@
 package amiran.SiriusTablet;
 
-public class SortApps {
+class SortApps {
     public void exchangeSort(AppDetail[] list) {
         int i, j;
         AppDetail temp;

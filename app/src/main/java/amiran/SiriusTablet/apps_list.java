@@ -21,7 +21,7 @@ import amiran.siriustablet_test.R;
 public class apps_list extends AppCompatActivity {
     private PackageManager manager;
     private List<AppDetail> apps;
-    ListView list;
+    private ListView list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

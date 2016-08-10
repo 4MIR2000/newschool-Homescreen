@@ -14,9 +14,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Timetable {
-    static final String LOG_TAG = Timetable.class.getName();
-    Context mcontext;
+class Timetable {
+    private static final String LOG_TAG = Timetable.class.getName();
+    private final Context mcontext;
 
     public Timetable(Context context) {
         mcontext = context;

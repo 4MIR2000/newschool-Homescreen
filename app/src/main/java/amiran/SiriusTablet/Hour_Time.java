@@ -1,6 +1,6 @@
 package amiran.SiriusTablet;
 
-public class Hour_Time {
+class Hour_Time {
     int hour_start;
     int minute_start;
     int hour_end;

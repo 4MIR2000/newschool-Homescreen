@@ -1,6 +1,6 @@
 package amiran.SiriusTablet;
 
-public class Timetable_HourDetail {
+class Timetable_HourDetail {
     int hour;
     String subject;
     String room;
