@@ -15,10 +15,11 @@ public class Timetable_lockscreen_adapter extends BaseAdapter {
     Timetable_DayDetail thisDay_timetable;
     Context mcontext;
 
-    public Timetable_lockscreen_adapter(Context context, Timetable_DayDetail timetable){
+    public Timetable_lockscreen_adapter(Context context, Timetable_DayDetail timetable) {
         thisDay_timetable = timetable;
         mcontext = context;
     }
+
     @Override
     public int getCount() {
         return thisDay_timetable.hours.size();
@@ -41,8 +42,8 @@ public class Timetable_lockscreen_adapter extends BaseAdapter {
         iv.setImageResource(thisDay_timetable.hours.get(position).pic);
 
         RelativeLayout.LayoutParams params;
-        params = new RelativeLayout.LayoutParams(150,150);
-       
+        params = new RelativeLayout.LayoutParams(150, 150);
+
 
         iv.setLayoutParams(params);
         return iv;

@@ -23,15 +23,16 @@ public class SubjectsList {
     final static String LOG_TAG = SubjectsList.class.getName();
     Context mcontext;
 
-    public SubjectsList(Context context){
+    public SubjectsList(Context context) {
         mcontext = context;
     }
-    public List<SubjectDetail> getAllSubjects(){
+
+    public List<SubjectDetail> getAllSubjects() {
         List<String> names = getSubjectsName();
 
         List<SubjectDetail> subjects = new ArrayList<>();
 
-        if(names != null) {
+        if (names != null) {
             for (int i = 0; i < names.size(); i++) {
 
                 SubjectDetail sd = new SubjectDetail();
@@ -116,7 +117,8 @@ public class SubjectsList {
 
         return null;
     }
-    public List<String> getSubjectsName(){
+
+    public List<String> getSubjectsName() {
 
    /*     List<String> names = new ArrayList<>();
         names.add(0,"german");
@@ -130,17 +132,17 @@ public class SubjectsList {
 
 
         return names;*/
-        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"NewSchool"+
-                        File.separator+"Facher"+File.separator+"f.txt");
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" +
+                File.separator + "Facher" + File.separator + "f.txt");
 
         FileInputStream fis = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
 
         List<String> names = null;
-        try{
+        try {
             fis = new FileInputStream(file);
-            isr = new InputStreamReader(fis,"UTF-8");
+            isr = new InputStreamReader(fis, "UTF-8");
             br = new BufferedReader(isr);
 
             names = new ArrayList<>();
@@ -148,32 +150,29 @@ public class SubjectsList {
             String line = br.readLine();
 
 
-
-            for(int i=0; line!=null; i++){
-
+            for (int i = 0; line != null; i++) {
 
 
-              //  Log.d(LOG_TAG,br.readLine());
-                names.add(i,line);
+                //  Log.d(LOG_TAG,br.readLine());
+                names.add(i, line);
 
 
                 line = br.readLine();
 
             }
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(names != null && names.size() != 0)
-        return names;
+        if (names != null && names.size() != 0)
+            return names;
 
         return null;
     }
-
 
 
 }

@@ -3,7 +3,8 @@
     android:initialLayout="@layout/activity_temperature_widget"
     android:minHeight="20dp"
     android:minWidth="20dp"
-    android:updatePeriodMillis="30000" android:widgetCategory="keyguard|home_screen">
+    android:updatePeriodMillis="30000"
+    android:widgetCategory="keyguard|home_screen">
 
 
 </appwidget-provider>

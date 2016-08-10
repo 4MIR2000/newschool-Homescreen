@@ -14,7 +14,7 @@ public class DrawerClick implements AdapterView.OnItemClickListener {
     Context mcontext;
     AppDetail[] mapps;
 
-    public DrawerClick(Context context){
+    public DrawerClick(Context context) {
         mcontext = context;
         //mapps = apps;
     }

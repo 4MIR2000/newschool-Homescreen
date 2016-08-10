@@ -42,9 +42,9 @@ import java.util.Objects;
 
 import amiran.siriustablet_test.R;
 
-public class Lockscreen extends AppCompatActivity{
+public class Lockscreen extends AppCompatActivity {
 
-    public static final String LOG_TAG=Lockscreen.class.getName();
+    public static final String LOG_TAG = Lockscreen.class.getName();
 
     TextView date_tv;
     Calendar calendar;
@@ -73,9 +73,9 @@ public class Lockscreen extends AppCompatActivity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
 
-        lockscreen_timetable = (LinearLayout)findViewById(R.id.timetable_lockscreen);
+        lockscreen_timetable = (LinearLayout) findViewById(R.id.timetable_lockscreen);
 
-        lock = (ImageView)findViewById(R.id.lock);
+        lock = (ImageView) findViewById(R.id.lock);
 
 
     /*  try{
@@ -84,8 +84,8 @@ public class Lockscreen extends AppCompatActivity{
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }catch(Exception e){ }*/
 
-       // String date = DateFormat.getDateTimeInstance().format(new Date());
-        date_tv = (TextView)findViewById(R.id.date_tv);
+        // String date = DateFormat.getDateTimeInstance().format(new Date());
+        date_tv = (TextView) findViewById(R.id.date_tv);
         //date_tv.setText(date);
 
         Calendar calendar = Calendar.getInstance();
@@ -98,38 +98,30 @@ public class Lockscreen extends AppCompatActivity{
 
         //seekbar_layout = (RelativeLayout)findViewById(R.id.seekBar_layout);
 
-        slideToUnlock_Tv = (ShimmerTextView)findViewById(R.id.slideToUnlock);
+        slideToUnlock_Tv = (ShimmerTextView) findViewById(R.id.slideToUnlock);
 
         shimmer = new Shimmer();
         shimmer.setDuration(2000);
         shimmer.start(slideToUnlock_Tv);
 
 
-        timetable_grid = (GridView)findViewById(R.id.timetable_lockscreen_gridView);
-        loadingBar = (ProgressBar)findViewById(R.id.progressBar);
+        timetable_grid = (GridView) findViewById(R.id.timetable_lockscreen_gridView);
+        loadingBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
+        // timetable_grid.setAdapter(new Timetable_lockscreen_adapter(this, timetable));
 
-       // timetable_grid.setAdapter(new Timetable_lockscreen_adapter(this, timetable));
-
-       //timetableDeclaration();
+        //timetableDeclaration();
         //new TimetableDeclaration().execute();
-
-
-
 
 
     }
 
-    public class LockCheck extends AsyncTask<String, Void, String>{
+    public class LockCheck extends AsyncTask<String, Void, String> {
 
         boolean locked = false;
 
         String line;
-
-
-
-
 
 
         @Override
@@ -144,10 +136,7 @@ public class Lockscreen extends AppCompatActivity{
                 //handler.postDelayed(new Timetable_Runnable(connection),2000);
 
 
-
-
-
-                try{
+                try {
                     InputStream is = connection.getInputStream();
                     InputStreamReader isr = new InputStreamReader(is);
                     BufferedReader br = new BufferedReader(isr);
@@ -155,8 +144,7 @@ public class Lockscreen extends AppCompatActivity{
                     line = br.readLine();
 
 
-
-                    if(line != null) {
+                    if (line != null) {
                         if (line.equals("false")) {
                             locked = false;
                         } else {
@@ -165,17 +153,16 @@ public class Lockscreen extends AppCompatActivity{
                         }
                     }
 
-                }finally {
+                } finally {
                     connection.disconnect();
                 }
-
 
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-               // Toast.makeText(this,"Übeprüfe deine Internetverbindung",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this,"Übeprüfe deine Internetverbindung",Toast.LENGTH_SHORT).show();
             }
 
             return null;
@@ -186,7 +173,7 @@ public class Lockscreen extends AppCompatActivity{
             super.onPostExecute(s);
 
 
-            if(locked) {
+            if (locked) {
 
                 gestureDetector = null;
                 lockscreen_timetable.setVisibility(View.GONE);
@@ -194,9 +181,9 @@ public class Lockscreen extends AppCompatActivity{
                 loadingBar.setVisibility(View.GONE);
 
 
-            }else{
+            } else {
 
-                if(locked == false) {
+                if (locked == false) {
                     gestureDetector = new GestureDetector(Lockscreen.this, new MyGestureListener(activity, Lockscreen.this));
                     lockscreen_timetable.setVisibility(View.VISIBLE);
                     lock.setVisibility(View.GONE);
@@ -206,18 +193,14 @@ public class Lockscreen extends AppCompatActivity{
             }
 
 
-
-
-
         }
     }
 
 
-    public class  TimetableDeclaration extends AsyncTask<String, Void, String> {
+    public class TimetableDeclaration extends AsyncTask<String, Void, String> {
 
         List<SubjectDetail> subjects;
         Timetable_DayDetail day_timetable;
-
 
 
         @Override
@@ -227,32 +210,31 @@ public class Lockscreen extends AppCompatActivity{
             calendar = Calendar.getInstance();
             int which_day = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 
-            if(which_day == -1){
+            if (which_day == -1) {
                 which_day = 7;
             }
 
             Timetable timetable_class = new Timetable(Lockscreen.this);
             Timetable_WeekDetail timetable = timetable_class.getTimetable();
-            if(timetable != null){
-                if(which_day < timetable.days.size()){
+            if (timetable != null) {
+                if (which_day < timetable.days.size()) {
 
 
-            day_timetable = timetable_class.getTimetable().days.get(which_day);
+                    day_timetable = timetable_class.getTimetable().days.get(which_day);
 
-            SubjectsList list = new SubjectsList(Lockscreen.this);
+                    SubjectsList list = new SubjectsList(Lockscreen.this);
 
-            //for getting the all subjects list
-            //we want to get the icon of one subject
+                    //for getting the all subjects list
+                    //we want to get the icon of one subject
 
-            subjects = list.getAllSubjects();
+                    subjects = list.getAllSubjects();
 
 
-
-        }else{
+                } else {
                     day_timetable = null;
                 }
 
-            }else{
+            } else {
                 day_timetable = null;
             }
 
@@ -263,13 +245,11 @@ public class Lockscreen extends AppCompatActivity{
         protected void onPostExecute(String s) {
 
 
-
-                LinearLayout parent = (LinearLayout) findViewById(R.id.timetable_lockscreen);
-                parent.removeAllViews();
+            LinearLayout parent = (LinearLayout) findViewById(R.id.timetable_lockscreen);
+            parent.removeAllViews();
 
             if (day_timetable != null) {
                 ImageView[] hours_views = new ImageView[day_timetable.hours.size()];
-
 
 
                 for (int i = 0; i < day_timetable.hours.size(); i++) {
@@ -310,8 +290,8 @@ public class Lockscreen extends AppCompatActivity{
                         Log.d(LOG_TAG, "actual hour" + Integer.toString(time.hour_start));
                         Log.d(LOG_TAG, "actual hour end" + Integer.toString(time.hour_end));
 
-                        if(current_hour == time.hour_start){
-                            if(current_minute>time.minute_start){
+                        if (current_hour == time.hour_start) {
+                            if (current_minute > time.minute_start) {
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
                                 params.setMargins(5, 0, 5, 0);
                                 //params.gravity = Gravity.CENTER;
@@ -319,8 +299,8 @@ public class Lockscreen extends AppCompatActivity{
                                 return;
                             }
 
-                        }else{
-                            if(current_hour == time.hour_end) {
+                        } else {
+                            if (current_hour == time.hour_end) {
                                 if (current_minute < time.minute_end) {
                                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
                                     params.setMargins(5, 0, 5, 0);
@@ -328,7 +308,7 @@ public class Lockscreen extends AppCompatActivity{
                                     hours_views[i].setLayoutParams(params);
                                     return;
                                 }
-                            }else{
+                            } else {
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
                                 params.setMargins(5, 0, 5, 0);
                                 // params.gravity = Gravity.CENTER;
@@ -338,7 +318,6 @@ public class Lockscreen extends AppCompatActivity{
                         }
                     }
                 }
-
 
 
             }
@@ -415,24 +394,26 @@ public class Lockscreen extends AppCompatActivity{
 
 
     class StateListener extends PhoneStateListener {
-    @Override
-    public void onCallStateChanged(int state, String incomingNumber)     {
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
 
-        super.onCallStateChanged(state, incomingNumber);
-        switch(state){
-            case TelephonyManager.CALL_STATE_RINGING:
-                break;
-            case TelephonyManager.CALL_STATE_OFFHOOK:
-                System.out.println("call Activity off hook");
+            super.onCallStateChanged(state, incomingNumber);
+            switch (state) {
+                case TelephonyManager.CALL_STATE_RINGING:
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    System.out.println("call Activity off hook");
 
-                // Finish lock screen activity
-                finish();
-                break;
-            case TelephonyManager.CALL_STATE_IDLE:
-                break;
+                    // Finish lock screen activity
+                    finish();
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    break;
+            }
         }
     }
-};
+
+    ;
 
     @Override
     public void onBackPressed() {
@@ -443,13 +424,13 @@ public class Lockscreen extends AppCompatActivity{
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
 
-        if((keyCode == KeyEvent.KEYCODE_HOME)){
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
 
             return true;
         }
 
-        if((keyCode == KeyEvent.KEYCODE_TAB)){
-            Toast.makeText(this,"3D_MODE",Toast.LENGTH_SHORT).show();
+        if ((keyCode == KeyEvent.KEYCODE_TAB)) {
+            Toast.makeText(this, "3D_MODE", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -457,7 +438,7 @@ public class Lockscreen extends AppCompatActivity{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(gestureDetector != null) {
+        if (gestureDetector != null) {
             gestureDetector.onTouchEvent(event);
         }
         return super.onTouchEvent(event);

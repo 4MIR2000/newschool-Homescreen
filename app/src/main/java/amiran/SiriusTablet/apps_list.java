@@ -25,7 +25,6 @@ public class apps_list extends AppCompatActivity {
     ListView list;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,29 +56,29 @@ public class apps_list extends AppCompatActivity {
     }
 
 
-    private void loadListView(){
+    private void loadListView() {
 
-        list = (ListView)findViewById(R.id.apps_list);
+        list = (ListView) findViewById(R.id.apps_list);
 
 
-        ArrayAdapter<AppDetail> adapter = new ArrayAdapter<AppDetail>(this ,R.layout.list_item,apps){
+        ArrayAdapter<AppDetail> adapter = new ArrayAdapter<AppDetail>(this, R.layout.list_item, apps) {
 
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                  if(convertView == null) {
-                      convertView = getLayoutInflater().inflate(R.layout.list_item,null);
-                  }
-                      ImageView appicon = (ImageView)convertView.findViewById(R.id.item_app_icon);
-                      appicon.setImageDrawable(apps.get(position).icon);
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.list_item, null);
+                }
+                ImageView appicon = (ImageView) convertView.findViewById(R.id.item_app_icon);
+                appicon.setImageDrawable(apps.get(position).icon);
 
-                      TextView appTextView = (TextView)convertView.findViewById(R.id.item_app_label);
-                      appTextView.setText(apps.get(position).label);
+                TextView appTextView = (TextView) convertView.findViewById(R.id.item_app_label);
+                appTextView.setText(apps.get(position).label);
 
-                      //TextView appName = (TextView)convertView.findViewById(R.id.item_app_name);
-                      //appName.setText(apps.get(position).name);
+                //TextView appName = (TextView)convertView.findViewById(R.id.item_app_name);
+                //appName.setText(apps.get(position).name);
 
-                      return convertView;
+                return convertView;
             }
         };
 
@@ -87,7 +86,7 @@ public class apps_list extends AppCompatActivity {
 
     }
 
-    private void addClickListener(){
+    private void addClickListener() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

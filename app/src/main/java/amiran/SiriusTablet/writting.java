@@ -18,7 +18,7 @@ import amiran.siriustablet_test.R;
 /**
  * Created by Amir on 30.12.2015.
  */
-public class writting extends Activity  {
+public class writting extends Activity {
 
 
     DrawingView dv;
@@ -29,6 +29,7 @@ public class writting extends Activity  {
 
     Button save;
     Button resultat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +45,8 @@ public class writting extends Activity  {
         mPaint.setStrokeWidth(7);
 
 
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.layout_R);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout_R);
         layout.addView(new DrawingView(this));
-
-
-
-
 
 
     }
@@ -68,7 +65,6 @@ public class writting extends Activity  {
         private Path circlePath;
 
 
-
         public DrawingView(Context c) {
             super(c);
             context = c;
@@ -81,7 +77,6 @@ public class writting extends Activity  {
             circlePaint.setStyle(Paint.Style.STROKE);
             circlePaint.setStrokeJoin(Paint.Join.MITER);
             circlePaint.setStrokeWidth(4f);
-
 
 
         }
@@ -121,7 +116,7 @@ public class writting extends Activity  {
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                mPath.quadTo(mX, mY, (x + mX)/2, (y + mY) /2);
+                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
                 mY = y;
 
@@ -138,7 +133,6 @@ public class writting extends Activity  {
             mCanvas.drawPath(mPath, mPaint);
             // kill this so we don't double draw
             mPath.reset();
-
 
 
         }
@@ -169,6 +163,5 @@ public class writting extends Activity  {
     }
 
 
-
-    }
+}
 

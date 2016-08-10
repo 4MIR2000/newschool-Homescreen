@@ -13,17 +13,17 @@ import amiran.siriustablet_test.R;
  * Created by ASUS on 27.05.2016.
  */
 public class Fragment1 extends android.support.v4.app.Fragment {
-   public static LinearLayout layout;
+    public static LinearLayout layout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if(container == null){
+        if (container == null) {
             return null;
         }
 
-       layout = (LinearLayout)inflater.inflate(R.layout.homescreen_fragment1_layout,container,false);
+        layout = (LinearLayout) inflater.inflate(R.layout.homescreen_fragment1_layout, container, false);
 
         return layout;
     }

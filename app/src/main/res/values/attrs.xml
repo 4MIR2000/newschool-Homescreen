@@ -12,24 +12,24 @@
          the workspace in XML files. -->
     <declare-styleable name="Workspace">
         <!-- The first screen the workspace should display. -->
-        <attr name="defaultScreen" format="integer"  />
+        <attr name="defaultScreen" format="integer" />
     </declare-styleable>
 
     <!-- CellLayout specific attributes. These attributes are used to customize
          a CellLayout view in XML files. -->
     <declare-styleable name="CellLayout">
         <!-- The width of a single cell -->
-        <attr name="cellWidth" format="dimension"  />
+        <attr name="cellWidth" format="dimension" />
         <!-- The height of a single cell -->
-        <attr name="cellHeight" format="dimension"  />
+        <attr name="cellHeight" format="dimension" />
         <!-- Padding to apply at the start of the long axis -->
-        <attr name="longAxisStartPadding" format="dimension"  />
+        <attr name="longAxisStartPadding" format="dimension" />
         <!-- Padding to apply at the end of the long axis -->
-        <attr name="longAxisEndPadding" format="dimension"  />
+        <attr name="longAxisEndPadding" format="dimension" />
         <!-- Padding to apply at the start of the short axis -->
-        <attr name="shortAxisStartPadding" format="dimension"  />
+        <attr name="shortAxisStartPadding" format="dimension" />
         <!-- Padding to apply at the end of the short axis -->
-        <attr name="shortAxisEndPadding" format="dimension"  />
+        <attr name="shortAxisEndPadding" format="dimension" />
         <!-- Number of cells on the short axis of the CellLayout -->
         <attr name="shortAxisCells" format="integer" />
         <!-- Number of cells on the long axis of the CellLayout -->
@@ -51,7 +51,7 @@
          the list of all apps in XML files. -->
     <declare-styleable name="AllAppsGridView">
         <!-- The background texture. -->
-        <attr name="texture" format="reference"  />
+        <attr name="texture" format="reference" />
     </declare-styleable>
     <!-- XML attributes used by default_workspace.xml -->
     <declare-styleable name="Favorite">
@@ -64,13 +64,13 @@
 
     <declare-styleable name="CircleImageView">
 
-    <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_width" format="dimension" />
 
-    <attr name="civ_border_color" format="color"/>
+        <attr name="civ_border_color" format="color" />
 
-    <attr name="civ_border_overlay" format="boolean"/>
+        <attr name="civ_border_overlay" format="boolean" />
 
-    <attr name="civ_fill_color" format="color"/>
+        <attr name="civ_fill_color" format="color" />
 
     </declare-styleable>
 </resources>

@@ -29,24 +29,21 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
     View draggingIcon;
 
-    public DrawerLongClick(Context context, LinearLayout layout, TextView delete_tv){
+    public DrawerLongClick(Context context, LinearLayout layout, TextView delete_tv) {
 
         mcontext = context;
         home_layout = layout;
         //list = apps;
         delete_bar_tv = delete_tv;
-        delete_bar_tv.setOnDragListener(new Delete_bar(delete_bar_tv,home_layout));
-        home_layout.setOnDragListener(new ShortcutListeners(mcontext,layout,delete_bar_tv));
+        delete_bar_tv.setOnDragListener(new Delete_bar(delete_bar_tv, home_layout));
+        home_layout.setOnDragListener(new ShortcutListeners(mcontext, layout, delete_bar_tv));
 
 
     }
 
-    public DrawerLongClick(){
+    public DrawerLongClick() {
 
     }
-
-
-
 
 
     @Override
@@ -57,7 +54,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
 
         AppSerializableData objectdata = SerializationTools.loadSerializedData();
-        if(objectdata == null)
+        if (objectdata == null)
             objectdata = new AppSerializableData();
 
       /*  if(objectdata.apps != null){
@@ -76,7 +73,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
         appToAdd.y = (int) view.getY();
 
 
-        if(objectdata.apps == null)
+        if (objectdata.apps == null)
             objectdata.apps = new ArrayList<AppDetail>();
 
         appToAdd.cacheIcon();
@@ -86,7 +83,7 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
         appToAdd.screen_num = mainActivity.multiscreen_pager.getCurrentItem();
 
-        String date = new SimpleDateFormat("yyyyMMdd_HHmmss",Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
         //setting the exact time as id
         appToAdd.id = date;
@@ -107,8 +104,6 @@ public class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
         return false;
     }
-
-
 
 
 }

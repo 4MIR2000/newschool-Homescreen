@@ -17,7 +17,7 @@ import amiran.siriustablet_test.R;
 /**
  * Created by ASUS on 01.05.2016.
  */
-public class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGridView.OnDropListener, DynamicGridView.OnItemClickListener{
+public class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGridView.OnDropListener, DynamicGridView.OnItemClickListener {
 
     Context mcontext;
     LinearLayout subjects_layout;
@@ -27,12 +27,14 @@ public class SubjectListeners implements AdapterView.OnItemLongClickListener, Dy
     DynamicGridView mgridView;
 
     private static final String TAG = SubjectListeners.class.getName();
-    public SubjectListeners(Context context, DynamicGridView gridview){
+
+    public SubjectListeners(Context context, DynamicGridView gridview) {
         mcontext = context;
         mgridView = gridview;
         mgridView.setOnDropListener(this);
 
     }
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -40,7 +42,6 @@ public class SubjectListeners implements AdapterView.OnItemLongClickListener, Dy
 
         return true;
     }
-
 
 
     @Override
@@ -52,13 +53,13 @@ public class SubjectListeners implements AdapterView.OnItemLongClickListener, Dy
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        try{
+        try {
             Intent intent = mcontext.getPackageManager().getLaunchIntentForPackage("com.newschool.schreibapp");
             mcontext.startActivity(intent);
-        }catch(ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(mcontext,mcontext.getResources().getString(R.string.writtingAppNotFound),Toast.LENGTH_SHORT);
+            Toast.makeText(mcontext, mcontext.getResources().getString(R.string.writtingAppNotFound), Toast.LENGTH_SHORT);
         }
 
-}
+    }
 }

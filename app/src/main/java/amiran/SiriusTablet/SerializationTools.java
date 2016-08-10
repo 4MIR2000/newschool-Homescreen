@@ -14,48 +14,48 @@ import java.io.ObjectOutputStream;
  */
 public class SerializationTools {
 
-    public static void serializeData(AppSerializableData obj){
+    public static void serializeData(AppSerializableData obj) {
 
         FileOutputStream fos;
-        try{
+        try {
             fos = mainActivity.activity.openFileOutput("data", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(obj);
             os.close();
 
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static AppSerializableData loadSerializedData(){
+    public static AppSerializableData loadSerializedData() {
         ObjectInputStream inputStream = null;
 
-        try{
-            inputStream =new ObjectInputStream(mainActivity.activity.openFileInput("data"));
+        try {
+            inputStream = new ObjectInputStream(mainActivity.activity.openFileInput("data"));
             Object obj = inputStream.readObject();
 
-            if(obj instanceof AppSerializableData){
+            if (obj instanceof AppSerializableData) {
                 return (AppSerializableData) obj;
-            }else{
+            } else {
                 return null;
             }
 
 
-        }catch(EOFException e){
+        } catch (EOFException e) {
             e.printStackTrace();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
-            try{
-                if(inputStream!=null) {
+            try {
+                if (inputStream != null) {
                     inputStream.close();
                 }
-            }catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

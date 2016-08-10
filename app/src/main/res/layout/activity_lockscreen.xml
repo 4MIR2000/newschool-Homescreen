@@ -29,9 +29,7 @@
         android:layout_below="@+id/textClock"
         android:textSize="40sp"
         android:text="2016-03-16"
-        android:paddingLeft="15dp"
-        />
-
+        android:paddingLeft="15dp" />
 
 
     <TextView
@@ -42,7 +40,6 @@
         android:textSize="50sp"
         android:textStyle="bold"
         android:layout_toLeftOf="@+id/klasse_tv"
-
 
 
         />
@@ -66,8 +63,7 @@
         android:id="@+id/timetable_lockscreen"
         android:layout_centerInParent="true"
         android:orientation="horizontal"
-        android:visibility="gone"
-        ></LinearLayout>
+        android:visibility="gone"></LinearLayout>
 
 
     <ImageView
@@ -79,21 +75,17 @@
         android:layout_centerInParent="true"
 
         />
+
     <GridView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numColumns="auto_fit"
-            android:id="@+id/timetable_lockscreen_gridView"
-            android:columnWidth="70dp"
-            android:verticalSpacing="40dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"
-            android:visibility="gone"
-            ></GridView>
-
-
-
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="auto_fit"
+        android:id="@+id/timetable_lockscreen_gridView"
+        android:columnWidth="70dp"
+        android:verticalSpacing="40dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:visibility="gone"></GridView>
 
 
     <com.romainpiel.shimmer.ShimmerTextView
@@ -115,8 +107,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-         />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

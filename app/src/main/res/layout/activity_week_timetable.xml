@@ -10,8 +10,7 @@
         android:layout_height="match_parent"
         android:id="@+id/weekTimetable"
         android:weightSum="10"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
 
         <GridView
@@ -21,8 +20,7 @@
             android:id="@+id/days_grid"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit"
-            android:verticalSpacing="@dimen/weekTimetable_vertical_margin"
-            ></GridView>
+            android:verticalSpacing="@dimen/weekTimetable_vertical_margin"></GridView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,18 +28,17 @@
 
 
         <GridView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/subjects_grid"
-                android:stretchMode="columnWidth"
-                android:numColumns="auto_fit"
-                android:verticalSpacing="@dimen/weekTimetable_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/subjects_grid"
+            android:stretchMode="columnWidth"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="@dimen/weekTimetable_vertical_margin"
 
-                ></GridView>
+            ></GridView>
 
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

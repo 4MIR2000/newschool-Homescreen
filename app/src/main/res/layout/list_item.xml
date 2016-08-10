@@ -25,7 +25,6 @@
         android:maxLines="2"
         android:gravity="center_horizontal"
         android:textStyle="bold"
-        android:textColor="@color/Black"
-        />
+        android:textColor="@color/Black" />
 
 </LinearLayout>

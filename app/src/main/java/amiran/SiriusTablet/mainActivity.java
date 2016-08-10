@@ -40,7 +40,6 @@ import MultiScreen_Fragments.ViewPagerAdapter;
 import amiran.siriustablet_test.R;
 
 
-
 public class mainActivity extends Activity implements View.OnClickListener {
     static final String LOG_TAG = mainActivity.class.getName();
     static Activity activity;
@@ -64,7 +63,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
     AppWidgetManager mAppWidgetManager;
     LauncherAppWidgetHost mAppWidgetHost;
 
-    int  REQUEST_CREATE_APPWIDGET = 900;
+    int REQUEST_CREATE_APPWIDGET = 900;
     int REQUEST_PICK_APPWIDGET = 800;
 
     DynamicGridView subjects_grid;
@@ -72,11 +71,12 @@ public class mainActivity extends Activity implements View.OnClickListener {
 
     static ViewPager multiscreen_pager;
     static ViewPagerAdapter mpagerAdapter;
-    ImageView [] dots;
+    ImageView[] dots;
     static LinearLayout viewPagerIndicator_layout;
     List<RelativeLayout> multiScreen_layouts;
 
     int day_of_timetable = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,18 +84,14 @@ public class mainActivity extends Activity implements View.OnClickListener {
         activity = this;
 
 
-
-
-
-        inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
         intialize_AllApps_Drawer();
 
 
-        app_widget_layout = (LinearLayout)findViewById(R.id.app_widget_placement);
-        app_widget_child_layout = (LinearLayout)findViewById(R.id.app_widget_child_layout);
-
+        app_widget_layout = (LinearLayout) findViewById(R.id.app_widget_placement);
+        app_widget_child_layout = (LinearLayout) findViewById(R.id.app_widget_child_layout);
 
 
         delete_bar = (TextView) findViewById(R.id.delete_bar);
@@ -118,7 +114,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
         //For reloading timetable if date changes
         IntentFilter date_changed_filter = new IntentFilter();
         date_changed_filter.addAction(Intent.ACTION_DATE_CHANGED);
-       // registerReceiver(new ReloadTimetable(),date_changed_filter);
+        // registerReceiver(new ReloadTimetable(),date_changed_filter);
 
         new LoadApps().execute();
         new AddAppsToHome().execute();
@@ -147,45 +143,37 @@ public class mainActivity extends Activity implements View.OnClickListener {
         mAppWidgetManager = AppWidgetManager.getInstance(this);
 
         //AppWidgetHost will keep the widget instances in memory
-        mAppWidgetHost = new LauncherAppWidgetHost(this,R.id.APPWIDGET_HOST_ID);
+        mAppWidgetHost = new LauncherAppWidgetHost(this, R.id.APPWIDGET_HOST_ID);
 
 
         app_widget_layout.setOnLongClickListener(new Home_Longclick());
 
         //fullscreen
-      //  this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-
+        //  this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         Intent lockscreen = new Intent(this, LockscreenService.class);
         startService(lockscreen);
 
 
-
-
-
-
     }
 
-    private void intialize_AllApps_Drawer(){
+    private void intialize_AllApps_Drawer() {
 
-        slidingDrawer = (SlidingDrawer) inflater.inflate(R.layout.apps_sliding_drawer,null);
+        slidingDrawer = (SlidingDrawer) inflater.inflate(R.layout.apps_sliding_drawer, null);
 
-        drawergrid = (GridView)slidingDrawer.findViewById(R.id.content);
+        drawergrid = (GridView) slidingDrawer.findViewById(R.id.content);
     }
 
     private void intializeMultiscreenPager() {
-        multiscreen_pager = (ViewPager)findViewById(R.id.viewpager);
+        multiscreen_pager = (ViewPager) findViewById(R.id.viewpager);
         multiScreen_layouts = new ArrayList<>();
-        multiScreen_layouts.add(0, (RelativeLayout) inflater.inflate(R.layout.homescreen_fragment1_layout,null));
-        multiScreen_layouts.add(1, (RelativeLayout) inflater.inflate(R.layout.homescreen_fragment2_layout,null));
-        multiScreen_layouts.add(2,(RelativeLayout) inflater.inflate(R.layout.homescreen_fragment3_layout,null));
+        multiScreen_layouts.add(0, (RelativeLayout) inflater.inflate(R.layout.homescreen_fragment1_layout, null));
+        multiScreen_layouts.add(1, (RelativeLayout) inflater.inflate(R.layout.homescreen_fragment2_layout, null));
+        multiScreen_layouts.add(2, (RelativeLayout) inflater.inflate(R.layout.homescreen_fragment3_layout, null));
 
         mpagerAdapter = new ViewPagerAdapter(multiScreen_layouts);
         multiscreen_pager.setAdapter(mpagerAdapter);
-
 
 
         multiscreen_pager.setCurrentItem(1);
@@ -193,12 +181,12 @@ public class mainActivity extends Activity implements View.OnClickListener {
     }
 
     private void intializedotsIndicator() {
-        viewPagerIndicator_layout = (LinearLayout)findViewById(R.id.viewPager_indicator_child);
+        viewPagerIndicator_layout = (LinearLayout) findViewById(R.id.viewPager_indicator_child);
         int dotsCount = mpagerAdapter.getCount();
         dots = new ImageView[dotsCount];
 
         //Log.d("dots",Integer.toString(dotsCount));
-        for(int i = 0; i<dotsCount; i++){
+        for (int i = 0; i < dotsCount; i++) {
             dots[i] = new ImageView(this);
             dots[i].setImageDrawable(getResources().getDrawable(R.drawable.indicator_nonselecteditem_dot));
 
@@ -206,10 +194,10 @@ public class mainActivity extends Activity implements View.OnClickListener {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            params.setMargins(16,0,16,0);
+            params.setMargins(16, 0, 16, 0);
 
             params.gravity = Gravity.CENTER;
-            viewPagerIndicator_layout.addView(dots[i],params);
+            viewPagerIndicator_layout.addView(dots[i], params);
         }
 
         dots[1].setImageDrawable(getResources().getDrawable(R.drawable.indicator_selecteditem_dot));
@@ -219,15 +207,15 @@ public class mainActivity extends Activity implements View.OnClickListener {
     }
 
 
-    private class ReloadTimetable extends BroadcastReceiver{
+    private class ReloadTimetable extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-           new OneDayTimeTable_declaration().execute();
+            new OneDayTimeTable_declaration().execute();
         }
     }
 
-    public class OneDayTimeTable_declaration extends AsyncTask<String,Void,String>{
+    public class OneDayTimeTable_declaration extends AsyncTask<String, Void, String> {
         List<Timetable_HourDetail> timetable_hours = null;
         List<Timetable_HourDetail> substitution_hours = null;
 
@@ -237,23 +225,19 @@ public class mainActivity extends Activity implements View.OnClickListener {
 
 
             Calendar calendar = Calendar.getInstance();
-            int which_day = calendar.get(Calendar.DAY_OF_WEEK)-2;
+            int which_day = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 
-            if(which_day == -1){
+            if (which_day == -1) {
                 which_day = 6;
             }
 
             day_of_timetable = which_day;
-            Log.d("which day",Integer.toString(which_day));
+            Log.d("which day", Integer.toString(which_day));
             Timetable timetable_class = new Timetable(mainActivity.this);
             Substitution substitution_class = new Substitution(mainActivity.this);
 
 
-
-
-
-
-            if(timetable_class.getTimetable() != null) {
+            if (timetable_class.getTimetable() != null) {
                 if (which_day < timetable_class.getTimetable().days.size()) {
                     timetable_hours = timetable_class.getTimetable().days.get(which_day).hours;
                 } else {
@@ -272,7 +256,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
                         Log.d(LOG_TAG, Integer.toString(days.get(i).day_num));
 
                         //which_day+1 because it start from 0
-                        if (days.get(i).day_num == which_day+1) {
+                        if (days.get(i).day_num == which_day + 1) {
                             substitution_hours = days.get(i).hours;
                             Log.d(LOG_TAG, "we have the sub");
 
@@ -294,9 +278,9 @@ public class mainActivity extends Activity implements View.OnClickListener {
             loading_bar.setVisibility(View.GONE);
             oneDayTimetable.setVisibility(View.VISIBLE);
 
-            if(timetable_hours !=null) {
+            if (timetable_hours != null) {
 
-                oneDayTimetable.setAdapter(new OneDayTimetable_ListAdapter(mainActivity.this, timetable_hours,substitution_hours));
+                oneDayTimetable.setAdapter(new OneDayTimetable_ListAdapter(mainActivity.this, timetable_hours, substitution_hours));
 
                 oneDayTimetable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -310,79 +294,75 @@ public class mainActivity extends Activity implements View.OnClickListener {
             }
 
 
-
-
         }
     }
 
 
+    public class SubjectsGrid_declaration extends AsyncTask<String, Void, String> {
 
-   public class SubjectsGrid_declaration extends AsyncTask<String,Void,String> {
+        List<SubjectDetail> allSubjects = null;
 
-       List<SubjectDetail> allSubjects = null;
-       @Override
-       protected String doInBackground(String... params) {
-           SubjectsList list = new SubjectsList(mainActivity.this);
-           subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
+        @Override
+        protected String doInBackground(String... params) {
+            SubjectsList list = new SubjectsList(mainActivity.this);
+            subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
 
-           allSubjects = list.getAllSubjects();
+            allSubjects = list.getAllSubjects();
 
-           return null;
-       }
+            return null;
+        }
 
-       @Override
-       protected void onPostExecute(String s) {
-           if(allSubjects !=null) {
-               subjects_grid.setAdapter(new Subjects_gridAdapter(mainActivity.this, allSubjects,
-                       getResources().getInteger(R.integer.column_count)));
+        @Override
+        protected void onPostExecute(String s) {
+            if (allSubjects != null) {
+                subjects_grid.setAdapter(new Subjects_gridAdapter(mainActivity.this, allSubjects,
+                        getResources().getInteger(R.integer.column_count)));
 
-               subjects_grid.setOnItemLongClickListener(new SubjectListeners(mainActivity.this,subjects_grid));
-               subjects_grid.setOnItemClickListener(new SubjectListeners(mainActivity.this,subjects_grid));
+                subjects_grid.setOnItemLongClickListener(new SubjectListeners(mainActivity.this, subjects_grid));
+                subjects_grid.setOnItemClickListener(new SubjectListeners(mainActivity.this, subjects_grid));
 
-               Log.d("width",Integer.toString(subjects_grid.getWidth()));
-           }
+                Log.d("width", Integer.toString(subjects_grid.getWidth()));
+            }
 
-       }
-   }
+        }
+    }
 
 
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.apps_icon_imageView ){
+        if (v.getId() == R.id.apps_icon_imageView) {
 
             open_allApps_drawer();
 
-           // LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-           // SlidingDrawer drawer = (SlidingDrawer) inflater.inflate(R.layout.apps_sliding_drawer,null);
+            // LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // SlidingDrawer drawer = (SlidingDrawer) inflater.inflate(R.layout.apps_sliding_drawer,null);
 
         }
 
     }
 
-    private void open_allApps_drawer(){
+    private void open_allApps_drawer() {
 
-        if(slidingDrawer.getParent() == null) {
+        if (slidingDrawer.getParent() == null) {
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
                     (app_widget_layout.getMeasuredWidth(), app_widget_child_layout.getMeasuredHeight());
 
 
-                slidingDrawer.setLayoutParams(params);
+            slidingDrawer.setLayoutParams(params);
 
-                //slidingDrawer.startAnimation(all_apps_anim);
-               app_widget_layout.addView(slidingDrawer);
+            //slidingDrawer.startAnimation(all_apps_anim);
+            app_widget_layout.addView(slidingDrawer);
 
-            }
-
-
+        }
 
 
-        if(slidingDrawer.isOpened()){
+        if (slidingDrawer.isOpened()) {
             multiscreen_pager.setVisibility(View.VISIBLE);
             viewPagerIndicator_layout.setVisibility(View.VISIBLE);
             slidingDrawer.close();
-        }else {
+        } else {
             multiscreen_pager.setVisibility(View.GONE);
             viewPagerIndicator_layout.setVisibility(View.INVISIBLE);
             slidingDrawer.setVisibility(View.VISIBLE);
@@ -392,16 +372,14 @@ public class mainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public static SlidingDrawer getDrawer(){
+    public static SlidingDrawer getDrawer() {
 
         return slidingDrawer;
     }
 
 
-
-
     //this class helps us to load the installed apps in the background
-    public class LoadApps extends AsyncTask<String, Void, String>{
+    public class LoadApps extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -413,11 +391,11 @@ public class mainActivity extends Activity implements View.OnClickListener {
             Intent i = new Intent(Intent.ACTION_MAIN, null);
             i.addCategory(Intent.CATEGORY_LAUNCHER);
 
-            List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(i,0);
+            List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(i, 0);
             apps = new AppDetail[avaibleactivities.size()];
 
 
-            for (int n = 0; n<avaibleactivities.size(); n++) {
+            for (int n = 0; n < avaibleactivities.size(); n++) {
 
                 apps[n] = new AppDetail();
                 apps[n].label = avaibleactivities.get(n).loadLabel(manager).toString();
@@ -437,13 +415,13 @@ public class mainActivity extends Activity implements View.OnClickListener {
         protected void onPostExecute(String result) {
 
 
-            if(drawerAdapterObject == null) {
+            if (drawerAdapterObject == null) {
                 drawerAdapterObject = new DrawerAdapter(activity);
                 //Adding the content look at DrawerAdapter class
                 drawergrid.setAdapter(drawerAdapterObject);
-                drawergrid.setOnItemLongClickListener(new DrawerLongClick(activity,app_widget_layout, delete_bar));
+                drawergrid.setOnItemLongClickListener(new DrawerLongClick(activity, app_widget_layout, delete_bar));
                 drawergrid.setOnItemClickListener(new DrawerClick(activity));
-            }else{
+            } else {
 
                 drawerAdapterObject.notifyDataSetInvalidated();
                 drawerAdapterObject.notifyDataSetChanged();
@@ -451,7 +429,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private class AddAppsToHome extends AsyncTask<String,Void, String> {
+    private class AddAppsToHome extends AsyncTask<String, Void, String> {
         AppSerializableData data;
 
         @Override
@@ -473,17 +451,17 @@ public class mainActivity extends Activity implements View.OnClickListener {
 
     }
 
-    private class Home_Longclick implements View.OnLongClickListener{
+    private class Home_Longclick implements View.OnLongClickListener {
 
         @Override
         public boolean onLongClick(View v) {
-           // selectWidget();
+            // selectWidget();
             return false;
         }
     }
 
 
-    private class appsReceiver extends BroadcastReceiver{
+    private class appsReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -503,26 +481,27 @@ public class mainActivity extends Activity implements View.OnClickListener {
         addEmptyData(pickIntent);
         startActivityForResult(pickIntent, REQUEST_PICK_APPWIDGET);
     }
+
     void addEmptyData(Intent pickIntent) {
         //addEmptyData is for preveting a crash if list is null
         ArrayList customInfo = new ArrayList();
         pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, customInfo);
         ArrayList customExtras = new ArrayList();
         pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, customExtras);
-    };
+    }
+
+    ;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK ) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_APPWIDGET) {
                 configureWidget(data);
-            }
-            else if (requestCode == REQUEST_CREATE_APPWIDGET) {
+            } else if (requestCode == REQUEST_CREATE_APPWIDGET) {
                 createWidget(data);
             }
-        }
-        else if (resultCode == RESULT_CANCELED && data != null) {
+        } else if (resultCode == RESULT_CANCELED && data != null) {
             int appWidgetId = data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
             if (appWidgetId != -1) {
                 mAppWidgetHost.deleteAppWidgetId(appWidgetId);
@@ -557,15 +536,13 @@ public class mainActivity extends Activity implements View.OnClickListener {
 
         hostView.setAppWidget(appWidgetId, appWidgetInfo);
         hostView.setTag(appWidgetId);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(hostView.getWidth(),hostView.getHeight());
-       // lp.leftMargin = numWidgets * app_widget_layout.getWidth()/3;
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(hostView.getWidth(), hostView.getHeight());
+        // lp.leftMargin = numWidgets * app_widget_layout.getWidth()/3;
         app_widget_layout.addView(hostView);
         hostView.setOnLongClickListener(new ShortcutListeners());
 
         //Bringing the Drawer into front
         //slidingDrawer.bringToFront();
-
-
 
 
     }
@@ -576,6 +553,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
         //updating only if the app is showing on screen
         mAppWidgetHost.startListening();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -594,7 +572,7 @@ public class mainActivity extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         // Don't allow back to dismiss.
 
-        if(slidingDrawer.isOpened()){
+        if (slidingDrawer.isOpened()) {
             multiscreen_pager.setVisibility(View.VISIBLE);
             viewPagerIndicator_layout.setVisibility(View.VISIBLE);
             slidingDrawer.animateClose();
@@ -607,12 +585,12 @@ public class mainActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-       if(keyCode == KeyEvent.KEYCODE_HOME){
-           Log.d("home button"," pressed");
+        if (keyCode == KeyEvent.KEYCODE_HOME) {
+            Log.d("home button", " pressed");
 
-           multiscreen_pager.setCurrentItem(1);
-           return true;
-       }
+            multiscreen_pager.setCurrentItem(1);
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -621,14 +599,14 @@ public class mainActivity extends Activity implements View.OnClickListener {
         super.onResume();
         Calendar calendar = Calendar.getInstance();
 
-        int which_day = calendar.get(Calendar.DAY_OF_WEEK)-2;
+        int which_day = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 
-        if(which_day == -1){
+        if (which_day == -1) {
             which_day = 6;
         }
 
         //if there is a new timetable
-        if(day_of_timetable != which_day) {
+        if (day_of_timetable != which_day) {
             oneDayTimetable.setVisibility(View.GONE);
             loading_bar.setVisibility(View.VISIBLE);
 

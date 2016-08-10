@@ -17,26 +17,20 @@ public class LockscreenService extends Service {
     BroadcastReceiver mReceiver;
 
 
-
-
-
-
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
 
-        Log.d("message","IBinder");
+        Log.d("message", "IBinder");
         return null;
     }
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         KeyguardManager.KeyguardLock k1;
 
-        KeyguardManager km =(KeyguardManager)getSystemService(KEYGUARD_SERVICE);
-        k1= km.newKeyguardLock("IN");
+        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        k1 = km.newKeyguardLock("IN");
         k1.disableKeyguard();
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -44,7 +38,7 @@ public class LockscreenService extends Service {
         mReceiver = new LockscreenReceiver();
         registerReceiver(mReceiver, filter);
 
-        Log.d("message","service started");
+        Log.d("message", "service started");
     }
 
     @Override

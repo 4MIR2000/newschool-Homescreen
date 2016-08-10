@@ -40,12 +40,15 @@ public class CellLayout extends ViewGroup {
     boolean[][] mOccupied;
     private RectF mDragRect = new RectF();
     private boolean mDirtyTag;
+
     public CellLayout(Context context) {
         this(context, null);
     }
+
     public CellLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
     public CellLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CellLayout, defStyle, 0);
@@ -73,6 +76,7 @@ public class CellLayout extends ViewGroup {
             }
         }
     }
+
     @Override
     public void cancelLongPress() {
         super.cancelLongPress();
@@ -83,12 +87,15 @@ public class CellLayout extends ViewGroup {
             child.cancelLongPress();
         }
     }
+
     int getCountX() {
         return mPortrait ? mShortAxisCells : mLongAxisCells;
     }
+
     int getCountY() {
         return mPortrait ? mLongAxisCells : mShortAxisCells;
     }
+
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         // Generate an id for each view, this assumes we have at most 256x256 cells
@@ -98,6 +105,7 @@ public class CellLayout extends ViewGroup {
                 (cellParams.cellX & 0xFF) << 8 | (cellParams.cellY & 0xFF));
         super.addView(child, index, params);
     }
+
     @Override
     public void requestChildFocus(View child, View focused) {
         super.requestChildFocus(child, focused);
@@ -107,19 +115,21 @@ public class CellLayout extends ViewGroup {
             requestRectangleOnScreen(r);
         }
     }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mCellInfo.screen = ((ViewGroup) getParent()).indexOfChild(this);
     }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         final CellInfo cellInfo = mCellInfo;
         if (action == MotionEvent.ACTION_DOWN) {
             final Rect frame = mRect;
-            final int x = (int) ev.getX() ;
-            final int y = (int) ev.getY() ;
+            final int x = (int) ev.getX();
+            final int y = (int) ev.getY();
             final int count = getChildCount();
             boolean found = false;
             for (int i = count - 1; i >= 0; i--) {
@@ -174,6 +184,7 @@ public class CellLayout extends ViewGroup {
         }
         return false;
     }
+
     @Override
     public CellInfo getTag() {
         final CellInfo info = (CellInfo) super.getTag();
@@ -188,6 +199,7 @@ public class CellLayout extends ViewGroup {
         }
         return info;
     }
+
     private static void findIntersectingVacantCells(CellInfo cellInfo, int x, int y,
                                                     int xCount, int yCount, boolean[][] occupied) {
         cellInfo.maxVacantSpanX = Integer.MIN_VALUE;
@@ -201,6 +213,7 @@ public class CellLayout extends ViewGroup {
         cellInfo.current.set(x, y, x, y);
         findVacantCell(cellInfo.current, xCount, yCount, occupied, cellInfo);
     }
+
     private static void findVacantCell(Rect current, int xCount, int yCount, boolean[][] occupied,
                                        CellInfo cellInfo) {
         addVacantCell(current, cellInfo);
@@ -233,6 +246,7 @@ public class CellLayout extends ViewGroup {
             }
         }
     }
+
     private static void addVacantCell(Rect current, CellInfo cellInfo) {
         CellInfo.VacantCell cell = CellInfo.VacantCell.acquire();
         cell.cellX = current.left;
@@ -249,6 +263,7 @@ public class CellLayout extends ViewGroup {
         }
         cellInfo.vacantCells.add(cell);
     }
+
     private static boolean isColumnEmpty(int x, int top, int bottom, boolean[][] occupied) {
         for (int y = top; y <= bottom; y++) {
             if (occupied[x][y]) {
@@ -257,6 +272,7 @@ public class CellLayout extends ViewGroup {
         }
         return true;
     }
+
     private static boolean isRowEmpty(int y, int left, int right, boolean[][] occupied) {
         for (int x = left; x <= right; x++) {
             if (occupied[x][y]) {
@@ -265,6 +281,7 @@ public class CellLayout extends ViewGroup {
         }
         return true;
     }
+
     CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
         final boolean portrait = mPortrait;
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
@@ -305,10 +322,12 @@ public class CellLayout extends ViewGroup {
 
         return cellInfo;
     }
+
     /**
      * Given a point, return the cell that strictly encloses that point
-     * @param x X coordinate of the point
-     * @param y Y coordinate of the point
+     *
+     * @param x      X coordinate of the point
+     * @param y      Y coordinate of the point
      * @param result Array of 2 ints to hold the x and y coordinate of the cell
      */
     void pointToCellExact(int x, int y, int[] result) {
@@ -328,19 +347,20 @@ public class CellLayout extends ViewGroup {
 
     /**
      * Given a point, return the cell that most closely encloses that point
-     * @param x X coordinate of the point
-     * @param y Y coordinate of the point
+     *
+     * @param x      X coordinate of the point
+     * @param y      Y coordinate of the point
      * @param result Array of 2 ints to hold the x and y coordinate of the cell
      */
     void pointToCellRounded(int x, int y, int[] result) {
         pointToCellExact(x + (mCellWidth / 2), y + (mCellHeight / 2), result);
     }
+
     /**
      * Given a cell coordinate, return the point that represents the upper left corner of that cell
      *
-     * @param cellX X coordinate of the cell
-     * @param cellY Y coordinate of the cell
-     *
+     * @param cellX  X coordinate of the cell
+     * @param cellY  Y coordinate of the cell
      * @param result Array of 2 ints to hold the x and y coordinate of the point
      */
     void cellToPoint(int cellX, int cellY, int[] result) {
@@ -351,15 +371,16 @@ public class CellLayout extends ViewGroup {
         result[0] = hStartPadding + cellX * (mCellWidth + mWidthGap);
         result[1] = vStartPadding + cellY * (mCellHeight + mHeightGap);
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // TODO: currently ignoring padding
 
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize =  MeasureSpec.getSize(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
 
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize =  MeasureSpec.getSize(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
 
         if (widthSpecMode == MeasureSpec.UNSPECIFIED || heightSpecMode == MeasureSpec.UNSPECIFIED) {
             throw new RuntimeException("CellLayout cannot have UNSPECIFIED dimensions");
@@ -417,6 +438,7 @@ public class CellLayout extends ViewGroup {
         }
         setMeasuredDimension(widthSpecSize, heightSpecSize);
     }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int count = getChildCount();
@@ -430,6 +452,7 @@ public class CellLayout extends ViewGroup {
             }
         }
     }
+
     @Override
     protected void setChildrenDrawingCacheEnabled(boolean enabled) {
         final int count = getChildCount();
@@ -440,22 +463,24 @@ public class CellLayout extends ViewGroup {
             view.buildDrawingCache(true);
         }
     }
+
     @Override
     protected void setChildrenDrawnWithCacheEnabled(boolean enabled) {
         super.setChildrenDrawnWithCacheEnabled(enabled);
     }
+
     /**
      * Find a vacant area that will fit the given bounds nearest the requested
      * cell location. Uses Euclidean distance to score multiple vacant areas.
      *
-     * @param pixelX The X location at which you want to search for a vacant area.
-     * @param pixelY The Y location at which you want to search for a vacant area.
-     * @param spanX Horizontal span of the object.
-     * @param spanY Vertical span of the object.
+     * @param pixelX      The X location at which you want to search for a vacant area.
+     * @param pixelY      The Y location at which you want to search for a vacant area.
+     * @param spanX       Horizontal span of the object.
+     * @param spanY       Vertical span of the object.
      * @param vacantCells Pre-computed set of vacant cells to search.
-     * @param recycle Previously returned value to possibly recycle.
+     * @param recycle     Previously returned value to possibly recycle.
      * @return The X, Y cell of a vacant area that can contain this object,
-     *         nearest the requested location.
+     * nearest the requested location.
      */
     int[] findNearestVacantArea(int pixelX, int pixelY, int spanX, int spanY,
                                 CellInfo vacantCells, int[] recycle) {
@@ -501,7 +526,7 @@ public class CellLayout extends ViewGroup {
     /**
      * Drop a child at the specified position
      *
-     * @param child The child that is being dropped
+     * @param child    The child that is being dropped
      * @param targetXY Destination area to move to
      */
     void onDropChild(View child, int[] targetXY) {
@@ -513,6 +538,7 @@ public class CellLayout extends ViewGroup {
         child.requestLayout();
         invalidate();
     }
+
     void onDropAborted(View child) {
         if (child != null) {
             ((LayoutParams) child.getLayoutParams()).isDragging = false;
@@ -520,6 +546,7 @@ public class CellLayout extends ViewGroup {
         }
         mDragRect.setEmpty();
     }
+
     /**
      * Start dragging the specified child
      *
@@ -549,11 +576,11 @@ public class CellLayout extends ViewGroup {
     /**
      * Computes a bounding rectangle for a range of cells
      *
-     * @param cellX X coordinate of upper left corner expressed as a cell position
-     * @param cellY Y coordinate of upper left corner expressed as a cell position
+     * @param cellX     X coordinate of upper left corner expressed as a cell position
+     * @param cellY     Y coordinate of upper left corner expressed as a cell position
      * @param cellHSpan Width in cells
      * @param cellVSpan Height in cells
-     * @param dragRect Rectnagle into which to put the results
+     * @param dragRect  Rectnagle into which to put the results
      */
     public void cellToRect(int cellX, int cellY, int cellHSpan, int cellVSpan, RectF dragRect) {
         final boolean portrait = mPortrait;
@@ -577,7 +604,7 @@ public class CellLayout extends ViewGroup {
      * Computes the required horizontal and vertical cell spans to always
      * fit the given rectangle.
      *
-     * @param width Width in pixels
+     * @param width  Width in pixels
      * @param height Height in pixels
      */
     public int[] rectToCell(int width, int height) {
@@ -590,15 +617,15 @@ public class CellLayout extends ViewGroup {
         // Always round up to next largest cell
         int spanX = (width + smallerSize) / smallerSize;
         int spanY = (height + smallerSize) / smallerSize;
-        return new int[] { spanX, spanY };
+        return new int[]{spanX, spanY};
     }
+
     /**
      * Find the first vacant cell, if there is one.
      *
      * @param vacant Holds the x and y coordinate of the vacant cell
-     * @param spanX Horizontal cell span.
-     * @param spanY Vertical cell span.
-     *
+     * @param spanX  Horizontal cell span.
+     * @param spanY  Vertical cell span.
      * @return True if a vacant cell was found
      */
     public boolean getVacantCell(int[] vacant, int spanX, int spanY) {
@@ -609,12 +636,14 @@ public class CellLayout extends ViewGroup {
         findOccupiedCells(xCount, yCount, occupied, null);
         return findVacantCell(vacant, spanX, spanY, xCount, yCount, occupied);
     }
+
     static boolean findVacantCell(int[] vacant, int spanX, int spanY,
                                   int xCount, int yCount, boolean[][] occupied) {
         for (int x = 0; x < xCount; x++) {
             for (int y = 0; y < yCount; y++) {
                 boolean available = !occupied[x][y];
-                out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
+                out:
+                for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
                     for (int j = y; j < y + spanY - 1 && y < yCount; j++) {
                         available = available && !occupied[i][j];
                         if (!available) break out;
@@ -629,6 +658,7 @@ public class CellLayout extends ViewGroup {
         }
         return false;
     }
+
     boolean[] getOccupiedCells() {
         final boolean portrait = mPortrait;
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
@@ -643,6 +673,7 @@ public class CellLayout extends ViewGroup {
         }
         return flat;
     }
+
     private void findOccupiedCells(int xCount, int yCount, boolean[][] occupied, View ignoreView) {
         for (int x = 0; x < xCount; x++) {
             for (int y = 0; y < yCount; y++) {
@@ -661,18 +692,22 @@ public class CellLayout extends ViewGroup {
             }
         }
     }
+
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new CellLayout.LayoutParams(getContext(), attrs);
     }
+
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
         return p instanceof CellLayout.LayoutParams;
     }
+
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return new CellLayout.LayoutParams(p);
     }
+
     public static class LayoutParams extends ViewGroup.MarginLayoutParams {
         /**
          * Horizontal location of the item in the grid.
@@ -705,11 +740,13 @@ public class CellLayout extends ViewGroup {
         // Y coordinate of the view in the layout.
         @ViewDebug.ExportedProperty
         int y;
+
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             cellHSpan = 1;
             cellVSpan = 1;
         }
+
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
             cellHSpan = 1;
@@ -723,6 +760,7 @@ public class CellLayout extends ViewGroup {
             this.cellHSpan = cellHSpan;
             this.cellVSpan = cellVSpan;
         }
+
         public void setup(int cellWidth, int cellHeight, int widthGap, int heightGap,
                           int hStartPadding, int vStartPadding) {
 
@@ -739,6 +777,7 @@ public class CellLayout extends ViewGroup {
             y = vStartPadding + myCellY * (cellHeight + heightGap) + topMargin;
         }
     }
+
     static final class CellInfo implements ContextMenu.ContextMenuInfo {
         /**
          * See View.AttachInfo.InvalidateInfo for futher explanations about
@@ -760,6 +799,7 @@ public class CellLayout extends ViewGroup {
             private static int sAcquiredCount = 0;
             private static VacantCell sRoot;
             private VacantCell next;
+
             static VacantCell acquire() {
                 synchronized (sLock) {
                     if (sRoot == null) {
@@ -771,6 +811,7 @@ public class CellLayout extends ViewGroup {
                     return info;
                 }
             }
+
             void release() {
                 synchronized (sLock) {
                     if (sAcquiredCount < POOL_LIMIT) {
@@ -780,12 +821,14 @@ public class CellLayout extends ViewGroup {
                     }
                 }
             }
+
             @Override
             public String toString() {
                 return "VacantCell[x=" + cellX + ", y=" + cellY + ", spanX=" + spanX +
                         ", spanY=" + spanY + "]";
             }
         }
+
         View cell;
         int cellX;
         int cellY;
@@ -799,12 +842,14 @@ public class CellLayout extends ViewGroup {
         int maxVacantSpanY;
         int maxVacantSpanYSpanX;
         final Rect current = new Rect();
+
         void clearVacantCells() {
             final ArrayList<VacantCell> list = vacantCells;
             final int count = list.size();
             for (int i = 0; i < count; i++) list.get(i).release();
             list.clear();
         }
+
         void findVacantCellsFromOccupied(boolean[] occupied, int xCount, int yCount) {
             if (cellX < 0 || cellY < 0) {
                 maxVacantSpanX = maxVacantSpanXSpanY = Integer.MIN_VALUE;
@@ -820,23 +865,24 @@ public class CellLayout extends ViewGroup {
             }
             CellLayout.findIntersectingVacantCells(this, cellX, cellY, xCount, yCount, unflattened);
         }
+
         /**
          * This method can be called only once! Calling #findVacantCellsFromOccupied will
          * restore the ability to call this method.
-         *
+         * <p/>
          * Finds the upper-left coordinate of the first rectangle in the grid that can
          * hold a cell of the specified dimensions.
          *
          * @param cellXY The array that will contain the position of a vacant cell if such a cell
          *               can be found.
-         * @param spanX The horizontal span of the cell we want to find.
-         * @param spanY The vertical span of the cell we want to find.
-         *
+         * @param spanX  The horizontal span of the cell we want to find.
+         * @param spanY  The vertical span of the cell we want to find.
          * @return True if a vacant cell of the specified dimension was found, false otherwise.
          */
         boolean findCellForSpan(int[] cellXY, int spanX, int spanY) {
             return findCellForSpan(cellXY, spanX, spanY, true);
         }
+
         boolean findCellForSpan(int[] cellXY, int spanX, int spanY, boolean clear) {
             final ArrayList<VacantCell> list = vacantCells;
             final int count = list.size();
@@ -869,6 +915,7 @@ public class CellLayout extends ViewGroup {
             if (clear) clearVacantCells();
             return found;
         }
+
         @Override
         public String toString() {
             return "Cell[view=" + (cell == null ? "null" : cell.getClass()) + ", x=" + cellX +

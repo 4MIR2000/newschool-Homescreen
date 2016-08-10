@@ -19,11 +19,12 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
     Context mcontext;
     Timetable_WeekDetail mtimetable;
 
-    public WeekTimetable_Days_GridAdapter(Context context, Timetable_WeekDetail timetable){
+    public WeekTimetable_Days_GridAdapter(Context context, Timetable_WeekDetail timetable) {
         mtimetable = timetable;
         mcontext = context;
 
     }
+
     @Override
     public int getCount() {
         return mtimetable.days.size();
@@ -43,21 +44,21 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View convertLayout = convertView;
         Holder holder;
-        if(convertLayout == null){
+        if (convertLayout == null) {
             LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertLayout = inflater.inflate(R.layout.timetable_week_day,null);
+            convertLayout = inflater.inflate(R.layout.timetable_week_day, null);
 
-            Display d = ((WindowManager)mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            Display d = ((WindowManager) mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             int display_width = d.getWidth();
 
             double gridView_leftMargin = mcontext.getResources().getDimension(R.dimen.weekTimetable_horizontal_margin)
-                    /mcontext.getResources().getDisplayMetrics().density;
+                    / mcontext.getResources().getDisplayMetrics().density;
 
-            double gridView_width = display_width-gridView_leftMargin;
+            double gridView_width = display_width - gridView_leftMargin;
 
-            int cellWidth = (int)((gridView_width-gridView_leftMargin*mtimetable.days.size()) /mtimetable.days.size());
+            int cellWidth = (int) ((gridView_width - gridView_leftMargin * mtimetable.days.size()) / mtimetable.days.size());
             int cellHeight = (int) (mcontext.getResources().getDimension(R.dimen.WeekTimetable_days_height)
-                    /mcontext.getResources().getDisplayMetrics().density);
+                    / mcontext.getResources().getDisplayMetrics().density);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cellWidth, cellHeight);
             convertLayout.setLayoutParams(params);
@@ -65,7 +66,7 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
             holder = new Holder(convertLayout);
             convertLayout.setTag(holder);
 
-        }else{
+        } else {
             holder = (Holder) convertLayout.getTag();
         }
 
@@ -73,16 +74,16 @@ public class WeekTimetable_Days_GridAdapter extends BaseAdapter {
         return convertLayout;
     }
 
-    private class Holder{
+    private class Holder {
         TextView day_tv;
 
-        public Holder(View convertLayout){
+        public Holder(View convertLayout) {
 
-            day_tv = (TextView)convertLayout.findViewById(R.id.day_timetable);
+            day_tv = (TextView) convertLayout.findViewById(R.id.day_timetable);
 
         }
 
-        public void build(String day){
+        public void build(String day) {
             day_tv.setText(day);
         }
     }

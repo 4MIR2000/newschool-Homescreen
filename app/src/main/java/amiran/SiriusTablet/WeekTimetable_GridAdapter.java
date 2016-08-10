@@ -25,16 +25,17 @@ public class WeekTimetable_GridAdapter extends BaseAdapter {
     int mposition;
 
 
-    public WeekTimetable_GridAdapter(Context context, Timetable_WeekDetail timetable, int longestDayHoursNum){
+    public WeekTimetable_GridAdapter(Context context, Timetable_WeekDetail timetable, int longestDayHoursNum) {
         mcontext = context;
         mtimetable = timetable;
         mlongestDayHoursNum = longestDayHoursNum;
 
 
     }
+
     @Override
     public int getCount() {
-        return mtimetable.days.size()*mlongestDayHoursNum;
+        return mtimetable.days.size() * mlongestDayHoursNum;
     }
 
     @Override
@@ -58,17 +59,17 @@ public class WeekTimetable_GridAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertLayout = inflater.inflate(R.layout.timetable_week_item, null);
 
-            Display d = ((WindowManager)mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            Display d = ((WindowManager) mcontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             int display_width = d.getWidth();
 
             double gridView_leftMargin = mcontext.getResources().getDimension(R.dimen.weekTimetable_horizontal_margin)
-                    /mcontext.getResources().getDisplayMetrics().density;
+                    / mcontext.getResources().getDisplayMetrics().density;
 
-            double gridView_width = display_width-gridView_leftMargin;
+            double gridView_width = display_width - gridView_leftMargin;
 
-            int cellWidth = (int)((gridView_width-gridView_leftMargin*mtimetable.days.size()) /mtimetable.days.size());
+            int cellWidth = (int) ((gridView_width - gridView_leftMargin * mtimetable.days.size()) / mtimetable.days.size());
             int cellHeight = (int) (mcontext.getResources().getDimension(R.dimen.WeekTimetable_days_height)
-                    /mcontext.getResources().getDisplayMetrics().density);
+                    / mcontext.getResources().getDisplayMetrics().density);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(cellWidth, cellHeight);
             convertLayout.setLayoutParams(params);
@@ -77,40 +78,37 @@ public class WeekTimetable_GridAdapter extends BaseAdapter {
 
             convertLayout.setTag(holder);
 
-        }else {
+        } else {
 
             holder = (Holder) convertLayout.getTag();
         }
 
 
-
-
         int day_position = position;
-        for(int i= 0; day_position>=mtimetable.days.size(); i++){
+        for (int i = 0; day_position >= mtimetable.days.size(); i++) {
 
-            day_position = day_position-mtimetable.days.size();
-            }
+            day_position = day_position - mtimetable.days.size();
+        }
 
-           // Toast.makeText(mcontext,Integer.toString(day_position),Toast.LENGTH_SHORT).show();
-            int hourposition = position / mtimetable.days.size();
+        // Toast.makeText(mcontext,Integer.toString(day_position),Toast.LENGTH_SHORT).show();
+        int hourposition = position / mtimetable.days.size();
 
-            if (hourposition < mtimetable.days.get(day_position).hours.size()) {
-                holder.build(mtimetable.days.get(day_position).hours.get(hourposition).subject,
-                        mtimetable.days.get(day_position).hours.get(hourposition).room);
+        if (hourposition < mtimetable.days.get(day_position).hours.size()) {
+            holder.build(mtimetable.days.get(day_position).hours.get(hourposition).subject,
+                    mtimetable.days.get(day_position).hours.get(hourposition).room);
 
-            }else {
-                holder.build("","");
-            }
+        } else {
+            holder.build("", "");
+        }
 
 
-            //day_position++;
-
+        //day_position++;
 
 
         return convertLayout;
     }
 
-    public class Holder{
+    public class Holder {
         TextView subject_tv;
         TextView room_tv;
 
@@ -119,10 +117,9 @@ public class WeekTimetable_GridAdapter extends BaseAdapter {
             room_tv = (TextView) convertLayout.findViewById(R.id.standardroom_timetable);
 
 
-
         }
 
-        public void build(String subject, String room){
+        public void build(String subject, String room) {
             subject_tv.setText(subject);
             room_tv.setText(room);
 

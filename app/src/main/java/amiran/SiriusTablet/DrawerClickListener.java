@@ -12,10 +12,10 @@ import android.widget.AdapterView;
 public class DrawerClickListener implements AdapterView.OnItemClickListener {
 
     Context mcontext;
-    AppDetail [] list;
+    AppDetail[] list;
     PackageManager Pmanager;
 
-    public DrawerClickListener(Context context, AppDetail[] apps, PackageManager manager){
+    public DrawerClickListener(Context context, AppDetail[] apps, PackageManager manager) {
         mcontext = context;
         list = apps;
         manager = Pmanager;

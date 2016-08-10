@@ -42,11 +42,11 @@ public class ViewPagerAdapter extends android.support.v4.view.PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
 
     }
 
-    public RelativeLayout getLayout(int position){
+    public RelativeLayout getLayout(int position) {
 
         return layouts.get(position);
     }

@@ -32,54 +32,51 @@ public class AppDetail implements Serializable {
     String name;
     String packageName;
     transient Drawable icon;
-    int x,y;
+    int x, y;
     String iconLocation;
 
     //which screen is the shortcut added
     int screen_num;
 
 
-
-
-
-    public void cacheIcon(){
-        if(iconLocation == null) {
+    public void cacheIcon() {
+        if (iconLocation == null) {
 
             //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
 
-                File file = new File(Environment.getExternalStorageDirectory()+File.separator+"NewSchool"+File.separator+
-                                    "cachedApps"+File.separator+packageName+name);
+            File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
+                    "cachedApps" + File.separator + packageName + name);
             try {
                 file.createNewFile();
-                Log.d(LOG_TAG,"file angelegt");
-            }catch(IOException e){
+                Log.d(LOG_TAG, "file angelegt");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        if(icon != null){
+        if (icon != null) {
 
-            iconLocation = Environment.getExternalStorageDirectory()+File.separator+"NewSchool"+File.separator+
-                    "cachedApps"+File.separator+packageName+name;
+            iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
+                    "cachedApps" + File.separator + packageName + name;
 
             FileOutputStream fos = null;
-            try{
+            try {
                 fos = new FileOutputStream(iconLocation);
-            }catch(FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-            if(fos!=null){
-                Tools.getdrawableToBitmap(icon).compress(Bitmap.CompressFormat.PNG,100,fos);
-                Log.d(LOG_TAG,"icon saved");
-                try{
+            if (fos != null) {
+                Tools.getdrawableToBitmap(icon).compress(Bitmap.CompressFormat.PNG, 100, fos);
+                Log.d(LOG_TAG, "icon saved");
+                try {
                     fos.flush();
                     fos.close();
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-            }else{
+            } else {
                 iconLocation = null;
             }
 
@@ -87,27 +84,28 @@ public class AppDetail implements Serializable {
 
     }
 
-    public Bitmap getCachedIcon(){
+    public Bitmap getCachedIcon() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inDither = true;
 
-        if(iconLocation != null){
+        if (iconLocation != null) {
             File cachedIcon = new File(iconLocation);
             return BitmapFactory.decodeFile(cachedIcon.getAbsolutePath());
         }
 
         return null;
     }
-    public void deleteIcon(){
-        if(iconLocation!=null) {
+
+    public void deleteIcon() {
+        if (iconLocation != null) {
             new File(iconLocation).delete();
 
         }
     }
 
-    public void addToHome(Context context){
+    public void addToHome(Context context) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = x;
@@ -118,18 +116,18 @@ public class AppDetail implements Serializable {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View home_icon = inflater.inflate(R.layout.list_item, null);
 
-        if(icon ==null){
-            icon = new BitmapDrawable(context.getResources(),getCachedIcon());
+        if (icon == null) {
+            icon = new BitmapDrawable(context.getResources(), getCachedIcon());
         }
 
-        ImageView icon_imageView = (ImageView)home_icon.findViewById(R.id.item_app_icon);
+        ImageView icon_imageView = (ImageView) home_icon.findViewById(R.id.item_app_icon);
         icon_imageView.setImageDrawable(icon);
 
-        ((TextView)home_icon.findViewById(R.id.item_app_label)).setText(label);
+        ((TextView) home_icon.findViewById(R.id.item_app_label)).setText(label);
 
 
         RelativeLayout parent = mainActivity.mpagerAdapter.getLayout(screen_num);
-        parent.addView(home_icon,0, params);
+        parent.addView(home_icon, 0, params);
 
         home_icon.setOnLongClickListener(new ShortcutListeners());
         home_icon.setOnClickListener(new ShortcutListeners());

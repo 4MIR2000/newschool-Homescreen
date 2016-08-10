@@ -15,9 +15,9 @@ import amiran.siriustablet_test.R;
  */
 public class DrawerAdapter extends BaseAdapter {
     Context mcontext;
-   // AppDetail[] applist;
+    // AppDetail[] applist;
 
-    public DrawerAdapter(Context context){
+    public DrawerAdapter(Context context) {
         mcontext = context;
         //this.applist = list;
     }
@@ -46,19 +46,18 @@ public class DrawerAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewHolder viewHolder;
 
-        if(convertView == null){
+        if (convertView == null) {
             //convertView is the View which will apear on the list
-            convertView = inflater.inflate(R.layout.list_item,null);
+            convertView = inflater.inflate(R.layout.list_item, null);
             viewHolder = new ViewHolder();
 
-            viewHolder.text = (TextView)convertView.findViewById(R.id.item_app_label);
-            viewHolder.icon = (ImageView)convertView.findViewById(R.id.item_app_icon);
+            viewHolder.text = (TextView) convertView.findViewById(R.id.item_app_label);
+            viewHolder.icon = (ImageView) convertView.findViewById(R.id.item_app_icon);
 
             convertView.setTag(viewHolder);
-        }
-        else {
+        } else {
 
-            viewHolder = (ViewHolder)convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
 
         }
 
@@ -69,7 +68,7 @@ public class DrawerAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder{
+    static class ViewHolder {
         TextView text;
         ImageView icon;
 

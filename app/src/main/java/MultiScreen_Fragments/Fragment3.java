@@ -18,11 +18,11 @@ public class Fragment3 extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if(container == null){
+        if (container == null) {
             return null;
         }
 
-        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.homescreen_fragment3_layout,container,false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.homescreen_fragment3_layout, container, false);
 
         return layout;
     }
