@@ -94,7 +94,7 @@ class Timetable {
                     time_class.minute_start = Integer.parseInt(time_minute_start);
 
                     time_class.hour_end = Integer.parseInt(time_hour_end);
-                    time_class.minute_start = Integer.parseInt(time_minute_end);
+                    time_class.minute_end = Integer.parseInt(time_minute_end);
 
 
                     //setting the time Object;
