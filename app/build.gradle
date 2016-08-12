@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
     defaultConfig {
-        applicationId "amiran.siriustablet_test"
+        applicationId "de.newschool.homescreen"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1

@@ -20,7 +20,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="amiran.siriustablet.MainActivity"
+            android:name="de.newschool.homescreen.MainActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/homescreen"
             android:launchMode="singleTask"
@@ -38,7 +38,7 @@
         </activity>
 
         <activity
-            android:name="amiran.siriustablet.Lockscreen"
+            android:name="de.newschool.homescreen.Lockscreen"
             android:launchMode="singleTask"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -49,18 +49,18 @@
         </activity>
 
         <service
-            android:name="amiran.siriustablet.LockscreenService"
+            android:name="de.newschool.homescreen.LockscreenService"
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name="amiran.siriustablet.LockscreenReceiver">
+        <receiver android:name="de.newschool.homescreen.LockscreenReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="amiran.siriustablet.WeekTimetableActivity"
+        <activity android:name="de.newschool.homescreen.WeekTimetableActivity"
             android:theme="@style/AppTheme"
             android:label="@string/timetable"></activity>
     </application>
