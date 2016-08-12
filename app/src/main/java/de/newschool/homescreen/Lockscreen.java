@@ -109,8 +109,8 @@ public class Lockscreen extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            try {
-                URL url = new URL("http://s1.demo.newschool-tablet.de:3000/status");
+            /*try {
+               URL url = new URL("http://s1.demo.newschool-tablet.de:3000/status");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                 connection.setConnectTimeout(5000);
@@ -135,7 +135,7 @@ public class Lockscreen extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 // Toast.makeText(this,"Übeprüfe deine Internetverbindung",Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
             return null;
         }
