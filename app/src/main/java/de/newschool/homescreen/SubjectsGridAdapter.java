@@ -55,7 +55,6 @@ class SubjectsGridAdapter extends BaseDynamicGridAdapter {
 
             int subject_width = ((gridView_width - subject_margin * 2) / 3);
 
-            Toast.makeText(mcontext,Integer.toString(subject_width),Toast.LENGTH_SHORT).show();
 
             //both subject_width, because it should be a square
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(subject_width, subject_width);

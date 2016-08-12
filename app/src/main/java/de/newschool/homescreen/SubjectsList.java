@@ -114,7 +114,7 @@ class SubjectsList {
 
         return names;*/
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" +
-                File.separator + "Facher" + File.separator + "f.txt");
+                File.separator + "Faecher" + File.separator + "f.txt");
 
         FileInputStream fis = null;
         InputStreamReader isr = null;
