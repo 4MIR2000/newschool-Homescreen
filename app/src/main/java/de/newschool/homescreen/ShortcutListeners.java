@@ -36,6 +36,7 @@ class ShortcutListeners implements View.OnClickListener, View.OnLongClickListene
         AppDetail dataofView = (AppDetail) v.getTag();
         try {
             Intent launchintent = new Intent(Intent.ACTION_MAIN);
+            launchintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //it is a Launcher and not a background app
             launchintent.addCategory(Intent.CATEGORY_LAUNCHER);
             ComponentName cp = new ComponentName(dataofView.packageName, dataofView.name);

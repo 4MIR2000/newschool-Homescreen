@@ -21,6 +21,7 @@ class DrawerClick implements AdapterView.OnItemClickListener {
         if (MainActivity.isLaunchable) {
             Intent launchintent = new Intent(Intent.ACTION_MAIN);
 
+            launchintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //so it is a Launcher and not a background app
             launchintent.addCategory(Intent.CATEGORY_LAUNCHER);
             ComponentName cp = new ComponentName(MainActivity.apps[position].packageName, MainActivity.apps[position].name);
