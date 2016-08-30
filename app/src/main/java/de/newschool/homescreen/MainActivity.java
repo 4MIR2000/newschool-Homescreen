@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -28,16 +30,19 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
+import celllayout.CellLayout;
 import multiscreenfragments.PagerChangeListener;
 import multiscreenfragments.ViewPagerAdapter;
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -55,7 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private PackageManager manager;
     private DrawerAdapter drawerAdapterObject;
 
-    public static AppDetail[] apps; // @TODO Dangerous static instance
+    public static ArrayList<AppDetail> apps; // @TODO Dangerous static instance
     static boolean isLaunchable = true; // @TODO Dangerous static instance
 
     private AppWidgetManager mAppWidgetManager;
@@ -79,8 +84,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activity = this;
+        hideStatusBar();
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        //LOCKSCREEN RECEIVER
+        IntentFilter lockscreen_filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        lockscreen_filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        registerReceiver(new LockscreenReceiver(),lockscreen_filter);
+
+
+        activity = this;
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         intialize_AllApps_Drawer();
@@ -142,8 +156,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //fullscreen
         //  this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Intent lockscreen = new Intent(this, LockscreenService.class);
-        startService(lockscreen);
+
+
+    }
+
+    private void hideStatusBar(){
+        WindowManager manager = ((WindowManager) getApplicationContext()
+                .getSystemService(Context.WINDOW_SERVICE));
+
+        WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
+        localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        localLayoutParams.gravity = Gravity.TOP;
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+
+                // this is to enable the notification to recieve touch events
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+
+                // Draws over status bar
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
+        localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        localLayoutParams.height = (int) (50 * getResources()
+                .getDisplayMetrics().scaledDensity);
+        localLayoutParams.format = PixelFormat.TRANSPARENT;
+
+        CustomViewGroup view = new CustomViewGroup(this);
+
+        manager.addView(view, localLayoutParams);
+
     }
 
     private void intialize_AllApps_Drawer() {
@@ -277,6 +317,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 subjects_grid.setOnItemClickListener(new SubjectListeners(MainActivity.this, subjects_grid));
 
                 Log.d("width", Integer.toString(subjects_grid.getWidth()));
+
+
             }
         }
     }
@@ -315,22 +357,47 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     //this class helps us to load the installed apps in the background
     private class LoadApps extends AsyncTask<String, Void, String> {
+        int position = 0;
         @Override
         protected String doInBackground(String... params) {
             //manager gives data about installed packages
             manager = getPackageManager();
 
-            Intent i = new Intent(Intent.ACTION_MAIN, null);
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            Intent intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-            List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(i, 0);
-            apps = new AppDetail[avaibleactivities.size()];
-            for (int n = 0; n < avaibleactivities.size(); n++) {
-                apps[n] = new AppDetail();
-                apps[n].label = avaibleactivities.get(n).loadLabel(manager).toString();
-                apps[n].name = avaibleactivities.get(n).activityInfo.name;
-                apps[n].packageName = avaibleactivities.get(n).activityInfo.packageName;
-                apps[n].icon = avaibleactivities.get(n).loadIcon(manager);
+            List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(intent, 0);
+
+            String[][] lockedApps = LockedApps.getLockedApps();
+
+            apps = new ArrayList<>();
+
+            for (int i = 0; i < avaibleactivities.size(); i++) {
+                boolean locked = false;
+
+                lockedLoop:
+                for(int j = 0; j<lockedApps[0].length; j++){
+                    if(Objects.equals(avaibleactivities.get(i).activityInfo.packageName, lockedApps[0][j])
+                            && Objects.equals(avaibleactivities.get(i).activityInfo.name, lockedApps[1][j])){
+
+                        position++;
+                        locked = true;
+                        break lockedLoop;
+                    }
+                }
+
+                if(!locked) {
+                    AppDetail detail = new AppDetail();
+                    detail.label = avaibleactivities.get(i).loadLabel(manager).toString();
+                    detail.name = avaibleactivities.get(i).activityInfo.name;
+                    detail.packageName = avaibleactivities.get(i).activityInfo.packageName;
+                    detail.icon = avaibleactivities.get(i).loadIcon(manager);
+                    apps.add(detail);
+                }
+
+
+
+
             }
 
             SortApps sort = new SortApps();
@@ -341,6 +408,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String result) {
+            Toast.makeText(MainActivity.this,Integer.toString(position),Toast.LENGTH_SHORT).show();
             if (drawerAdapterObject == null) {
                 drawerAdapterObject = new DrawerAdapter(activity);
                 //Adding the content look at DrawerAdapter class

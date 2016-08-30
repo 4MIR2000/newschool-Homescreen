@@ -1,15 +1,23 @@
 package de.newschool.homescreen;
 
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.KeyEvent;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,25 +30,24 @@ import android.widget.Toast;
 
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class Lockscreen extends AppCompatActivity {
     private static final String LOG_TAG = Lockscreen.class.getName();
 
+    CustomViewGroup systemUIHider;
+    WindowManager windowManager;
+
     private TextView date_tv;
     private Calendar calendar;
+
+    private TextView name_tv;
+    private TextView class_tv;
 
     private ShimmerTextView slideToUnlock_Tv;
     private Shimmer shimmer;
@@ -61,12 +68,13 @@ public class Lockscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lockscreen);
 
-        //no actionBar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         lockscreen_timetable = (LinearLayout) findViewById(R.id.timetable_lockscreen);
         lock = (ImageView) findViewById(R.id.lock);
+
+        name_tv = (TextView)findViewById(R.id.name_tv);
+        class_tv = (TextView) findViewById(R.id.class_tv);
 
     /*  try{
         StateListener phoneStateListener = new StateListener();
@@ -74,18 +82,10 @@ public class Lockscreen extends AppCompatActivity {
         telephonymanager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }catch(Exception e){ }*/
 
-        // String date = DateFormat.getDateTimeInstance().format(new Date());
         date_tv = (TextView) findViewById(R.id.date_tv);
-        //date_tv.setText(date);
-
         Calendar calendar = Calendar.getInstance();
-
-        //String date = new SimpleDateFormat("EMM"+"."+"MM"+"."+"yyyy", Locale.getDefault()).format(calendar.getTime());
-
         SimpleDateFormat format = new SimpleDateFormat("E dd.MM.yyyy");
         date_tv.setText(format.format(calendar.getTime()));
-
-        //seekbar_layout = (RelativeLayout)findViewById(R.id.seekBar_layout);
 
         slideToUnlock_Tv = (ShimmerTextView) findViewById(R.id.slideToUnlock);
 
@@ -96,11 +96,75 @@ public class Lockscreen extends AppCompatActivity {
         timetable_grid = (GridView) findViewById(R.id.timetable_lockscreen_gridView);
         loadingBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        hideSystemUI();
+        new ShowUserInfo().execute();
 
-        // timetable_grid.setAdapter(new TimetableLockscreenAdapter(this, timetable));
 
-        //timetableDeclaration();
-        //new TimetableDeclaration().execute();
+    }
+
+
+
+    //hide homebutton,backbutton,taskmanagerbutton
+    private void hideSystemUI(){
+        windowManager = ((WindowManager)getApplicationContext()
+               .getSystemService(Context.WINDOW_SERVICE));
+        WindowManager.LayoutParams localLayoutParams =  new WindowManager.LayoutParams();
+        localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        localLayoutParams.gravity = Gravity.BOTTOM;
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+
+                // this is to enable the notification to recieve touch events
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+
+                // Draws over status bar
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
+        localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        localLayoutParams.height = (int) (50* getResources().getDisplayMetrics().scaledDensity);
+        localLayoutParams.format = PixelFormat.TRANSPARENT;
+        systemUIHider = new CustomViewGroup(this);
+        windowManager.addView(systemUIHider,localLayoutParams);
+
+    }
+
+    private class ShowUserInfo extends AsyncTask<String,Void,String>{
+        String username;
+        String schoolclass;
+        @Override
+        protected String doInBackground(String... params) {
+            username = UserInfo.getUsername();
+            schoolclass  = UserInfo.getSchoolClass();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            name_tv.setText(username);
+            class_tv.setText(schoolclass);
+        }
+
+
+
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if(hasFocus) {
+            final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+            final View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(flags);
+        }
     }
 
     public class LockCheck extends AsyncTask<String, Void, String> {
@@ -225,27 +289,45 @@ public class Lockscreen extends AppCompatActivity {
 
                 for (int i = 0; i < day_timetable.hours.size(); i++) {
                     HourTime time = day_timetable.hours.get(i).time;
-                    Log.d(LOG_TAG, Integer.toString(time.hour_start));
+
                     if (current_hour >= time.hour_start && current_hour <= time.hour_end) {
 
                         Log.d(LOG_TAG, "actual hour" + Integer.toString(time.hour_start));
                         Log.d(LOG_TAG, "actual hour end" + Integer.toString(time.hour_end));
 
-                        if (current_hour == time.hour_start) {
-                            if (current_minute > time.minute_start) {
+
+                        if(current_hour==time.hour_start && current_hour == time.hour_end){
+                            if(current_minute >= time.minute_start && current_minute < time.minute_end){
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
                                 params.setMargins(5, 0, 5, 0);
                                 //params.gravity = Gravity.CENTER;
                                 hours_views[i].setLayoutParams(params);
+
+
                                 return;
                             }
-                        } else {
+                        }else{
+                        if (current_hour == time.hour_start) {
+
+                            if (current_minute >= time.minute_start) {
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
+                                params.setMargins(5, 0, 5, 0);
+                                //params.gravity = Gravity.CENTER;
+                                hours_views[i].setLayoutParams(params);
+
+                                //Toast.makeText(Lockscreen.this,Integer.toString(time.hour_start)+":"+Integer.toString(time.minute_start)+"-"+Integer.toString(time.hour_end)+":"+Integer.toString(time.minute_end),Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }else{
                             if (current_hour == time.hour_end) {
+
                                 if (current_minute < time.minute_end) {
                                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);
                                     params.setMargins(5, 0, 5, 0);
                                     // params.gravity = Gravity.CENTER;
                                     hours_views[i].setLayoutParams(params);
+
+
                                     return;
                                 }
                             } else {
@@ -255,6 +337,8 @@ public class Lockscreen extends AppCompatActivity {
                                 hours_views[i].setLayoutParams(params);
                                 return;
                             }
+                        }
+
                         }
                     }
                 }
@@ -366,8 +450,18 @@ public class Lockscreen extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        //hideSystemUI();
         new TimetableDeclaration().execute();
         new LockCheck().execute();
+
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(windowManager != null)
+        windowManager.removeView(systemUIHider);
     }
 }
