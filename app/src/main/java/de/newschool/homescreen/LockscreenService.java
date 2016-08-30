@@ -29,6 +29,7 @@ public class LockscreenService extends Service {
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         mReceiver = new LockscreenReceiver();
         registerReceiver(mReceiver, filter);
 

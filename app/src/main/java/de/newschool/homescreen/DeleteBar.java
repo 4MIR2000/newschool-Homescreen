@@ -6,6 +6,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -37,34 +38,49 @@ class DeleteBar implements View.OnDragListener {
                 AppDetail appDetail = (AppDetail) ShortcutListeners.getDraggingApp().getTag();
                 AppSerializableData data = SerializationTools.loadSerializedData();
 
+
                 if (appDetail != null) {
                     if (data != null) {
                         if (data.apps != null) {
                             for (int i = 0; i < data.apps.size(); i++) {
-                                Log.d(LOG_TAG, data.apps.get(i).packageName);
-                                Log.d(LOG_TAG, appDetail.packageName);
+
+
+
                                 if (Objects.equals(data.apps.get(i).id, appDetail.id)) {
-                                    Log.d(LOG_TAG, "deleted");
+
+
+                                    //check if there is an other app with same icon
+                                    //else delete icon
 
                                     boolean otherShortcutWithSameIcon_avaiable = false;
                                     for (int j = 0; j < data.apps.size(); j++) {
                                         if (Objects.equals(data.apps.get(j).packageName, appDetail.packageName) &&
                                                 Objects.equals(data.apps.get(j).name, appDetail.name)) {
 
-                                            otherShortcutWithSameIcon_avaiable = true;
-                                            Log.d(LOG_TAG, "avaible");
+
+                                            //we does ignore the actual dragged app
+                                            if(!Objects.equals(data.apps.get(j).id,appDetail.id)) {
+                                                otherShortcutWithSameIcon_avaiable = true;
+                                                Log.d(LOG_TAG, "avaible");
+                                            }
                                         }
                                     }
+
 
                                     //if there is no other shortcut with the same icon
                                     if (!otherShortcutWithSameIcon_avaiable) {
                                         data.apps.get(i).deleteIcon();
+
+
+
                                     }
 
                                     data.apps.remove(i);
                                     SerializationTools.serializeData(data);
+                                    break;
                                 }
                             }
+
                         }
                     }
                 }
