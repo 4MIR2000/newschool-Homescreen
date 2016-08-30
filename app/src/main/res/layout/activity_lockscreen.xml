@@ -8,7 +8,7 @@
     android:paddingRight="60dp"
     android:paddingTop="60dp"
     android:background="@color/newSchoolTabletBlue"
-    tools:context="amiran.siriustablet.Lockscreen"
+    tools:context="de.newschool.homescreen.Lockscreen"
 
     >
 
@@ -36,10 +36,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/name_tv"
-        android:text="Amir Taghizadegan"
+        android:text=""
         android:textSize="50sp"
         android:textStyle="bold"
-        android:layout_toLeftOf="@+id/klasse_tv"
+        android:layout_toLeftOf="@+id/class_tv"
 
 
         />
@@ -48,8 +48,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/klasse_tv"
-        android:text="9b"
+        android:id="@+id/class_tv"
+        android:text=""
         android:textSize="50dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="40dp"
