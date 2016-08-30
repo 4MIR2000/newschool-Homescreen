@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 class DrawerClick implements AdapterView.OnItemClickListener {
     private final Context mcontext;
@@ -24,8 +25,10 @@ class DrawerClick implements AdapterView.OnItemClickListener {
             launchintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //so it is a Launcher and not a background app
             launchintent.addCategory(Intent.CATEGORY_LAUNCHER);
-            ComponentName cp = new ComponentName(MainActivity.apps[position].packageName, MainActivity.apps[position].name);
+            ComponentName cp = new ComponentName(MainActivity.apps.get(position).packageName, MainActivity.apps.get(position).name);
             launchintent.setComponent(cp);
+
+
             mcontext.startActivity(launchintent);
         }
     }

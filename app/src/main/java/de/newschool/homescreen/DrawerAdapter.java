@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class DrawerAdapter extends BaseAdapter {
     private final Context mcontext;
@@ -21,7 +20,7 @@ class DrawerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return MainActivity.apps.length;
+        return MainActivity.apps.size();
     }
 
     @Override
@@ -52,8 +51,8 @@ class DrawerAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(MainActivity.apps[position].label);
-        viewHolder.icon.setImageDrawable(MainActivity.apps[position].icon);
+        viewHolder.text.setText(MainActivity.apps.get(position).label);
+        viewHolder.icon.setImageDrawable(MainActivity.apps.get(position).icon);
 
         return convertView;
     }

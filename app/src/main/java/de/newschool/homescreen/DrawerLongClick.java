@@ -46,7 +46,7 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
             }
         }*/
 
-        AppDetail appToAdd = MainActivity.apps[position];
+        AppDetail appToAdd = MainActivity.apps.get(position);
         appToAdd.x = (int) view.getX();
         appToAdd.y = (int) view.getY();
 

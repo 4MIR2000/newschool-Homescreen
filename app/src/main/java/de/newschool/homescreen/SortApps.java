@@ -1,19 +1,17 @@
 package de.newschool.homescreen;
 
-class SortApps {
-    public void exchangeSort(AppDetail[] list) {
-        int i, j;
-        AppDetail temp;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-        for (i = 0; i < list.length - 1; i++) {
-            for (j = i; j < list.length; j++) {
-                if (list[i].label.compareToIgnoreCase(list[j].label) > 0) {
-                    //swapping
-                    temp = list[i];
-                    list[i] = list[j];
-                    list[j] = temp;
-                }
+class SortApps {
+    public void exchangeSort(List<AppDetail> list) {
+
+        Collections.sort(list, new Comparator<AppDetail>() {
+            @Override
+            public int compare(AppDetail lhs, AppDetail rhs) {
+                return lhs.label.compareToIgnoreCase(rhs.label);
             }
-        }
+        });
     }
 }
