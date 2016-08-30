@@ -3,8 +3,7 @@ package multiscreenfragments;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.ImageView;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class PagerChangeListener implements ViewPager.OnPageChangeListener {
     private static final String LOG_TAG = PagerChangeListener.class.getName();

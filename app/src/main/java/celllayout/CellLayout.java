@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class CellLayout extends ViewGroup {
     private boolean mPortrait;

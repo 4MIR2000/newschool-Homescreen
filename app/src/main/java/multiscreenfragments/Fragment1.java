@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class Fragment1 extends android.support.v4.app.Fragment {
     private static LinearLayout layout; // @TODO Dangerous static instance
