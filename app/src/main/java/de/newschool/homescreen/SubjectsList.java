@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class SubjectsList {
     private final static String LOG_TAG = SubjectsList.class.getName();

@@ -15,8 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class ShortcutListeners implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener, View.OnTouchListener {
     private static View dragging_app; // @TODO Dangerous static instance
@@ -58,6 +57,7 @@ class ShortcutListeners implements View.OnClickListener, View.OnLongClickListene
         v.startDrag(clipData, shadow, null, 0);
         v.setVisibility(View.INVISIBLE);
         dragging_app = v;
+
 
         //making the delete_bar visible if icon is longpressed
         delete_bar_tv.setVisibility(View.VISIBLE);

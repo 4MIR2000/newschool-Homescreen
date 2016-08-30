@@ -9,8 +9,7 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class WeekTimetableGridAdapter extends BaseAdapter {
     public static final String LOG_TAG = WeekTimetableGridAdapter.class.getName();

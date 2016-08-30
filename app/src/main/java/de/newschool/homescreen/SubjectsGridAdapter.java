@@ -16,7 +16,7 @@ import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
 import java.util.List;
 
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class SubjectsGridAdapter extends BaseDynamicGridAdapter {
     private final String LOG_TAG = SubjectsGridAdapter.class.getName();

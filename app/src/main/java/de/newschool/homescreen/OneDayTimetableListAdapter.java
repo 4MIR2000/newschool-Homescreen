@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 class OneDayTimetableListAdapter extends BaseAdapter {
     private final Context mcontext;

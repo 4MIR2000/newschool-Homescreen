@@ -14,8 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class WeekTimetableActivity extends ActionBarActivity {
     RelativeLayout timetable_layout;

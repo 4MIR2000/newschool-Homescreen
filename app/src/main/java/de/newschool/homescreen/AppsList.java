@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class AppsList extends AppCompatActivity {
     private PackageManager manager;

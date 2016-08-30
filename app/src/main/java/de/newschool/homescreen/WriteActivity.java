@@ -11,8 +11,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class WriteActivity extends Activity {
     private DrawingView dv;
