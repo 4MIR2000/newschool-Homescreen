@@ -22,6 +22,10 @@
     <string name="activityNotFound">Diese Applikation ist nicht installiert</string>
     <string name="writtingAppNotFound">Die Schreibeapp ist nicht installiert</string>
     <string name="timetable">Stundenplan</string>
-
+    <string name="openSettingsMessage">Gib den Pin ein, um diese Aktion durchzuführen</string>
+    <string name="pin">Pin:</string>
+    <string name="ok">ok</string>
+    <string name="cancel">abbrechen</string>
+    <string name="false_pin">Falscher Pin</string>
 
 </resources>

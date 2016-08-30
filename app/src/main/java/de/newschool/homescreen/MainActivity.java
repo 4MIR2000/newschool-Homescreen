@@ -1,11 +1,14 @@
 package de.newschool.homescreen;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -13,6 +16,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.media.TransportPerformer;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,7 +26,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,11 +45,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.zip.Inflater;
 
-import celllayout.CellLayout;
 import multiscreenfragments.PagerChangeListener;
 import multiscreenfragments.ViewPagerAdapter;
-import de.newschool.homescreen.R;
+
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -80,6 +87,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private int day_of_timetable = 1000;
 
+    private int timesClickedTheAppsButton;
+    Handler handler;
+    Runnable runnable;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +99,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         hideStatusBar();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         //LOCKSCREEN RECEIVER
         IntentFilter lockscreen_filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
@@ -327,10 +340,76 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.apps_icon_imageView) {
             open_allApps_drawer();
-            // LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // SlidingDrawer drawer = (SlidingDrawer) inflater.inflate(R.layout.apps_sliding_drawer,null);
+            timesClickedTheAppsButton++;
+
+            if(runnable != null) {
+                handler.removeCallbacks(runnable);
+            }
+
+
+            if(timesClickedTheAppsButton == 10) {
+
+                showOptionsOpenRequestDialog();
+            }
+
+            handler = new Handler();
+            runnable = new timesClickedAppsButtonRunnable();
+            handler.postDelayed(runnable,500);
         }
     }
+
+    private class timesClickedAppsButtonRunnable implements Runnable {
+        @Override
+        public void run() {
+            //set variable to 0 after 500 ms
+            timesClickedTheAppsButton = 0;
+        }
+    }
+
+    private void showOptionsOpenRequestDialog(){
+        LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View convertView = inflater.inflate(R.layout.settings_open_request,null);
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(getString(R.string.openSettingsMessage));
+        alertDialog.setView(convertView);
+        alertDialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                if(Objects.equals(((EditText) convertView.findViewById(R.id.editText_pin)).getText().toString(), "1378")){
+                    timesClickedTheAppsButton = 0;
+                    handler.removeCallbacks(runnable);
+
+                    Intent settings = new Intent(Intent.ACTION_MAIN);
+                    ComponentName cn = new ComponentName("com.android.settings","com.android.settings.HWSettings");
+                    settings.setComponent(cn);
+                    settings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //so it is a Launcher and not a background app
+                    settings.addCategory(Intent.CATEGORY_LAUNCHER);
+                    startActivity(settings);
+                }else{
+                    dialog.dismiss();
+                    Toast.makeText(MainActivity.this,getString(R.string.false_pin),Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+        alertDialog.show();
+
+
+    }
+
 
     private void open_allApps_drawer() {
         if (slidingDrawer.getParent() == null) {
@@ -408,7 +487,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(MainActivity.this,Integer.toString(position),Toast.LENGTH_SHORT).show();
+
             if (drawerAdapterObject == null) {
                 drawerAdapterObject = new DrawerAdapter(activity);
                 //Adding the content look at DrawerAdapter class
