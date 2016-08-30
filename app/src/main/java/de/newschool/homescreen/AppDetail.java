@@ -13,14 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-
-import amiran.siriustablet.test.R;
+import de.newschool.homescreen.R;
 
 public class AppDetail implements Serializable {
     private final String LOG_TAG = AppDetail.class.getName();
@@ -37,41 +37,46 @@ public class AppDetail implements Serializable {
 
     public void cacheIcon() {
         if (iconLocation == null) {
-            //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
+            if (icon != null) {
+                //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
 
-            File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
-                    "cachedApps" + File.separator + packageName + name);
-            try {
-                file.createNewFile();
-                Log.d(LOG_TAG, "file angelegt");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+                iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator + "cachedApps" + File.separator + packageName + name;
+                File file = new File(iconLocation);
 
-        if (icon != null) {
-            iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
-                    "cachedApps" + File.separator + packageName + name;
 
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(iconLocation);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                if (!file.exists()) {
 
-            if (fos != null) {
-                Tools.getdrawableToBitmap(icon).compress(Bitmap.CompressFormat.PNG, 100, fos);
-                Log.d(LOG_TAG, "icon saved");
-                try {
-                    fos.flush();
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        file.createNewFile();
+
+                        Log.d(LOG_TAG, "file angelegt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(iconLocation);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (fos != null) {
+                        Tools.getdrawableToBitmap(icon).compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        Log.d(LOG_TAG, "icon saved");
+                        try {
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        iconLocation = null;
+                    }
                 }
-
-            } else {
-                iconLocation = null;
             }
         }
     }
@@ -92,8 +97,13 @@ public class AppDetail implements Serializable {
 
     public void deleteIcon() {
         if (iconLocation != null) {
-            new File(iconLocation).delete();
-        }
+            File file = new File(iconLocation);
+            boolean succes =  file.delete();
+
+
+
+    }
+
     }
 
     public void addToHome(Context context) {
@@ -127,5 +137,7 @@ public class AppDetail implements Serializable {
 
         icon_imageView.setTag(this);
         home_icon.setTag(this);
+
+        Toast.makeText(MainActivity.activity,id,Toast.LENGTH_SHORT).show();
     }
 }
