@@ -25,7 +25,7 @@ public class UserInfo {
 
         try{
             fis = new FileInputStream(file);
-            isr = new InputStreamReader(fis);
+            isr = new InputStreamReader(fis,"UTF-8");
             br = new BufferedReader(isr);
 
             return br.readLine();
@@ -50,7 +50,7 @@ public class UserInfo {
 
         try {
             fis = new FileInputStream(file);
-            isr = new InputStreamReader(fis);
+            isr = new InputStreamReader(fis,"UTF-8");
             br = new BufferedReader(isr);
 
             return br.readLine();

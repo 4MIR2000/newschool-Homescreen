@@ -131,6 +131,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         new SubjectsGrid_declaration().execute();
         //new OneDayTimeTable_declaration().execute();
 
+
         //For reloading timetable if date changes
         IntentFilter date_changed_filter = new IntentFilter();
         date_changed_filter.addAction(Intent.ACTION_DATE_CHANGED);

@@ -1,7 +1,9 @@
 package de.newschool.homescreen;
 
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,13 +35,13 @@ class SubjectsList {
 
                 Log.d(LOG_TAG, sd.name);
                 switch (sd.name) {
-                    case "Informatik":
-                        sd.pic = R.drawable.informatik;
-                        break;
                     case "Deutsch":
                         sd.pic = R.drawable.deutsch;
                         break;
-                    case "Franzoesisch":
+                    case "Informatik":
+                        sd.pic = R.drawable.informatik;
+                        break;
+                    case "Französisch":
                         sd.pic = R.drawable.franzoesisch;
                         break;
                     case "Latein":
@@ -119,6 +121,7 @@ class SubjectsList {
         InputStreamReader isr = null;
         BufferedReader br = null;
 
+        TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter(';');
         List<String> names = null;
         try {
             fis = new FileInputStream(file);
@@ -128,19 +131,23 @@ class SubjectsList {
             names = new ArrayList<>();
 
             String line = br.readLine();
-            for (int i = 0; line != null; i++) {
-                //  Log.d(LOG_TAG,br.readLine());
-                names.add(i, line);
+            String subject;
+            sss.setString(line);
 
-                line = br.readLine();
+            for(int i = 0; sss.hasNext(); i++){
+                subject = sss.next();
+
+                names.add(subject);
             }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (names != null && names.size() != 0)
+        if (names != null && names.size() != 0) {
             return names;
-
+        }
         return null;
     }
 }
