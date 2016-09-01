@@ -87,7 +87,9 @@ class SubjectsList {
                     case "Englisch":
                         sd.pic = R.drawable.englisch;
                         break;
-
+                    case "Sport":
+                        sd.pic = R.drawable.sport;
+                        break;
                     default:
                         sd.pic = 0;
                 }
