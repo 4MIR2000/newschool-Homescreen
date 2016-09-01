@@ -12,6 +12,7 @@ public class LockedApps {
 
         String[][] apps = new String[][]{{
                 "de.newschool.homescreen",
+                "de.newschool.lockscreen",
                 "com.android.settings",
                 "com.android.vending",
                 "com.android.browser",
@@ -28,6 +29,7 @@ public class LockedApps {
 
                 {
                         "de.newschool.homescreen.MainActivity",
+                        "de.newschool.lockscreen.MainActivity",
                         "com.android.settings.HWSettings",
                         "com.android.vending.AssetBrowserActivity",
                         "com.android.browser.BrowserActivity",

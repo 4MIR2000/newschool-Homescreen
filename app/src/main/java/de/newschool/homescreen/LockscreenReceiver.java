@@ -9,13 +9,13 @@ public class LockscreenReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            Intent intent1 = new Intent(context, Lockscreen.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
+            Intent lockscreen = context.getPackageManager().getLaunchIntentForPackage("de.newschool.lockscreen");
+            lockscreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(lockscreen);
         } else if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            Intent intent11 = new Intent(context, Lockscreen.class);
-            intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent11);
+            Intent lockscreen = context.getPackageManager().getLaunchIntentForPackage("de.newschool.lockscreen");
+            lockscreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(lockscreen);
         }
 
     }
