@@ -17,7 +17,6 @@ import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.media.TransportPerformer;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -45,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.zip.Inflater;
 
 import multiscreenfragments.PagerChangeListener;
 import multiscreenfragments.ViewPagerAdapter;
@@ -88,8 +85,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int day_of_timetable = 1000;
 
     private int timesClickedTheAppsButton;
-    Handler handler;
-    Runnable runnable;
+    Handler optionsOpenRequestHandler;
+    Runnable optionsOpenRequestrunnable;
+
+    Handler updateCheckerHandler;
+    Runnable updateCheckerRunnable;
 
 
     @Override
@@ -135,7 +135,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //For reloading timetable if date changes
         IntentFilter date_changed_filter = new IntentFilter();
         date_changed_filter.addAction(Intent.ACTION_DATE_CHANGED);
-        // registerReceiver(new ReloadTimetable(),date_changed_filter);
 
         new LoadApps().execute();
         new AddAppsToHome().execute();
@@ -145,8 +144,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onDrawerOpened() {
                 isLaunchable = true;
-                //for rotating the arrow
-                //handle.setBackgroundResource(R.drawable.down_arrow);
+
             }
         });
 
@@ -172,7 +170,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
+        checkForUpdates();
+
+
     }
+
+    private void checkForUpdates() {
+        updateCheckerHandler = new Handler();
+        updateCheckerRunnable = new UpdateCheckerRunnable();
+
+        updateCheckerHandler.postDelayed(updateCheckerRunnable,5000);
+    }
+
+    private class UpdateCheckerRunnable implements Runnable{
+
+        @Override
+        public void run() {
+
+            Updates updates_class = new Updates();
+            updates_class.checkForUpdates();
+
+        }
+    }
+
 
     private void hideStatusBar(){
         WindowManager manager = ((WindowManager) getApplicationContext()
@@ -343,8 +363,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             open_allApps_drawer();
             timesClickedTheAppsButton++;
 
-            if(runnable != null) {
-                handler.removeCallbacks(runnable);
+            if(optionsOpenRequestrunnable != null) {
+                optionsOpenRequestHandler.removeCallbacks(optionsOpenRequestrunnable);
             }
 
 
@@ -353,9 +373,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 showOptionsOpenRequestDialog();
             }
 
-            handler = new Handler();
-            runnable = new timesClickedAppsButtonRunnable();
-            handler.postDelayed(runnable,500);
+            optionsOpenRequestHandler = new Handler();
+            optionsOpenRequestrunnable = new timesClickedAppsButtonRunnable();
+            optionsOpenRequestHandler.postDelayed(optionsOpenRequestrunnable,500);
         }
     }
 
@@ -364,6 +384,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void run() {
             //set variable to 0 after 500 ms
             timesClickedTheAppsButton = 0;
+
         }
     }
 
@@ -380,7 +401,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 if(Objects.equals(((EditText) convertView.findViewById(R.id.editText_pin)).getText().toString(), "1378")){
                     timesClickedTheAppsButton = 0;
-                    handler.removeCallbacks(runnable);
+                    optionsOpenRequestHandler.removeCallbacks(optionsOpenRequestrunnable);
 
                     Intent settings = new Intent(Intent.ACTION_MAIN);
                     ComponentName cn = new ComponentName("com.android.settings","com.android.settings.HWSettings");
