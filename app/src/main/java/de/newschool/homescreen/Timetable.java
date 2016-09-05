@@ -28,7 +28,7 @@ class Timetable {
 
     private TimetableWeekDetail getTimetableFromFile() {
         //the File of our txt file
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" +
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + ".NewSchool" +
                 File.separator + "Stundenplan" + File.separator + "st.txt");
 
 

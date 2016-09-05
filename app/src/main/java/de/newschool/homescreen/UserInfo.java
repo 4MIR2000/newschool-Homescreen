@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 public class UserInfo {
 
     public static String getUsername(){
-        String path = Environment.getExternalStorageDirectory()+ File.separator+"NewSchool/Benutzer/bn.txt";
+        String path = Environment.getExternalStorageDirectory()+ File.separator+".NewSchool/Benutzer/bn.txt";
         File file = new File(path);
 
         FileInputStream fis = null;
@@ -41,7 +41,7 @@ public class UserInfo {
 
     public static String getSchoolClass(){
 
-        String path =  Environment.getExternalStorageDirectory()+ File.separator+"NewSchool/Benutzer/k.txt";
+        String path =  Environment.getExternalStorageDirectory()+ File.separator+".NewSchool/Benutzer/k.txt";
         File file = new File(path);
 
         FileInputStream fis= null;
