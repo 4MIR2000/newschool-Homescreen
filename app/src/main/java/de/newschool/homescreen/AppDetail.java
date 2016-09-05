@@ -40,6 +40,11 @@ public class AppDetail implements Serializable {
             if (icon != null) {
                 //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
 
+                File root = new File(Environment.getExternalStorageDirectory()+File.separator+"NewSchool","cachedApps");
+                if(!root.exists())
+                    root.mkdirs();
+
+
                 iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator + "cachedApps" + File.separator + packageName + name;
                 File file = new File(iconLocation);
 
@@ -138,6 +143,5 @@ public class AppDetail implements Serializable {
         icon_imageView.setTag(this);
         home_icon.setTag(this);
 
-        Toast.makeText(MainActivity.activity,id,Toast.LENGTH_SHORT).show();
     }
 }

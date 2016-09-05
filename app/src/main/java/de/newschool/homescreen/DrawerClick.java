@@ -1,5 +1,6 @@
 package de.newschool.homescreen;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,6 @@ class DrawerClick implements AdapterView.OnItemClickListener {
             launchintent.addCategory(Intent.CATEGORY_LAUNCHER);
             ComponentName cp = new ComponentName(MainActivity.apps.get(position).packageName, MainActivity.apps.get(position).name);
             launchintent.setComponent(cp);
-
 
             mcontext.startActivity(launchintent);
         }
