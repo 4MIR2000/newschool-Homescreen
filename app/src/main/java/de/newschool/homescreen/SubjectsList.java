@@ -33,7 +33,6 @@ class SubjectsList {
                 //   Log.d(LOG_TAG,names.get(i));
                 //  Log.d(LOG_TAG,Integer.toString(imageId));
 
-                Log.d(LOG_TAG, sd.name);
                 switch (sd.name) {
                     case "Deutsch":
                         sd.pic = R.drawable.deutsch;
@@ -64,6 +63,7 @@ class SubjectsList {
                         break;
                     case "Physik Üb.":
                         sd.pic = R.drawable.physik;
+                        sd.showInHomescreen = false;
                         break;
                     case "Religion":
                         sd.pic = R.drawable.religion;
@@ -76,6 +76,7 @@ class SubjectsList {
                         break;
                     case "Chemie Üb.":
                         sd.pic = R.drawable.chemie;
+                        sd.showInHomescreen = false;
                         break;
 
                     case "Biologie":
@@ -89,6 +90,7 @@ class SubjectsList {
                         break;
                     case "Sport":
                         sd.pic = R.drawable.sport;
+                        sd.showInHomescreen = false;
                         break;
                     default:
                         sd.pic = 0;
@@ -116,7 +118,7 @@ class SubjectsList {
 
 
         return names;*/
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" +
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + ".NewSchool" +
                 File.separator + "Faecher" + File.separator + "f.txt");
 
         FileInputStream fis = null;
