@@ -16,7 +16,7 @@ import java.util.List;
 class Substitution {
     public TimetableWeekDetail getSubstitution() {
         TimetableWeekDetail week = null;
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator +
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + ".NewSchool" + File.separator +
                 "Vertretungsplan" + File.separator + "vp.txt");
         FileInputStream fis = null;
         InputStreamReader isr = null;
@@ -94,10 +94,12 @@ class Substitution {
             week = new TimetableWeekDetail();
             week.days = days_list;
 
+            return week;
+
         } catch (IOException | StringIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
-        return week;
+        return null;
     }
 }

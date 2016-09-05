@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import de.newschool.homescreen.R;
 
 class DrawerAdapter extends BaseAdapter {
@@ -51,9 +54,13 @@ class DrawerAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.text.setText(MainActivity.apps.get(position).label);
-        viewHolder.icon.setImageDrawable(MainActivity.apps.get(position).icon);
+        ArrayList<AppDetail> apps = MainActivity.apps;
 
+        if(apps.size() >position) {
+            viewHolder.text.setText(apps.get(position).label);
+            viewHolder.icon.setImageDrawable(MainActivity.apps.get(position).icon);
+
+        }
         return convertView;
     }
 
