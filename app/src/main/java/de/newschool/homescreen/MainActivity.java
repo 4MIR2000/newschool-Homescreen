@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        hideStatusBar();
+         hideStatusBar();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -172,6 +172,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         checkForUpdates();
 
+        Files.makeFiles();
+
+       // new OneDayTimeTable_declaration().execute();
 
     }
 
@@ -179,7 +182,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         updateCheckerHandler = new Handler();
         updateCheckerRunnable = new UpdateCheckerRunnable();
 
-        updateCheckerHandler.postDelayed(updateCheckerRunnable,5000);
+        updateCheckerHandler.postDelayed(updateCheckerRunnable,1000);
     }
 
     private class UpdateCheckerRunnable implements Runnable{
@@ -189,6 +192,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             Updates updates_class = new Updates();
             updates_class.checkForUpdates();
+            updateCheckerHandler.postDelayed(updateCheckerRunnable,1800000);
 
         }
     }
@@ -283,8 +287,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Log.d("which day", Integer.toString(which_day));
             Timetable timetable_class = new Timetable(MainActivity.this);
             Substitution substitution_class = new Substitution();
-
             if (timetable_class.getTimetable() != null) {
+
                 if (which_day < timetable_class.getTimetable().days.size()) {
                     timetable_hours = timetable_class.getTimetable().days.get(which_day).hours;
                 } else {
@@ -329,22 +333,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public class SubjectsGrid_declaration extends AsyncTask<String, Void, String> {
-        List<SubjectDetail> allSubjects = null;
+
+        List<SubjectDetail> allSubjectsShowInHomescreen = null;
 
         @Override
         protected String doInBackground(String... params) {
+
+            List<SubjectDetail> allSubjects = null;
             SubjectsList list = new SubjectsList();
             subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
 
             allSubjects = list.getAllSubjects();
+            allSubjectsShowInHomescreen = new ArrayList<>();
 
+            if(allSubjects != null) {
+                for (int i = 0; i < allSubjects.size(); i++) {
+
+                    if (allSubjects.get(i).showInHomescreen) {
+                        allSubjectsShowInHomescreen.add(allSubjects.get(i));
+                    }
+                }
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            if (allSubjects != null) {
-                subjects_grid.setAdapter(new SubjectsGridAdapter(MainActivity.this, allSubjects,
+            if (allSubjectsShowInHomescreen != null) {
+                subjects_grid.setAdapter(new SubjectsGridAdapter(MainActivity.this, allSubjectsShowInHomescreen,
                        getResources().getInteger(R.integer.column_count)));
 
                 subjects_grid.setOnItemLongClickListener(new SubjectListeners(MainActivity.this, subjects_grid));
