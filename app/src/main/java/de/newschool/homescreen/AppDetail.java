@@ -40,12 +40,12 @@ public class AppDetail implements Serializable {
             if (icon != null) {
                 //mainactivity.activity.getApplicationInfo().dataDir+"/cachedApps/"+packageName+name;
 
-                File root = new File(Environment.getExternalStorageDirectory()+File.separator+"NewSchool","cachedApps");
+                File root = new File(Environment.getExternalStorageDirectory()+File.separator+".NewSchool","cachedApps");
                 if(!root.exists())
                     root.mkdirs();
 
 
-                iconLocation = Environment.getExternalStorageDirectory() + File.separator + "NewSchool" + File.separator + "cachedApps" + File.separator + packageName + name;
+                iconLocation = Environment.getExternalStorageDirectory() + File.separator + ".NewSchool" + File.separator + "cachedApps" + File.separator + packageName + name;
                 File file = new File(iconLocation);
 
 
@@ -132,7 +132,7 @@ public class AppDetail implements Serializable {
         ((TextView) home_icon.findViewById(R.id.item_app_label)).setText(label);
 
 
-        RelativeLayout parent = MainActivity.mpagerAdapter.getLayout(screen_num);
+        RelativeLayout parent = MainActivity.getMpagerAdapter().getLayout(screen_num);
         parent.addView(home_icon, 0, params);
 
         home_icon.setOnLongClickListener(new ShortcutListeners());

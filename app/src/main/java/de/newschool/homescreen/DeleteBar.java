@@ -72,7 +72,6 @@ class DeleteBar implements View.OnDragListener {
                                         data.apps.get(i).deleteIcon();
 
 
-
                                     }
 
                                     data.apps.remove(i);

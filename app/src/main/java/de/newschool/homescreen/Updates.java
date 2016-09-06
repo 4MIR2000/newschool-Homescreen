@@ -111,7 +111,7 @@ public class Updates {
 
                 for (int i = 0; i < package_Versions[1].length; i++) {
                     try {
-                        PackageInfo pinfo = MainActivity.activity.getPackageManager().getPackageInfo(package_Versions[0][i], 0);
+                        PackageInfo pinfo = MainActivity.getContext().getPackageManager().getPackageInfo(package_Versions[0][i], 0);
                         int actualversionCode = pinfo.versionCode;
                         int serverversionCode = Integer.parseInt(package_Versions[1][i]);
                         String apkUrl = package_Versions[2][i];
@@ -140,23 +140,23 @@ public class Updates {
 
     private void showUpdateDialog( final String apkUrl, final Uri path, final String downloadedFileType){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.activity);
-        builder.setTitle(MainActivity.activity.getString(R.string.update_title));
-        builder.setMessage(MainActivity.activity.getString(R.string.update_message));
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
+        builder.setTitle(MainActivity.getContext().getString(R.string.update_title));
+        builder.setMessage(MainActivity.getContext().getString(R.string.update_message));
         builder.setIcon(R.drawable.newschool);
         builder.setCancelable(false);
-        builder.setPositiveButton(MainActivity.activity.getString(R.string.yes), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
                 Intent install = new Intent(Intent.ACTION_VIEW);
                 install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 install.setDataAndType(path,downloadedFileType);
-                MainActivity.activity.startActivity(install);
+                MainActivity.getContext().startActivity(install);
 
 
             }
         });
-        builder.setNegativeButton(MainActivity.activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
@@ -169,20 +169,20 @@ public class Updates {
 
     private void showNewAppDialog(final String apkUrl, final Uri path, final String downloadedFileType){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.activity);
-        builder.setTitle(MainActivity.activity.getString(R.string.newAppAvaible_title));
-        builder.setMessage(MainActivity.activity.getString(R.string.newAppAvaible_message));
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
+        builder.setTitle(MainActivity.getContext().getString(R.string.newAppAvaible_title));
+        builder.setMessage(MainActivity.getContext().getString(R.string.newAppAvaible_message));
         builder.setIcon(R.drawable.newschool);
         builder.setCancelable(false);
-        builder.setPositiveButton(MainActivity.activity.getString(R.string.yes), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent install = new Intent(Intent.ACTION_VIEW);
                 install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 install.setDataAndType(path,downloadedFileType);
-                MainActivity.activity.startActivity(install);
+                MainActivity.getContext().startActivity(install);
             }
         });
-        builder.setNegativeButton(MainActivity.activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
@@ -213,7 +213,7 @@ public class Updates {
         request.setDestinationUri(uri);
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        final DownloadManager manager = (DownloadManager)MainActivity.activity.getSystemService(Context.DOWNLOAD_SERVICE);
+        final DownloadManager manager = (DownloadManager)MainActivity.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         final long downloadId = manager.enqueue(request);
 
@@ -238,7 +238,7 @@ public class Updates {
 
         };
 
-        MainActivity.activity.registerReceiver(onDonwloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        MainActivity.getContext().registerReceiver(onDonwloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
 
 

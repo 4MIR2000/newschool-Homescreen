@@ -16,14 +16,14 @@ class DrawerAdapter extends BaseAdapter {
     private final Context mcontext;
     // AppDetail[] applist;
 
-    public DrawerAdapter(Context context) {
-        mcontext = context;
+    public DrawerAdapter() {
+        mcontext = MainActivity.getContext();
         //this.applist = list;
     }
 
     @Override
     public int getCount() {
-        return MainActivity.apps.size();
+        return MainActivity.getApps().size();
     }
 
     @Override
@@ -54,11 +54,11 @@ class DrawerAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ArrayList<AppDetail> apps = MainActivity.apps;
+        ArrayList<AppDetail> apps = MainActivity.getApps();
 
         if(apps.size() >position) {
             viewHolder.text.setText(apps.get(position).label);
-            viewHolder.icon.setImageDrawable(MainActivity.apps.get(position).icon);
+            viewHolder.icon.setImageDrawable(MainActivity.getApps().get(position).icon);
 
         }
         return convertView;

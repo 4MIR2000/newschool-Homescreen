@@ -18,8 +18,8 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
     private LinearLayout home_layout;
 
 
-    public DrawerLongClick(Context context, LinearLayout layout, TextView delete_tv) {
-        mcontext = context;
+    public DrawerLongClick(LinearLayout layout, TextView delete_tv) {
+        mcontext = MainActivity.getContext();
         home_layout = layout;
         //list = apps;
         delete_bar_tv = delete_tv;
@@ -29,7 +29,7 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        MainActivity.isLaunchable = false; //so the app wont lauch if you longclick it. Look at OnItemListener in MainActivity.class
+        DrawerClick.setAppLaunchable(false); //so the app wont lauch if you longclick it. Look at OnItemListener in MainActivity.class
 
         AppSerializableData objectdata = SerializationTools.loadSerializedData();
         if (objectdata == null)
@@ -46,7 +46,7 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
             }
         }*/
 
-        AppDetail appToAdd = MainActivity.apps.get(position);
+        AppDetail appToAdd = MainActivity.getApps().get(position);
         appToAdd.x = (int) view.getX();
         appToAdd.y = (int) view.getY();
 
@@ -58,7 +58,7 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
         //to get the viewpagerItem which is shown
 
-        appToAdd.screen_num = MainActivity.multiscreen_pager.getCurrentItem();
+        appToAdd.screen_num = MainActivity.getMultiscreenPager().getCurrentItem();
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
@@ -69,9 +69,9 @@ class DrawerLongClick implements AdapterView.OnItemLongClickListener {
 
         appToAdd.addToHome(mcontext);
 
-        MainActivity.multiscreen_pager.setVisibility(View.VISIBLE);
-        MainActivity.viewPagerIndicator_layout.setVisibility(View.VISIBLE);
-        MainActivity.slidingDrawer.close();
+        MainActivity.getMultiscreenPager().setVisibility(View.VISIBLE);
+        MainActivity.getViewPagerIndicatorLayout().setVisibility(View.VISIBLE);
+        MainActivity.getSlidingDrawer().close();
 
         //for draging the home_app
         //home_icon.setOnLongClickListener(new HomeApp_Listeners());

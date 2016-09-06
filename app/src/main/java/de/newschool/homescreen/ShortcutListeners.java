@@ -112,7 +112,7 @@ class ShortcutListeners implements View.OnClickListener, View.OnLongClickListene
                                     data.apps.get(i).x = (int) event.getX() - dragging_app.getWidth() / 2;
                                     data.apps.get(i).y = (int) event.getY() - dragging_app.getHeight() / 2;
 
-                                    data.apps.get(i).screen_num = MainActivity.multiscreen_pager.getCurrentItem();
+                                    data.apps.get(i).screen_num = MainActivity.getMultiscreenPager().getCurrentItem();
                                     SerializationTools.serializeData(data);
                                 }
                             }

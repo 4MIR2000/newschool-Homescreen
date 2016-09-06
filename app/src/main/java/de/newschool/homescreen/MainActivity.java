@@ -51,11 +51,12 @@ import multiscreenfragments.ViewPagerAdapter;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private static final String LOG_TAG = MainActivity.class.getName();
-    static Activity activity; // @TODO Dangerous static instance
+    private static Context context;
+
     private LayoutInflater inflater;
     //layout views declaration
     private GridView drawergrid;
-    static SlidingDrawer slidingDrawer; // @TODO Dangerous static instance
+    private static SlidingDrawer slidingDrawer;
     private LinearLayout app_widget_layout;
     private LinearLayout app_widget_child_layout;
     private TextView delete_bar;
@@ -64,8 +65,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private PackageManager manager;
     private DrawerAdapter drawerAdapterObject;
 
-    public static ArrayList<AppDetail> apps; // @TODO Dangerous static instance
-    static boolean isLaunchable = true; // @TODO Dangerous static instance
+    private static ArrayList<AppDetail> apps;
+
 
     private AppWidgetManager mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
@@ -76,10 +77,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private DynamicGridView subjects_grid;
     private ListView oneDayTimetable;
 
-    static ViewPager multiscreen_pager; // @TODO Dangerous static instance
-    static ViewPagerAdapter mpagerAdapter; // @TODO Dangerous static instance
+    private static ViewPager multiscreen_pager;
+    private static ViewPagerAdapter mpagerAdapter;
     private ImageView[] dots;
-    static LinearLayout viewPagerIndicator_layout; // @TODO Dangerous static instance
+    private static LinearLayout viewPagerIndicator_layout;
     private List<RelativeLayout> multiScreen_layouts;
 
     private int day_of_timetable = 1000;
@@ -96,8 +97,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         hideStatusBar();
+        hideStatusBar();
 
+        context = this;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -107,7 +109,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         registerReceiver(new LockscreenReceiver(),lockscreen_filter);
 
 
-        activity = this;
+
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         intialize_AllApps_Drawer();
@@ -143,7 +145,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         slidingDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {
-                isLaunchable = true;
+                DrawerClick.setAppLaunchable(true);
 
             }
         });
@@ -170,7 +172,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
-        checkForUpdates();
+        //checkForUpdates();
 
         Files.makeFiles();
 
@@ -527,11 +529,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         protected void onPostExecute(String result) {
 
             if (drawerAdapterObject == null) {
-                drawerAdapterObject = new DrawerAdapter(activity);
+                drawerAdapterObject = new DrawerAdapter();
                 //Adding the content look at DrawerAdapter class
                 drawergrid.setAdapter(drawerAdapterObject);
-                drawergrid.setOnItemLongClickListener(new DrawerLongClick(activity, app_widget_layout, delete_bar));
-                drawergrid.setOnItemClickListener(new DrawerClick(activity));
+                drawergrid.setOnItemLongClickListener(new DrawerLongClick( app_widget_layout, delete_bar));
+                drawergrid.setOnItemClickListener(new DrawerClick());
             } else {
                 drawerAdapterObject.notifyDataSetInvalidated();
                 drawerAdapterObject.notifyDataSetChanged();
@@ -643,6 +645,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //slidingDrawer.bringToFront();
     }
 
+    public static Context getContext(){
+        return context;
+    }
+
+    public static ArrayList<AppDetail> getApps(){
+
+        return apps;
+    }
+
+    public static LinearLayout  getViewPagerIndicatorLayout(){
+        return viewPagerIndicator_layout;
+    }
+
+    public static ViewPager getMultiscreenPager(){
+        return multiscreen_pager;
+    }
+
+    public static SlidingDrawer getSlidingDrawer(){
+        return slidingDrawer;
+    }
+
+    public static ViewPagerAdapter getMpagerAdapter(){
+        return  mpagerAdapter;
+    }
     @Override
     protected void onStart() {
         super.onStart();

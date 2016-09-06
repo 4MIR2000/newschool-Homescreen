@@ -11,7 +11,7 @@ class SerializationTools {
     public static void serializeData(AppSerializableData obj) {
         FileOutputStream fos;
         try {
-            fos = MainActivity.activity.openFileOutput("data", Context.MODE_PRIVATE);
+            fos = MainActivity.getContext().openFileOutput("data", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(obj);
             os.close();
@@ -24,7 +24,7 @@ class SerializationTools {
         ObjectInputStream inputStream = null;
 
         try {
-            inputStream = new ObjectInputStream(MainActivity.activity.openFileInput("data"));
+            inputStream = new ObjectInputStream(MainActivity.getContext().openFileInput("data"));
             Object obj = inputStream.readObject();
             if (obj instanceof AppSerializableData) {
                 return (AppSerializableData) obj;
