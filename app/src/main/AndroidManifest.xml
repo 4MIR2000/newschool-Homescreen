@@ -62,9 +62,15 @@
             android:theme="@style/AppTheme"
             android:label="@string/timetable"></activity>
 
-        <service android:name="de.newschool.homescreen.LockscreenRestoreService"
-            android:enabled="true"
-            android:exported="true"></service>
+       <receiver
+           android:name=".DownloadReceiver"
+           android:exported="true"
+           android:enabled="true">
+
+           <intent-filter>
+               <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+           </intent-filter>
+       </receiver>
     </application>
 
 </manifest>
