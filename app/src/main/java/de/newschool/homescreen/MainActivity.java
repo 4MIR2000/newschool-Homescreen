@@ -2,6 +2,7 @@ package de.newschool.homescreen;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -16,6 +17,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -37,8 +39,21 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.askerov.dynamicgrid.DynamicGridView;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
 
+import org.askerov.dynamicgrid.DynamicGridView;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,6 +68,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final String LOG_TAG = MainActivity.class.getName();
     private static Context context;
 
+
+    private boolean madeFiles = false;
+
     private LayoutInflater inflater;
     //layout views declaration
     private GridView drawergrid;
@@ -60,7 +78,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private LinearLayout app_widget_layout;
     private LinearLayout app_widget_child_layout;
     private TextView delete_bar;
-    private ProgressBar loading_bar;
+    private ProgressBar timetable_loading_bar;
+    private ProgressBar subjects_loading_bar;
+
 
     private PackageManager manager;
     private DrawerAdapter drawerAdapterObject;
@@ -99,12 +119,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         hideStatusBar();
 
+        new MakeFiles().execute();
+
         context = this;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         //LOCKSCREEN RECEIVER
         IntentFilter lockscreen_filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        lockscreen_filter.addAction(Intent.ACTION_SCREEN_ON);
+
         lockscreen_filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(new LockscreenReceiver(),lockscreen_filter);
 
@@ -118,8 +142,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         app_widget_child_layout = (LinearLayout) findViewById(R.id.app_widget_child_layout);
 
         delete_bar = (TextView) findViewById(R.id.delete_bar);
-        loading_bar = (ProgressBar) findViewById(R.id.loadingbar);
 
+        timetable_loading_bar = (ProgressBar) findViewById(R.id.timetable_loadingbar);
         oneDayTimetable = (ListView) findViewById(R.id.oneDayTimetable);
 
         //the view pager is for the appWidget_placement
@@ -128,10 +152,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         manager = getPackageManager();
 
-        Substitution substitution_class = new Substitution();
 
-        new SubjectsGrid_declaration().execute();
-        //new OneDayTimeTable_declaration().execute();
+
+        subjects_loading_bar = (ProgressBar)findViewById(R.id.subjects_loadingbar);
+        subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
+        subjects_grid.setVisibility(View.GONE);
+
+        //if Files are created (NewSchool foler)
+        if(madeFiles) {
+            new SubjectsGrid_declaration().execute();
+        }else{
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    new SubjectsGrid_declaration().execute();
+                }
+            },1000);
+        }
 
 
         //For reloading timetable if date changes
@@ -159,6 +197,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //for refreshing the GridView
         registerReceiver(new appsReceiver(), filter);
 
+        IntentFilter downloadFilter = new IntentFilter();
+        filter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        //registerReceiver(new DownloadReceiver(),downloadFilter);
+
         //AppWidgetManager gives us data about the installed Widgets
         mAppWidgetManager = AppWidgetManager.getInstance(this);
 
@@ -172,12 +214,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
-        //checkForUpdates();
+        checkForUpdates();
 
-        Files.makeFiles();
+       // new AppsLockSocket().execute();
 
        // new OneDayTimeTable_declaration().execute();
 
+    }
+
+    private class MakeFiles extends AsyncTask<String,Void,String>{
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            Files.makeFiles();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            madeFiles = true;
+
+        }
     }
 
     private void checkForUpdates() {
@@ -188,13 +247,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private class UpdateCheckerRunnable implements Runnable{
-
+        Updates updates_class;
         @Override
         public void run() {
 
-            Updates updates_class = new Updates();
+            if(updates_class != null){
+                updates_class.removeOldAlertDialogs();
+            }
+            updates_class = new Updates();
             updates_class.checkForUpdates();
-            updateCheckerHandler.postDelayed(updateCheckerRunnable,1800000);
+            updateCheckerHandler.postDelayed(updateCheckerRunnable,900000);
 
         }
     }
@@ -216,7 +278,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 
         localLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        localLayoutParams.height = (int) (50 * getResources()
+        localLayoutParams.height = (int) (30 * getResources()
                 .getDisplayMetrics().scaledDensity);
         localLayoutParams.format = PixelFormat.TRANSPARENT;
 
@@ -266,7 +328,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         multiscreen_pager.setOnPageChangeListener(new PagerChangeListener(dots));
     }
 
-    private class ReloadTimetable extends BroadcastReceiver {
+
+        private class ReloadTimetable extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             new OneDayTimeTable_declaration().execute();
@@ -319,7 +382,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String s) {
-            loading_bar.setVisibility(View.GONE);
+            timetable_loading_bar.setVisibility(View.GONE);
             oneDayTimetable.setVisibility(View.VISIBLE);
 
             if (timetable_hours != null) {
@@ -343,9 +406,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             List<SubjectDetail> allSubjects = null;
             SubjectsList list = new SubjectsList();
-            subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
 
-            allSubjects = list.getAllSubjects();
+            //provisorisch:
+            allSubjects = new ArrayList<>();
+            SubjectDetail heft = new SubjectDetail();
+            heft.showInHomescreen = true;
+            heft.name = "heft";
+            heft.pic = R.drawable.heft_icon_drawable;
+            allSubjects.add(0,heft);
+
             allSubjectsShowInHomescreen = new ArrayList<>();
 
             if(allSubjects != null) {
@@ -370,8 +439,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 Log.d("width", Integer.toString(subjects_grid.getWidth()));
 
+                subjects_grid.setVisibility(View.VISIBLE);
 
             }
+
+            subjects_loading_bar.setVisibility(View.GONE);
         }
     }
 
@@ -454,7 +526,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void open_allApps_drawer() {
         if (slidingDrawer.getParent() == null) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                    (app_widget_layout.getMeasuredWidth(), app_widget_child_layout.getMeasuredHeight());
+                    (app_widget_layout.getMeasuredWidth(), app_widget_layout.getMeasuredHeight());
             slidingDrawer.setLayoutParams(params);
             //slidingDrawer.startAnimation(all_apps_anim);
             app_widget_layout.addView(slidingDrawer);
@@ -487,7 +559,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(intent, 0);
 
-            String[][] lockedApps = LockedApps.getLockedApps();
+            List<String> lockedApps = LockedApps.getLockedApps();
 
             apps = new ArrayList<>();
 
@@ -495,9 +567,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 boolean locked = false;
 
                 lockedLoop:
-                for(int j = 0; j<lockedApps[0].length; j++){
-                    if(Objects.equals(avaibleactivities.get(i).activityInfo.packageName, lockedApps[0][j])
-                            && Objects.equals(avaibleactivities.get(i).activityInfo.name, lockedApps[1][j])){
+                for(int j = 0; j<lockedApps.size(); j++){
+                    if(Objects.equals(avaibleactivities.get(i).activityInfo.packageName, lockedApps.get(j))){
 
                         position++;
                         locked = true;
@@ -538,6 +609,82 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 drawerAdapterObject.notifyDataSetInvalidated();
                 drawerAdapterObject.notifyDataSetChanged();
             }
+        }
+    }
+
+
+
+    private class AppsLockSocket extends AsyncTask<String,Void,String> {
+
+        com.github.nkzawa.socketio.client.Socket mSocket;
+        String[][] lockedApps;
+
+        final String[] result = new String[1];
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                mSocket = IO.socket("http://sirius.ddnss.de:3000");
+                mSocket.connect();
+
+                final String religion = Tools.getReligion();
+                if (religion != null) {
+                    mSocket.emit("religion", religion);
+                }
+                mSocket.on("receive lock", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+
+
+
+                        final List<String> lockedApps = new ArrayList<String>();
+                        result[0] = args[0].toString();
+                        try {
+                            JSONObject json= new JSONObject(args[0].toString());
+
+
+                                lockedApps.add(json.getString("packagename"));
+
+
+                            if(json.getString("locked").equals("true")) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this,"locked",Toast.LENGTH_SHORT).show();
+                                        LockedApps.addLockedApps(lockedApps);
+                                        new LoadApps().execute();
+                                    }
+                                });
+
+                            }else{
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this,"delocked",Toast.LENGTH_SHORT).show();
+                                        LockedApps.removeLockedApps(lockedApps);
+                                        new LoadApps().execute();
+                                    }
+                                });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } catch (URISyntaxException e1) {
+                e1.printStackTrace();
+            }
+
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
         }
     }
 
@@ -715,6 +862,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(Objects.equals(getLockedStatus(), "true")) {
+            Intent intent = getPackageManager().getLaunchIntentForPackage("de.newschool.lockscreen");
+
+            if(intent!=null) {
+                startActivity(intent);
+            }
+
+        }
+
         Calendar calendar = Calendar.getInstance();
         int which_day = calendar.get(Calendar.DAY_OF_WEEK) - 2;
         if (which_day == -1) {
@@ -723,10 +880,49 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         //if there is a new timetable
         if (day_of_timetable != which_day) {
-            oneDayTimetable.setVisibility(View.GONE);
-            loading_bar.setVisibility(View.VISIBLE);
+            timetable_loading_bar.setVisibility(View.VISIBLE);
+            if(madeFiles) {
+                oneDayTimetable.setVisibility(View.GONE);
 
-            new OneDayTimeTable_declaration().execute();
+                new OneDayTimeTable_declaration().execute();
+            }else{
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        oneDayTimetable.setVisibility(View.GONE);
+                        timetable_loading_bar.setVisibility(View.VISIBLE);
+
+                        new OneDayTimeTable_declaration().execute();
+                        handler.removeCallbacks(this);
+                    }
+                },1000);
+            }
         }
     }
-}
+
+    private String getLockedStatus(){
+
+        File root = new File(Environment.getExternalStorageDirectory(), ".NewSchool" + File.separator + "Status" + File.separator + "ls.txt");
+        FileInputStream fis = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+
+        try {
+            fis = new FileInputStream(root);
+            isr = new InputStreamReader(fis);
+            br = new BufferedReader(isr);
+
+            return br.readLine();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        return null;
+    }
+    }
+

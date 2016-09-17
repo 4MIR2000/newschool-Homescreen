@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_centerInParent="true"
-                android:id="@+id/loadingbar"
+                android:id="@+id/timetable_loadingbar"
 
                 />
         </RelativeLayout>
@@ -63,7 +63,10 @@
         android:id="@+id/subjects"
         android:layout_weight="0.4"
         android:layout_marginRight="@dimen/subjectGridView_margin"
-        android:layout_marginLeft="@dimen/subjectGridView_margin">
+        android:layout_marginLeft="@dimen/subjectGridView_margin"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal">
 
         <org.askerov.dynamicgrid.DynamicGridView
             android:layout_width="match_parent"
@@ -80,6 +83,14 @@
 
             />
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/subjects_loadingbar"
+            android:layout_centerInParent="true"
+
+            />
 
     </LinearLayout>
 
