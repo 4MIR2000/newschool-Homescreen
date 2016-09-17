@@ -3,12 +3,6 @@
     <string name="lockscreen">New School Lockscreen</string>
     <string name="action_settings">Settings</string>
 
-    <string name="square_root_symbol">√¯¯</string>
-    <string name="squared_two">"X\u00B2"</string>
-    <string name="qube">"X\u00B3"</string>
-    <string name="delete_numbers">"\u21D0"</string>
-    <string name="degree_celsius">"\u2103"</string>
-    <string name="pi">"\u03C0"</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="german">Deutsch</string>
@@ -28,11 +22,12 @@
     <string name="cancel">abbrechen</string>
     <string name="false_pin">Falscher Pin</string>
     <string name="update_title">Neues Update verfügbar!</string>
-    <string name="update_message">Installieren? </string>
+    <string name="update_message">Herunterladen? </string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="newAppAvaible_title">Eine neue App ist verfügbar für dich! </string>
-    <string name="newAppAvaible_message">Installieren? </string>
+    <string name="newAppAvaible_message">Herunterladen? </string>
+    <string name="downloading_progressBar">Download wird durchgeführt. Bitte warten...</string>
 
 
 </resources>

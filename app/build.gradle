@@ -7,8 +7,8 @@ android {
         applicationId "de.newschool.homescreen"
         minSdkVersion 21
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -27,6 +27,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile project(':libs:dynamicgrid')
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
 
 
 }
