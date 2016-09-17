@@ -29,7 +29,7 @@ class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGr
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        mgridView.startEditMode(position);
+        //mgridView.startEditMode(position);
 
         return true;
     }
@@ -37,13 +37,13 @@ class SubjectListeners implements AdapterView.OnItemLongClickListener, DynamicGr
     @Override
     public void onActionDrop() {
         Log.d(TAG, " item droped");
-        mgridView.stopEditMode();
+       // mgridView.stopEditMode();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         try {
-            Intent intent = mcontext.getPackageManager().getLaunchIntentForPackage("de.newschool.schreibapp");
+            Intent intent = mcontext.getPackageManager().getLaunchIntentForPackage("com.steadfastinnovation.android.projectpapyrus");
 
             if(intent != null) {
                 SubjectDetail detail = (SubjectDetail) mgridView.getItemAtPosition(position);
