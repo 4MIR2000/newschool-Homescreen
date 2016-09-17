@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.annotation.IntegerRes;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -36,6 +39,19 @@ class DrawerClick implements AdapterView.OnItemClickListener {
             ComponentName cp = new ComponentName(MainActivity.getApps().get(position).packageName, MainActivity.getApps().get(position).name);
             launchintent.setComponent(cp);
 
+            PackageInfo pinfo = null;
+            try {
+                pinfo = MainActivity.getContext().getPackageManager().getPackageInfo(MainActivity.getApps().get(position).packageName, 0);
+                int actualversionCode = pinfo.versionCode;
+
+
+              // Toast.makeText(mcontext,Integer.toString(actualversionCode),Toast.LENGTH_LONG).show();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+           // Toast.makeText(mcontext,Integer.toString(pinfo.versionCode),Toast.LENGTH_LONG).show();
+            //Toast.makeText(mcontext,MainActivity.getApps().get(position).name,Toast.LENGTH_LONG).show();
             mcontext.startActivity(launchintent);
         }
     }
