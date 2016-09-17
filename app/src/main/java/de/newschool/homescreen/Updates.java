@@ -2,6 +2,7 @@ package de.newschool.homescreen;
 
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ASUS on 01.09.2016.
@@ -38,11 +41,23 @@ public class Updates {
     private String[][] package_Versions;
     private String[] apkUrls = {};
 
+    private int actualAppPosition;
+    ProgressDialog progressDialog;
+
+    List<AlertDialog> alertDialogs;
 
     public void checkForUpdates() {
 
         new GetVersionsFromServer().execute();
 
+    }
+
+    public void removeOldAlertDialogs(){
+        if(alertDialogs != null) {
+            for (AlertDialog alertDialog : alertDialogs) {
+                alertDialog.cancel();
+            }
+        }
     }
 
     private class GetVersionsFromServer extends AsyncTask<String, Void, String> {
@@ -51,7 +66,7 @@ public class Updates {
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("http://sirius.ddnss.de:2000/student/getVersions");
+                URL url = new URL(VERSIONSURL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(10000);
 
@@ -77,6 +92,7 @@ public class Updates {
                     package_Versions[1] = new String[parentArray.length()];
                     package_Versions[2] = new String[parentArray.length()];
 
+                    alertDialogs = new ArrayList<>();
                     for (int i = 0; i < parentArray.length(); i++) {
                         JSONObject finalObject = parentArray.getJSONObject(i);
 
@@ -109,97 +125,120 @@ public class Updates {
 //            Toast.makeText(MainActivity.activity,package_Versions[0].length,Toast.LENGTH_SHORT).show();
             if (package_Versions != null) {
 
-                for (int i = 0; i < package_Versions[1].length; i++) {
-                    try {
-                        PackageInfo pinfo = MainActivity.getContext().getPackageManager().getPackageInfo(package_Versions[0][i], 0);
-                        int actualversionCode = pinfo.versionCode;
-                        int serverversionCode = Integer.parseInt(package_Versions[1][i]);
-                        String apkUrl = package_Versions[2][i];
-
-                        if (serverversionCode > actualversionCode) {
-                            //Toast.makeText(MainActivity.activity, "new version of " + package_Versions[0][i] + " avaible", Toast.LENGTH_SHORT).show();
-
-                           // showUpdateDialog(apkUrl);
-                           // MainActivity.activity.startActivity(intent);
-                            updateInBackground(apkUrl,true);
-
-                        }
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                        //Toast.makeText(MainActivity.activity, "new App " + package_Versions[0][i] + " avaible", Toast.LENGTH_SHORT).show();
-
-                        String apkUrl = package_Versions[2][i];
-                        updateInBackground(apkUrl,false);
-                        //showNewAppDialog(apkUrl);
-                    }
-                }
+                    checkForUpdateOrNewApp(actualAppPosition);
             }
         }
     }
 
 
-    private void showUpdateDialog( final String apkUrl, final Uri path, final String downloadedFileType){
+    private void checkForUpdateOrNewApp(int position){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
-        builder.setTitle(MainActivity.getContext().getString(R.string.update_title));
-        builder.setMessage(MainActivity.getContext().getString(R.string.update_message));
-        builder.setIcon(R.drawable.newschool);
-        builder.setCancelable(false);
-        builder.setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
+        try {
+            PackageInfo pinfo = MainActivity.getContext().getPackageManager().getPackageInfo(package_Versions[0][position], 0);
+            int actualversionCode = pinfo.versionCode;
+            int serverversionCode = Integer.parseInt(package_Versions[1][position]);
+            String apkUrl = package_Versions[2][position];
+
+            if (serverversionCode > actualversionCode) {
+                //Toast.makeText(MainActivity.activity, "new version of " + package_Versions[0][i] + " avaible", Toast.LENGTH_SHORT).show();
+
+                // showUpdateDialog(apkUrl);
+                // MainActivity.activity.startActivity(intent);
+                showUpdateDialog(apkUrl);
+                return;
+
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            //Toast.makeText(MainActivity.activity, "new App " + package_Versions[0][i] + " avaible", Toast.LENGTH_SHORT).show();
+
+            String apkUrl = package_Versions[2][position];
+            showNewAppDialog(apkUrl);
+            //showNewAppDialog(apkUrl);
+            return;
+        }
+
+        //if there is no new update or app to download on this position than go to the next app position
+
+        if(actualAppPosition<package_Versions[0].length-1) {
+            actualAppPosition++;
+            checkForUpdateOrNewApp(actualAppPosition);
+        }
+
+    }
+
+
+    private void showUpdateDialog( final String apkUrl){
+
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.getContext())
+            .setTitle(MainActivity.getContext().getString(R.string.update_title))
+            .setMessage(MainActivity.getContext().getString(R.string.update_message))
+            .setIcon(R.drawable.newschool)
+            .setCancelable(false)
+            .setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent install = new Intent(Intent.ACTION_VIEW);
-                install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                install.setDataAndType(path,downloadedFileType);
-                MainActivity.getContext().startActivity(install);
+
+                progressDialog = ProgressDialog.show(MainActivity.getContext(),"",MainActivity.getContext().getString(R.string.downloading_progressBar), true, false);
+                downloadInBackground(apkUrl,true);
+
 
 
             }
-        });
-        builder.setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+        })
+            .setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+        })
+
+            .create();
+        alertDialog.show();
+
+        alertDialogs.add(alertDialog);
 
 
     }
 
-    private void showNewAppDialog(final String apkUrl, final Uri path, final String downloadedFileType){
+    private void showNewAppDialog(final String apkUrl){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
-        builder.setTitle(MainActivity.getContext().getString(R.string.newAppAvaible_title));
-        builder.setMessage(MainActivity.getContext().getString(R.string.newAppAvaible_message));
-        builder.setIcon(R.drawable.newschool);
-        builder.setCancelable(false);
-        builder.setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent install = new Intent(Intent.ACTION_VIEW);
-                install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                install.setDataAndType(path,downloadedFileType);
-                MainActivity.getContext().startActivity(install);
-            }
-        });
-        builder.setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.getContext())
+                .setTitle(MainActivity.getContext().getString(R.string.newAppAvaible_title))
+                .setMessage(MainActivity.getContext().getString(R.string.newAppAvaible_message))
+                .setIcon(R.drawable.newschool)
+                .setCancelable(false)
+                .setPositiveButton(MainActivity.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+
+                        progressDialog = ProgressDialog.show(MainActivity.getContext(),"",MainActivity.getContext().getString(R.string.downloading_progressBar), true, false);
+                        downloadInBackground(apkUrl,false);
+
+
+
+                    }
+                })
+
+                .setNegativeButton(MainActivity.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+
+
+
+        alertDialog.show();
+        alertDialogs.add(alertDialog);
     }
 
 
-    private void updateInBackground(final String apkUrl, final boolean update){
+    private void downloadInBackground(final String apkUrl, final boolean update){
 
         String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
         String filename = "";
 
         filename = URLUtil.guessFileName(apkUrl,null, MimeTypeMap.getFileExtensionFromUrl(apkUrl));
         destination+=filename;
-
         File file = new File(destination);
         if(file.exists()){
             file.delete();
@@ -208,7 +247,7 @@ public class Updates {
         final Uri uri = Uri.parse("file://" + destination);
 
 
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("http://sirius.ddnss.de/test/Homescreen-1.6.apk"));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
         request.setTitle(filename);
         request.setDestinationUri(uri);
         request.allowScanningByMediaScanner();
@@ -223,13 +262,26 @@ public class Updates {
             public void onReceive(Context context, Intent intent) {
 
                 if(update){
-                    showUpdateDialog(apkUrl,uri,manager.getMimeTypeForDownloadedFile(downloadId));
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    install.setDataAndType(uri,manager.getMimeTypeForDownloadedFile(downloadId));
+                    MainActivity.getContext().startActivity(install);
+
 
                 }else{
 
-                    showNewAppDialog(apkUrl,uri,manager.getMimeTypeForDownloadedFile(downloadId));
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    install.setDataAndType(uri,manager.getMimeTypeForDownloadedFile(downloadId));
+                    MainActivity.getContext().startActivity(install);
+
                 }
 
+                progressDialog.dismiss();
+                if(actualAppPosition<package_Versions[0].length-1){
+                    actualAppPosition++;
+                    checkForUpdateOrNewApp(actualAppPosition);
+                }
                 context.unregisterReceiver(this);
 
 
@@ -240,7 +292,7 @@ public class Updates {
 
         MainActivity.getContext().registerReceiver(onDonwloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
-
-
     }
+
+
 }
