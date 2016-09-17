@@ -1,6 +1,9 @@
 package de.newschool.homescreen;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,46 +11,52 @@ import java.util.List;
  */
 public class LockedApps {
 
-    public static String[][] getLockedApps(){
+    private static List<String> lockedApps = new ArrayList<>();
 
-        String[][] apps = new String[][]{{
-                "de.newschool.homescreen",
-                "de.newschool.lockscreen",
-                "com.android.settings",
-                "com.android.vending",
-                "com.android.browser",
-                "com.google.android.apps.docs",
-                "com.google.android.gm",
-                "com.google.android.googlequicksearchbox",
-                "com.google.android.apps.plus",
-                "com.google.android.talk",
-                "com.google.android.play.games",
-                "com.google.android.videos",
-                "com.huawei.systemmanager",
-                "com.google.android.googlequicksearchbox",
-               },
+    public static List<String> getLockedApps(){
 
-                {
-                        "de.newschool.homescreen.MainActivity",
-                        "de.newschool.lockscreen.MainActivity",
-                        "com.android.settings.HWSettings",
-                        "com.android.vending.AssetBrowserActivity",
-                        "com.android.browser.BrowserActivity",
-                        "com.google.android.apps.docs.app.NewMainProxyActivity",
-                        "com.google.android.gm.ConversationListActivityGmail",
-                        "com.google.android.googlequicksearchbox.SearchActivity",
-                        "com.google.android.apps.plus.phone.HomeActivity",
-                        "com.google.android.talk.SigningInActivity",
-                        "com.google.android.gms.games.ui.destination.main.MainActivity",
-                        "com.google.android.youtube.videos.EntryPoint",
-                        "com.huawei.systemmanager.mainscreen.MainScreenActivity",
-                        "com.google.android.googlequicksearchbox.VoiceSearchActivity",
-                        }
-
-        };
+        lockedApps.add("de.newschool.homescreen");
+        lockedApps.add("de.newschool.lockscreen");
+        lockedApps.add("com.android.settings");
+        lockedApps.add( "com.android.vending");
+        lockedApps.add( "com.android.browser");
+        lockedApps.add("com.google.android.apps.docs");
+        lockedApps.add("com.google.android.gm");
+        lockedApps.add("com.google.android.googlequicksearchbox");
+        lockedApps.add("com.google.android.apps.plus");
+        lockedApps.add("com.google.android.talk");
+        lockedApps.add("com.google.android.play.games");
+        lockedApps.add("com.google.android.videos");
+        lockedApps.add( "com.huawei.systemmanager");
+        lockedApps.add("com.google.android.gms");
+        lockedApps.add("com.google.android.apps.photos");
+        lockedApps.add("com.google.android.apps.books");
+        lockedApps.add("com.google.android.music");
+        lockedApps.add("com.google.android.apps.magazines");
 
 
-        return apps;
+        return lockedApps;
+    }
+
+    public static void addLockedApps(List<String> apps){
+        for(int i=0; i<apps.size();i++){
+
+            lockedApps.add(apps.get(i));
+        }
+    }
+
+    public static void removeLockedApps(List<String> apps){
+
+//        Toast.makeText(MainActivity.getContext(),lockedApps[0].length,Toast.LENGTH_SHORT).show();
+        for(int i=0; i<apps.size();i++){
+            for(int j=0; j<lockedApps.size(); j++){
+                if(lockedApps.get(j).equals(apps.get(i))){
+
+                     lockedApps.remove(j);
+
+                }
+            }
+        }
     }
 
 }
