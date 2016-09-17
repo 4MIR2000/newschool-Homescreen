@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import de.newschool.homescreen.R;
 
 class WeekTimetableGridAdapter extends BaseAdapter {
@@ -22,11 +24,14 @@ class WeekTimetableGridAdapter extends BaseAdapter {
         mcontext = context;
         mtimetable = timetable;
         mlongestDayHoursNum = longestDayHoursNum;
+
+
     }
 
     @Override
     public int getCount() {
-        return mtimetable.days.size() * mlongestDayHoursNum;
+
+        return mtimetable.days.size()*mlongestDayHoursNum;
     }
 
     @Override
@@ -75,6 +80,7 @@ class WeekTimetableGridAdapter extends BaseAdapter {
 
         // Toast.makeText(mcontext,Integer.toString(day_position),Toast.LENGTH_SHORT).show();
         int hourposition = position / mtimetable.days.size();
+
 
         if (hourposition < mtimetable.days.get(day_position).hours.size()) {
             holder.build(mtimetable.days.get(day_position).hours.get(hourposition).subject,
