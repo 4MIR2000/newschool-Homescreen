@@ -37,7 +37,7 @@ import java.util.List;
  * Created by ASUS on 01.09.2016.
  */
 public class Updates {
-    private final String VERSIONSURL = "http://sirius.ddnss.de:2000/student/getVersions";
+    private final String VERSIONSURL = "http://10.200.1.1:2000/student/getVersions";
     private String[][] package_Versions;
     private String[] apkUrls = {};
 
