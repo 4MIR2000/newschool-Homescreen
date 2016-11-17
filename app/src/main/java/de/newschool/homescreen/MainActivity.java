@@ -1,8 +1,11 @@
 package de.newschool.homescreen;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -12,14 +15,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -58,6 +68,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import multiscreenfragments.PagerChangeListener;
 import multiscreenfragments.ViewPagerAdapter;
@@ -113,11 +125,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
     Runnable updateCheckerRunnable;
 
 
+    Handler notAllowedAppsHandler;
+    Runnable notAllowedAppsRunnable;
+
+    Handler securityServiceHandler;
+    Runnable securityServiceRunnable;
+
+    boolean noMoreNotAllowedApps;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        hideStatusBar();
+        //hideStatusBar();
+
+        //check if our app is set the default homescreen
+        //if not start request intent
 
         new MakeFiles().execute();
 
@@ -216,11 +243,106 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         checkForUpdates();
 
+        new CheckForNotAllowedApps().execute();
+
+
+        //drawSystembar();
+
        // new AppsLockSocket().execute();
 
        // new OneDayTimeTable_declaration().execute();
 
+
+
+
+      checkSecurityService();
+
+
+
+
+        }
+
+
+    //this methode checks every second if the security service is running or not
+    //if not it will start it
+    private void checkSecurityService(){
+        securityServiceHandler = new Handler();
+        securityServiceRunnable = new Runnable() {
+            @Override
+            public void run() {
+                List<ActivityManager.RunningServiceInfo> runningServices = Tools.getRunningServices();
+
+                boolean running = false;
+                for(int i = 0; i<runningServices.size();i++){
+                    if(runningServices.get(i).service.equals("de.newschool.securityservice")){
+                        running = true;
+                    }
+                }
+
+                if(!running){
+                    Intent securityService = new Intent();
+                    securityService.setComponent(new ComponentName("de.newschool.securityservice","de.newschool.securityservice.MainService"));
+                    startService(securityService);
+
+
+                }
+
+                securityServiceHandler.postDelayed(securityServiceRunnable,1000);
+            }
+        };
+
+        securityServiceHandler.postDelayed(securityServiceRunnable,1000);
     }
+
+
+
+
+    private String getForegrundApp(){
+        String currentApp = null;
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            UsageStatsManager usm = (UsageStatsManager)getSystemService(Context.USAGE_STATS_SERVICE);
+            long time = System.currentTimeMillis();
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time-1000*1000,time);
+
+
+            if(appList != null || appList.size() > 0){
+                SortedMap<Long,UsageStats> sortedMap = new TreeMap<>();
+
+                for(UsageStats usageStats:appList){
+
+                    sortedMap.put(usageStats.getLastTimeStamp(),usageStats);
+                }
+
+                if(sortedMap != null && !sortedMap.isEmpty()){
+
+
+
+                    currentApp = sortedMap.get(sortedMap.lastKey()).getPackageName();
+                        Toast.makeText(this,sortedMap.get(sortedMap.lastKey()).getLastTimeUsed()+"last time used",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,sortedMap.get(sortedMap.lastKey()).getLastTimeStamp()+" last time stamp",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(this,currentApp,Toast.LENGTH_SHORT).show();
+                    return currentApp;
+
+                     }else{
+                         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                       //  startActivity(intent);
+                     }
+
+            }
+        }else{
+            ActivityManager activityManager = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> tasks = activityManager.getRunningAppProcesses();
+            currentApp = tasks.get(0).processName;
+            return currentApp;
+
+        }
+
+
+
+        return null;
+    }
+
+
 
     private class MakeFiles extends AsyncTask<String,Void,String>{
 
@@ -239,6 +361,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private boolean isHomescreenRunning(){
+        boolean isrunning = false;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            long time = System.currentTimeMillis();
+            UsageStatsManager usageStatsManager = (UsageStatsManager)getSystemService(USAGE_STATS_SERVICE);
+            List<UsageStats> usageStatses = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,time-1000*1000,time);
+
+
+            for(UsageStats usageState:usageStatses){
+                if(usageState.getPackageName().equals("de.newschool.homescreen")){
+                    isrunning = true;
+                    break;
+                }
+            }
+        }else{
+            ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> tasks = activityManager.getRunningAppProcesses();
+            for(ActivityManager.RunningAppProcessInfo processInfo:tasks){
+                if(processInfo.processName.equals("de.newschool.homescreen")){
+                    isrunning = true;
+                }
+            }
+        }
+
+        return isrunning;
+
+    }
+
     private void checkForUpdates() {
         updateCheckerHandler = new Handler();
         updateCheckerRunnable = new UpdateCheckerRunnable();
@@ -251,16 +401,129 @@ public class MainActivity extends Activity implements View.OnClickListener {
         @Override
         public void run() {
 
+
             if(updates_class != null){
                 updates_class.removeOldAlertDialogs();
             }
             updates_class = new Updates();
             updates_class.checkForUpdates();
-            updateCheckerHandler.postDelayed(updateCheckerRunnable,900000);
+            updateCheckerHandler.postDelayed(updateCheckerRunnable,90000);
 
         }
     }
 
+    private class CheckForNotAllowedApps extends AsyncTask<String,String,String> {
+
+
+        // NotAllowedApps notAllowedApps_class;
+
+        List<ApplicationInfo> apps = manager.getInstalledApplications(0);
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            noMoreNotAllowedApps = false;
+            PackageManager manager = MainActivity.this.getPackageManager();
+
+            List<String> allowedApps = AppsList.getAllowedApps();
+
+
+
+            for (int i = 0; i < apps.size(); i++) {
+
+                boolean allowed = false;
+                String packagename_splitted = "";
+                TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter('.');
+                sss.setString(apps.get(i).packageName);
+
+
+                try {
+                    packagename_splitted += sss.next();
+                    packagename_splitted += sss.next();
+                } catch (StringIndexOutOfBoundsException e) {
+
+                }
+                for (int j = 0; j < allowedApps.size(); j++) {
+
+                    if (Objects.equals(apps.get(i).packageName, allowedApps.get(j)) || Objects.equals(packagename_splitted, "comandroid")
+                            || Objects.equals(packagename_splitted, "comgoogle")
+                            || Objects.equals(packagename_splitted, "comhuawei")
+                            || Objects.equals(packagename_splitted, "denewschool")
+                            || Objects.equals(packagename_splitted, "commicrosoft")
+                            || Objects.equals(packagename_splitted, "denewschool_tablet"))
+                    {
+
+
+                        // Toast.makeText(MainActivity.context,packagename_splitted,Toast.LENGTH_LONG).show();
+
+                        allowed = true;
+                    }
+                }
+
+                if(!allowed){
+                    return apps.get(i).packageName;
+                }
+
+            }
+
+            noMoreNotAllowedApps = true;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String packagename_parameter) {
+            super.onPostExecute(packagename_parameter);
+
+            if (packagename_parameter != null) {
+
+                String packagename = "package:"+packagename_parameter;
+                Intent intent = new Intent(Intent.ACTION_DELETE);
+                intent.setData(Uri.parse(packagename));
+                MainActivity.this.startActivity(intent);
+                //Toast.makeText(MainActivity.this,packagename,Toast.LENGTH_LONG).show();
+                //notAllowedAppsHandler.postDelayed(notAllowedAppsRunnable,4000);
+
+            }
+
+        }
+    }
+
+
+
+
+    private void drawSystembar(){
+
+        WindowManager manager = ((WindowManager) getApplicationContext()
+                .getSystemService(Context.WINDOW_SERVICE));
+
+        WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
+        localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        localLayoutParams.gravity = Gravity.BOTTOM;
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+
+                // this is to enable the notification to recieve touch events
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+
+                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS|
+                // Draws over status bar
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
+        localLayoutParams.verticalMargin = -100;
+        localLayoutParams.width =(int) (50 * getResources()
+                .getDisplayMetrics().scaledDensity);
+        localLayoutParams.height = (int) (50 * getResources()
+                .getDisplayMetrics().scaledDensity);
+       // localLayoutParams.format = PixelFormat.TRANSPARENT;
+
+        //Homebar view = new Homebar(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.fach_biologie);
+        ImageView imageView = new ImageView(MainActivity.getContext());
+        imageView.setImageDrawable(drawable);
+
+        imageView.setOnClickListener(this);
+        manager.addView(imageView, localLayoutParams);
+
+    }
 
     private void hideStatusBar(){
         WindowManager manager = ((WindowManager) getApplicationContext()
@@ -449,6 +712,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         if (v.getId() == R.id.apps_icon_imageView) {
             open_allApps_drawer();
             timesClickedTheAppsButton++;
@@ -554,15 +818,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //manager gives data about installed packages
             manager = getPackageManager();
 
+
             Intent intent = new Intent(Intent.ACTION_MAIN, null);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
             List<ResolveInfo> avaibleactivities = manager.queryIntentActivities(intent, 0);
 
-            List<String> lockedApps = LockedApps.getLockedApps();
+            List<String> lockedApps = AppsList.getLockedApps();
 
             apps = new ArrayList<>();
 
+            //check if app should be shown or not
             for (int i = 0; i < avaibleactivities.size(); i++) {
                 boolean locked = false;
 
@@ -576,14 +842,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                 }
 
-                if(!locked) {
+                //if(!locked) {
                     AppDetail detail = new AppDetail();
                     detail.label = avaibleactivities.get(i).loadLabel(manager).toString();
                     detail.name = avaibleactivities.get(i).activityInfo.name;
                     detail.packageName = avaibleactivities.get(i).activityInfo.packageName;
                     detail.icon = avaibleactivities.get(i).loadIcon(manager);
                     apps.add(detail);
-                }
+               // }
 
 
 
@@ -651,7 +917,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                     @Override
                                     public void run() {
                                         Toast.makeText(MainActivity.this,"locked",Toast.LENGTH_SHORT).show();
-                                        LockedApps.addLockedApps(lockedApps);
+                                        AppsList.addLockedApps(lockedApps);
                                         new LoadApps().execute();
                                     }
                                 });
@@ -661,7 +927,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                     @Override
                                     public void run() {
                                         Toast.makeText(MainActivity.this,"delocked",Toast.LENGTH_SHORT).show();
-                                        LockedApps.removeLockedApps(lockedApps);
+                                        AppsList.removeLockedApps(lockedApps);
                                         new LoadApps().execute();
                                     }
                                 });
@@ -720,6 +986,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             //for refreshing the gridView
             new LoadApps().execute();
+            new CheckForNotAllowedApps().execute();
         }
     }
 
@@ -828,6 +1095,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onStop();
         //if app is not showing than stop updating
         mAppWidgetHost.stopListening();
+
+
     }
 
     public void removeWidget(AppWidgetHostView v) {
@@ -857,6 +1126,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+
+
+
     }
 
     @Override
@@ -899,6 +1177,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 },1000);
             }
         }
+
+        //look for illegal apps
+        if(!noMoreNotAllowedApps){
+            new CheckForNotAllowedApps().execute();
+        }
     }
 
     private String getLockedStatus(){
@@ -919,10 +1202,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-
         }
 
         return null;
+
     }
+
+
     }
 

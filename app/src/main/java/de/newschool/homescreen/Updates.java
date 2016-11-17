@@ -34,10 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ASUS on 01.09.2016.
+ * Created by Amir on 01.09.2016.
  */
 public class Updates {
-    private final String VERSIONSURL = "http://10.200.1.1:2000/student/getVersions";
+    private final String INTERNVERSIONSURL = "http://10.200.1.1:2000/student/getVersions";
+    private final String EXTERNVERSIONURL = "https://sirius.ddnss.de:2000/student/getVersions";
     private String[][] package_Versions;
     private String[] apkUrls = {};
 
@@ -63,10 +64,12 @@ public class Updates {
     private class GetVersionsFromServer extends AsyncTask<String, Void, String> {
         String title;
 
+        boolean success;
+
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL(VERSIONSURL);
+                URL url = new URL(INTERNVERSIONSURL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(10000);
 
@@ -101,6 +104,8 @@ public class Updates {
                         package_Versions[2][i] = finalObject.getString("apk");
                     }
 
+                    success = true;
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,6 +117,61 @@ public class Updates {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            if(!success){
+
+
+                try {
+                    URL url = new URL(EXTERNVERSIONURL);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setConnectTimeout(10000);
+
+                    try {
+                        InputStream is = connection.getInputStream();
+                        InputStreamReader isr = new InputStreamReader(is);
+                        BufferedReader br = new BufferedReader(isr);
+
+                        //a stringbuffer is mutable a string not
+                        StringBuffer buffer = new StringBuffer();
+
+                        String line = "";
+
+                        while ((line = br.readLine()) != null) {
+                            buffer.append(line);
+                        }
+
+                        //versionsOnServer[i] = Integer.parseInt(br.readLine());
+
+                        JSONArray parentArray = new JSONArray(buffer.toString());
+                        package_Versions = new String[3][];
+                        package_Versions[0] = new String[parentArray.length()];
+                        package_Versions[1] = new String[parentArray.length()];
+                        package_Versions[2] = new String[parentArray.length()];
+
+                        alertDialogs = new ArrayList<>();
+                        for (int i = 0; i < parentArray.length(); i++) {
+                            JSONObject finalObject = parentArray.getJSONObject(i);
+
+                            package_Versions[0][i] = finalObject.getString("packagename");
+                            package_Versions[1][i] = finalObject.getString("versioncode");
+                            package_Versions[2][i] = finalObject.getString("apk");
+                        }
+
+                        success = true;
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        connection.disconnect();
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return null;
         }

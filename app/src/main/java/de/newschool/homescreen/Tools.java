@@ -1,5 +1,11 @@
 package de.newschool.homescreen;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +18,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 class Tools {
     public static Bitmap getdrawableToBitmap(Drawable drawable) {
@@ -52,4 +60,14 @@ class Tools {
 
             return null;
         }
+
+    public static List<ActivityManager.RunningServiceInfo> getRunningServices(){
+
+        ActivityManager mActivityManager = (ActivityManager)MainActivity.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+
+        List<ActivityManager.RunningServiceInfo> appProcessInfoList = mActivityManager.getRunningServices(Integer.MAX_VALUE);
+
+        return appProcessInfoList;
+    }
+
 }

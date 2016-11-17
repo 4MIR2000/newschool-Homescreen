@@ -21,19 +21,11 @@ public class LockscreenService extends Service {
 
     @Override
     public void onCreate() {
-        KeyguardManager.KeyguardLock k1;
 
-        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        k1 = km.newKeyguardLock("IN");
-        k1.disableKeyguard();
+            Intent intent = getPackageManager().getLaunchIntentForPackage("de.newschool.homescreen");
+            startActivity(intent);
 
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        mReceiver = new LockscreenReceiver();
-        registerReceiver(mReceiver, filter);
 
-        Log.d("message", "service started");
     }
 
     @Override
@@ -41,4 +33,6 @@ public class LockscreenService extends Service {
         unregisterReceiver(mReceiver);
         super.onDestroy();
     }
+
+
 }
