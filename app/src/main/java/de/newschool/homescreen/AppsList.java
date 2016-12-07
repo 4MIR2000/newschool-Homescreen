@@ -3,6 +3,7 @@ package de.newschool.homescreen;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,5 +125,52 @@ public class AppsList {
 
         return allowedApps;
 
+    }
+
+    class GetWhiteList extends AsyncTask {
+
+        private final String INTERNSURL = "http://10.200.1.1:1000/getAppsWhitelist";
+        private final String EXTERNURL = "https://sirius.ddnss.de:1000/getAppsWhitelist";
+
+        //first try externurl
+        //if it is not accessable than try internurl
+
+        boolean success;
+        @Override
+        protected Object doInBackground(Object[] params) {
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(EXTERNURL);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(10000);
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+
+                //StringBuffer is mutable
+                StringBuffer buffer  = new StringBuffer();
+
+                String line = "";
+
+                while((line = br.readLine()) != null){
+                    buffer.append(line);
+                }
+
+
+
+                success = true;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if(connection!=null)
+                connection.disconnect();
+            }
+
+            return null;
+        }
     }
 }

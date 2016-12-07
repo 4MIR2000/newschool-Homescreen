@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -68,6 +69,16 @@ class Tools {
         List<ActivityManager.RunningServiceInfo> appProcessInfoList = mActivityManager.getRunningServices(Integer.MAX_VALUE);
 
         return appProcessInfoList;
+    }
+
+    class GetWhiteList extends AsyncTask{
+
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            return null;
+        }
     }
 
 }

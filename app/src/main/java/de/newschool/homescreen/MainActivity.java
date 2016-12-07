@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -63,11 +64,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -255,7 +259,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
-      checkSecurityService();
+         checkSecurityService();
+
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        Set<String> saved = sharedPreferences.getStringSet("list",null);
+
+
+            List<String> list = new ArrayList();
+
+
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            Set<String> set = new HashSet<>();
+            set.addAll(list);
+
+            editor.putStringSet("list", set);
+            editor.commit();
 
 
 
@@ -293,8 +313,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         securityServiceHandler.postDelayed(securityServiceRunnable,1000);
     }
-
-
 
 
     private String getForegrundApp(){
@@ -445,6 +463,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
                 for (int j = 0; j < allowedApps.size(); j++) {
 
+                    //@TODO 
                     if (Objects.equals(apps.get(i).packageName, allowedApps.get(j)) || Objects.equals(packagename_splitted, "comandroid")
                             || Objects.equals(packagename_splitted, "comgoogle")
                             || Objects.equals(packagename_splitted, "comhuawei")
