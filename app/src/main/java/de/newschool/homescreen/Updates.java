@@ -102,6 +102,7 @@ public class Updates {
                         package_Versions[0][i] = finalObject.getString("packagename");
                         package_Versions[1][i] = finalObject.getString("versioncode");
                         package_Versions[2][i] = finalObject.getString("apk");
+
                     }
 
                     success = true;
@@ -209,7 +210,7 @@ public class Updates {
 
             }
         } catch (PackageManager.NameNotFoundException e) {
-            //Toast.makeText(MainActivity.activity, "new App " + package_Versions[0][i] + " avaible", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.getContext(), "new App " + package_Versions[0][position] + " avaible", Toast.LENGTH_SHORT).show();
 
             String apkUrl = package_Versions[2][position];
             showNewAppDialog(apkUrl);

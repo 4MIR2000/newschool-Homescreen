@@ -50,7 +50,7 @@ class DrawerClick implements AdapterView.OnItemClickListener {
                 e.printStackTrace();
             }
 
-           // Toast.makeText(mcontext,Integer.toString(pinfo.versionCode),Toast.LENGTH_LONG).show();
+            Toast.makeText(mcontext,"packagename: "+MainActivity.getApps().get(position).name+" versioncode: "+Integer.toString(pinfo.versionCode),Toast.LENGTH_LONG).show();
             //Toast.makeText(mcontext,MainActivity.getApps().get(position).name,Toast.LENGTH_LONG).show();
             mcontext.startActivity(launchintent);
         }

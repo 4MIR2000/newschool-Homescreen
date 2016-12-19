@@ -161,8 +161,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         lockscreen_filter.addAction(Intent.ACTION_SCREEN_ON);
 
         lockscreen_filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        registerReceiver(new LockscreenReceiver(),lockscreen_filter);
-
+        registerReceiver(new LockscreenReceiver(), lockscreen_filter);
 
 
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -184,22 +183,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         manager = getPackageManager();
 
 
-
-        subjects_loading_bar = (ProgressBar)findViewById(R.id.subjects_loadingbar);
+        subjects_loading_bar = (ProgressBar) findViewById(R.id.subjects_loadingbar);
         subjects_grid = (DynamicGridView) findViewById(R.id.subjects_grid);
         subjects_grid.setVisibility(View.GONE);
 
         //if Files are created (NewSchool foler)
-        if(madeFiles) {
+        if (madeFiles) {
             new SubjectsGrid_declaration().execute();
-        }else{
+        } else {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     new SubjectsGrid_declaration().execute();
                 }
-            },1000);
+            }, 1000);
         }
 
 
@@ -244,24 +242,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //  this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-
         checkForUpdates();
 
-        new CheckForNotAllowedApps().execute();
+        // new CheckForNotAllowedApps().execute();
 
 
         //drawSystembar();
 
-       // new AppsLockSocket().execute();
+        // new AppsLockSocket().execute();
 
-       // new OneDayTimeTable_declaration().execute();
-
-
+        // new OneDayTimeTable_declaration().execute();
 
 
-         checkSecurityService();
+        checkSecurityService();
 
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+       /* SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         Set<String> saved = sharedPreferences.getStringSet("list",null);
 
 
@@ -275,13 +270,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
             set.addAll(list);
 
             editor.putStringSet("list", set);
-            editor.commit();
+            editor.putStringSet("list", set);
+            editor.commit();*/
 
 
 
 
-        }
 
+
+
+
+    }
 
     //this methode checks every second if the security service is running or not
     //if not it will start it
@@ -425,7 +424,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             updates_class = new Updates();
             updates_class.checkForUpdates();
-            updateCheckerHandler.postDelayed(updateCheckerRunnable,90000);
+            updateCheckerHandler.postDelayed(updateCheckerRunnable,900000);
 
         }
     }
@@ -437,55 +436,67 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         List<ApplicationInfo> apps = manager.getInstalledApplications(0);
 
+        String notAllowedApp;
 
         @Override
         protected String doInBackground(String... params) {
             noMoreNotAllowedApps = false;
             PackageManager manager = MainActivity.this.getPackageManager();
 
-            List<String> allowedApps = AppsList.getAllowedApps();
 
 
+            AppsList.getAllowedApps2(new AsynctaskFinishListener() {
 
-            for (int i = 0; i < apps.size(); i++) {
+                @Override
+                public void onFinish(List<String> strings) {
+                    List<String> allowedApps = strings;
+                    for (int i = 0; i < apps.size(); i++) {
 
-                boolean allowed = false;
-                String packagename_splitted = "";
-                TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter('.');
-                sss.setString(apps.get(i).packageName);
-
-
-                try {
-                    packagename_splitted += sss.next();
-                    packagename_splitted += sss.next();
-                } catch (StringIndexOutOfBoundsException e) {
-
-                }
-                for (int j = 0; j < allowedApps.size(); j++) {
-
-                    //@TODO 
-                    if (Objects.equals(apps.get(i).packageName, allowedApps.get(j)) || Objects.equals(packagename_splitted, "comandroid")
-                            || Objects.equals(packagename_splitted, "comgoogle")
-                            || Objects.equals(packagename_splitted, "comhuawei")
-                            || Objects.equals(packagename_splitted, "denewschool")
-                            || Objects.equals(packagename_splitted, "commicrosoft")
-                            || Objects.equals(packagename_splitted, "denewschool_tablet"))
-                    {
+                        boolean allowed = false;
+                        String packagename_splitted = "";
+                        TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter('.');
+                        sss.setString(apps.get(i).packageName);
 
 
-                        // Toast.makeText(MainActivity.context,packagename_splitted,Toast.LENGTH_LONG).show();
+                        try {
+                            packagename_splitted += sss.next();
+                            packagename_splitted += sss.next();
+                        } catch (StringIndexOutOfBoundsException e) {
 
-                        allowed = true;
+                        }
+                        for (int j = 0; j < allowedApps.size(); j++) {
+
+                            //@TODO
+                            if (Objects.equals(apps.get(i).packageName, allowedApps.get(j)) || Objects.equals(packagename_splitted, "comandroid")
+                                    || Objects.equals(packagename_splitted, "comgoogle")
+                                    || Objects.equals(packagename_splitted, "comhuawei")
+                                    || Objects.equals(packagename_splitted, "denewschool")
+                                    || Objects.equals(packagename_splitted, "commicrosoft")
+                                    || Objects.equals(packagename_splitted, "denewschool_tablet"))
+                            {
+
+
+                                // Toast.makeText(MainActivity.context,packagename_splitted,Toast.LENGTH_LONG).show();
+
+                                allowed = true;
+                            }
+                        }
+
+                        if(!allowed){
+                            notAllowedApp = apps.get(i).packageName;
+                        }
+
                     }
+
+                    noMoreNotAllowedApps = true;
+
                 }
+            });
 
-                if(!allowed){
-                    return apps.get(i).packageName;
-                }
 
-            }
 
-            noMoreNotAllowedApps = true;
+
+
             return null;
         }
 
