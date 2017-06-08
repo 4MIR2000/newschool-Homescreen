@@ -438,58 +438,79 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         String notAllowedApp;
 
+
+
         @Override
         protected String doInBackground(String... params) {
             noMoreNotAllowedApps = false;
-            PackageManager manager = MainActivity.this.getPackageManager();
+          //  PackageManager manager = MainActivity.this.getPackageManager();
+
+
 
 
 
             AppsList.getAllowedApps2(new AsynctaskFinishListener() {
 
+
+
                 @Override
                 public void onFinish(List<String> strings) {
                     List<String> allowedApps = strings;
-                    for (int i = 0; i < apps.size(); i++) {
 
-                        boolean allowed = false;
-                        String packagename_splitted = "";
-                        TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter('.');
-                        sss.setString(apps.get(i).packageName);
+                    if (allowedApps != null) {
+                        for (int i = 0; i < apps.size(); i++) {
+
+                            boolean allowed = false;
+                            String packagename_splitted = "";
+                            TextUtils.SimpleStringSplitter sss = new TextUtils.SimpleStringSplitter('.');
+                            sss.setString(apps.get(i).packageName);
 
 
-                        try {
-                            packagename_splitted += sss.next();
-                            packagename_splitted += sss.next();
-                        } catch (StringIndexOutOfBoundsException e) {
+                            try {
+                                packagename_splitted += sss.next();
+                                packagename_splitted += sss.next();
+                            } catch (StringIndexOutOfBoundsException e) {
 
-                        }
-                        for (int j = 0; j < allowedApps.size(); j++) {
+                            }
 
-                            //@TODO
-                            if (Objects.equals(apps.get(i).packageName, allowedApps.get(j)) || Objects.equals(packagename_splitted, "comandroid")
+                            //standardmäßig erlaubt sind:
+                            if (Objects.equals(packagename_splitted, "comandroid")
                                     || Objects.equals(packagename_splitted, "comgoogle")
                                     || Objects.equals(packagename_splitted, "comhuawei")
                                     || Objects.equals(packagename_splitted, "denewschool")
                                     || Objects.equals(packagename_splitted, "commicrosoft")
-                                    || Objects.equals(packagename_splitted, "denewschool_tablet"))
-                            {
-
-
-                                // Toast.makeText(MainActivity.context,packagename_splitted,Toast.LENGTH_LONG).show();
-
+                                    || Objects.equals(packagename_splitted, "denewschool_tablet")) {
                                 allowed = true;
+
+
+                            } else {
+
+                                //bei der Whitelist schauen
+                                for (int j = 0; j < allowedApps.size(); j++) {
+                                    if (Objects.equals(apps.get(i).packageName, allowedApps.get(j))) {
+                                        allowed = true;
+
+                                    }
+
+                                }
                             }
+
+                            if (!allowed) {
+                                notAllowedApp = apps.get(i).packageName;
+                                onPostExecute(notAllowedApp);
+                                return;
+                            }
+
                         }
 
-                        if(!allowed){
-                            notAllowedApp = apps.get(i).packageName;
-                        }
+                        noMoreNotAllowedApps = true;
+
+                    }else{
+
+                        //Fehler beim Server
+                        //@TODO Möglichkeit überlegen wenn keine Verbindung zum Server möglich
 
                     }
-
-                    noMoreNotAllowedApps = true;
-
                 }
             });
 
@@ -510,10 +531,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Intent intent = new Intent(Intent.ACTION_DELETE);
                 intent.setData(Uri.parse(packagename));
                 MainActivity.this.startActivity(intent);
-                //Toast.makeText(MainActivity.this,packagename,Toast.LENGTH_LONG).show();
                 //notAllowedAppsHandler.postDelayed(notAllowedAppsRunnable,4000);
 
             }
+
 
         }
     }
